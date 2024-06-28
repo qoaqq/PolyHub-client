@@ -1,18 +1,41 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './frontend/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { PreloadStartComponent } from './components/preload-start/preload-start.component';
+import { NewsletterComponent } from './components/newsletter/newsletter.component';
+import { BookingTypeComponent } from './frontend/booking-type/booking-type.component';
+import { SeatBookingComponent } from './frontend/seat-booking/seat-booking.component';
+import { MovieBookingComponent } from './frontend/movie/movie-booking/movie-booking.component';
+import { ConfirmationComponent } from './frontend/confirmation/confirmation.component';
+import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.component';
+import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
+import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
+import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    HeaderComponent,
+    FooterComponent,
+    PreloadStartComponent,
+    NewsletterComponent,
+    BookingTypeComponent,
+    SeatBookingComponent,
+    MovieBookingComponent,
+    ConfirmationComponent,
+    CateMovieComponent,
+    SingleMovieComponent,
+    CateBlogComponent,
+    SingleBlogComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
