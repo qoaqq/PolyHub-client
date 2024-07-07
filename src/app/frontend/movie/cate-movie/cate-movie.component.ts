@@ -4,6 +4,9 @@ import {
   Renderer2,
   RendererFactory2,
 } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { MovieService } from 'src/app/services/movie.service';
 
 @Component({
   selector: 'app-cate-movie',
@@ -12,13 +15,78 @@ import {
 })
 export class CateMovieComponent implements AfterViewInit {
   private renderer: Renderer2;
+  movies: any[] = [];
+  countAllMovies: number = 0;
+  searchForm: FormGroup;
+  categories: any[] = [];
+  topMovies: any[] = [];
 
-  constructor(private rendererFactory: RendererFactory2) {
+  
+  constructor(private rendererFactory: RendererFactory2, private movie: MovieService, private fb: FormBuilder) {
     this.renderer = rendererFactory.createRenderer(null, null);
+    this.searchForm = this.fb.group({
+      title: ['']
+    });
   }
 
   ngAfterViewInit() {
     this.loadResources();
+
+    this.movie.getList().subscribe(movie => {
+      this.movies = movie.data.data;
+      console.log(this.movies);
+    })
+
+    this.movie.getCategories().subscribe(categories => {
+      this.categories = categories.data;
+      this.countAllMovies = categories.allMovies;
+      console.log(this.categories); 
+    })
+
+    this.movie.getTopMoviesInMonth().subscribe(movies => {
+      this.topMovies = movies.data;
+      console.log(this.topMovies); 
+    })
+  }
+
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const title = inputElement.value;
+    
+    if (title) {
+      this.movie.searchMovies(title).subscribe(
+        movies => {
+          this.movies = movies.data.data;
+          console.log(this.movies);
+          
+        },
+        error => {
+          console.error('having no record', error);
+        }
+      );
+    }
+  }
+
+
+  getMoviesByCategoryID(id: number, event: Event): void{
+    event.preventDefault();
+    this.movie.getMoviesByCategory(id).subscribe(
+      movies => {
+        this.movies = movies.data.data;
+        console.log(this.movies);
+      },
+      error => {
+        console.error('having no record', error);
+      }
+    );
+  }
+
+  getAllMovies(event: Event){
+    event.preventDefault();
+    this.movie.getList().subscribe(movie => {
+      this.movies = movie.data.data;
+      console.log(this.movies);
+    })
   }
 
   private loadResources() {

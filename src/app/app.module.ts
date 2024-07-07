@@ -15,6 +15,7 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.com
     CateBlogComponent,
     SingleBlogComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule , HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

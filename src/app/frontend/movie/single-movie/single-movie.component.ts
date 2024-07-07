@@ -3,7 +3,10 @@ import {
   AfterViewInit,
   Renderer2,
   RendererFactory2,
+  
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MovieService } from 'src/app/services/movie.service';
 
 @Component({
   selector: 'app-single-movie',
@@ -12,13 +15,21 @@ import {
 })
 export class SingleMovieComponent implements AfterViewInit {
   private renderer: Renderer2;
+  movie: any;
+  movieId: string | null = null;
 
-  constructor(private rendererFactory: RendererFactory2) {
+  constructor(private route: ActivatedRoute, private rendererFactory: RendererFactory2, private movieService: MovieService) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   ngAfterViewInit() {
     this.loadResources();
+    this.movieId = this.route.snapshot.paramMap.get('id');
+    this.movieService.getMovieById(this.movieId).subscribe(movie => {
+      this.movie = movie.data;
+      console.log(this.movie.name);
+    })
+    
   }
 
   private loadResources() {

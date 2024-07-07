@@ -5,12 +5,16 @@
 					<div class="st_video_slider_inner_wrapper float_left">
 						<div class="st_video_slider_overlay"></div>
 						<div class="st_video_slide_sec float_left">
-							<a rel='external' href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title' class="test-popup-link">
-								<img src="../../../../assets/images/index_III/icon.png" alt="img">
-							</a>
-							<h3>Aquaman</h3>
-							<p>ENGLISH, HINDI, TAMIL</p>
-							<h4>ACTION | Adventure | Fantasy</h4>
+							<div *ngFor="let attribute of movie?.attributes">
+								<div *ngIf="attribute.name === 'Trailer'">
+									<a rel='external' href='{{ attribute?.attribute_values[0]?.value }}' title='title' class="test-popup-link">
+										<img src="../../../../assets/images/index_III/icon.png" alt="img">
+									</a>
+								</div>
+							</div>
+							<h3>{{ movie?.name }}</h3>
+							<p>VietNamese</p>
+							<h4>{{ movie?.category.name }}</h4>
 							<h5><span>2d</span> <span>3d</span> <span>D 4DX</span> <span>Imax 3D</span></h5>
 						</div>
 						<div class="st_video_slide_social float_left">
@@ -32,8 +36,8 @@
 							</div>
 							<div class="st_video_slide_social_right float_left">
 								<ul>
-									<li data-animation="animated fadeInUp" class=""><i class="far fa-calendar-alt"></i> 14 Dec, 2022</li>
-									<li data-animation="animated fadeInUp" class=""><i class="far fa-clock"></i> 2 hrs 23 mins</li>
+									<li data-animation="animated fadeInUp" class=""><i class="far fa-calendar-alt"></i>{{ movie?.premiere_date }}</li>
+									<li data-animation="animated fadeInUp" class=""><i class="far fa-clock"></i> {{ movie?.duration }} minutes</li>
 								</ul>
 							</div>
 						</div>
@@ -196,8 +200,8 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="st_md_summ_pera float_left">
-													<h5>SYNOPSIS</h5>
-													<p>Immediately following the events of Justice League, Arthur Curry, the reluctant heir to the underwater kingdom of Atlantis, tries to balance the world of the surface dwellers and his own people. But where does his loyalty lie? In the water or on the land? While Aquaman finds himself at crossroads with these questions, closer to home a known foe tries to dethrone him.</p>
+													<h5>DESCRIPTION</h5>
+													<p>{{ movie?.description }}</p>
 												</div>
 											</div>
 											<div class="col-md-12">

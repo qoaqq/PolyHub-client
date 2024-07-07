@@ -1,0 +1,7 @@
+.truncate-text {
+    white-space: nowrap;        /* Ngăn không cho text xuống dòng */
+    overflow: hidden;           /* Ẩn nội dung vượt quá phần tử */
+    text-overflow: ellipsis;    /* Hiển thị dấu ... khi vượt quá */
+    width: 200px;               /* Độ rộng của phần tử */
+    padding: 5px;               /* Khoảng cách nội dung và đường viền */
+  }
