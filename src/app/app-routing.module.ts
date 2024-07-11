@@ -9,6 +9,8 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
+import { SigninComponent } from './frontend/signin/signin.component';
+import { SignupComponent } from './frontend/signup/signup.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -21,6 +23,8 @@ const routes: Routes = [
   { path: 'movie', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
   { path: 'blog', component: SingleBlogComponent },
+  { path: 'signin', component: SigninComponent },
+  { path: 'signup', component: SignupComponent },
 ];
 
 @NgModule({
