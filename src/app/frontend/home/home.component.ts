@@ -1,3 +1,4 @@
+import { HomeService } from './../../services/home.service';
 import {
   Component,
   AfterViewInit,
@@ -12,13 +13,62 @@ import {
 })
 export class HomeComponent implements AfterViewInit {
   private renderer: Renderer2;
-
-  constructor(private rendererFactory: RendererFactory2) {
+  movies: any[] = [];
+  topMovies: any[] = [];
+  image: any[]=[];
+  upcomingMovie: any[]=[];
+  blogHome: any[] = [];
+  constructor(private rendererFactory: RendererFactory2, private HomeService: HomeService) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
+
+
   ngAfterViewInit() {
+
     this.loadResources();
+    // lấy thông tin top phim
+    this.HomeService.getTopMovies().subscribe(data => { 
+      if (typeof jQuery == 'undefined') {
+        console.log('jQuery chưa được tải');
+    } else {
+      this.topMovies = data.data;
+    //   console.log(this.topMovies);
+    }
+    });
+    
+    // phim đang chiếu
+    this.HomeService.getMovies().subscribe(data => {
+      this.movies = data.data.data;
+      // console.log(data);
+      // console.log(this.movies);
+    });
+
+    // ảnh 
+
+    this.HomeService.getImage().subscribe(data => { 
+      
+      if (typeof jQuery == 'undefined') {
+        console.log('jQuery chưa được tải');
+    } else {
+      this.image = data.data.data;
+      console.log(this.image);
+    }
+    });
+    
+    //  Phim sắp chiếu
+    this.HomeService.getUpComingMovie().subscribe(data => { 
+      this.upcomingMovie = data.data.data;
+      // console.log(this.upcomingMovie);
+    });
+
+    this.HomeService.getBlogHome().subscribe(data => {
+      this.blogHome = data.data;
+      // console.log(data);
+      // console.log(this.movies);
+    });
+    
+  
   }
 
   private loadResources() {
