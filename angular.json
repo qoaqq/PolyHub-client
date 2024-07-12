@@ -17,6 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "ev-emitter",
+              "imagesloaded",
+              "jquery"
+            ],
             "outputPath": "dist/poly-hub-client",
             "index": "src/index.html",
             "main": "src/main.ts",
