@@ -1,36 +1,10 @@
-.prs_upcom_movie_content_box_inner h2 {
-  white-space: nowrap; /* Ngăn chặn từng dòng xuống dòng */
-  overflow: hidden; /* Ẩn nội dung bị tràn */
-  text-overflow: ellipsis; /* Thêm dấu ba chấm (...) cho nội dung bị tràn */
-}
 
-.wrap-album-slider {
-  .album-slider__item {
-    float: left; 
-    list-style: none; 
-    position: relative; 
-    width: 257px; 
-    margin-right: 17px;
+  .prs_upcom_movie_content_box_inner h2 {
+    white-space: nowrap; /* Ngăn chặn từng dòng xuống dòng */
+    overflow: hidden; /* Ẩn nội dung bị tràn */
+    text-overflow: ellipsis; /* Thêm dấu ba chấm (...) cho nội dung bị tràn */
   }
-}
-.prs_vp_left_slider{
-  .album-slider__item{
-    float: none; 
-    list-style: none; 
-    position: relative;
-     width: 176px; 
-     margin-bottom: 17px;
-  }
-}
-.prs_vp_right_slider{
-  .album-slider__item{
-    float: none; 
-    list-style: none; 
-    position: relative;
-     width: 176px; 
-     margin-bottom: 17px;
-  }
-}
+
 .truncate-content {
   white-space: nowrap; /* Ngăn chặn từng dòng xuống dòng */
   overflow: hidden; /* Ẩn nội dung bị tràn */

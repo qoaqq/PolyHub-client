@@ -14,8 +14,8 @@ import {
 export class HomeComponent implements AfterViewInit {
   private renderer: Renderer2;
   movies: any[] = [];
-  topMovies: any[] = [];
-  image: any[]=[];
+  // topMovies: any[] = [];
+  // image: any[]=[];
   upcomingMovie: any[]=[];
   blogHome: any[] = [];
   constructor(private rendererFactory: RendererFactory2, private HomeService: HomeService) {
@@ -27,33 +27,12 @@ export class HomeComponent implements AfterViewInit {
   ngAfterViewInit() {
 
     this.loadResources();
-    // lấy thông tin top phim
-    this.HomeService.getTopMovies().subscribe(data => { 
-      if (typeof jQuery == 'undefined') {
-        console.log('jQuery chưa được tải');
-    } else {
-      this.topMovies = data.data;
-    //   console.log(this.topMovies);
-    }
-    });
     
     // phim đang chiếu
     this.HomeService.getMovies().subscribe(data => {
       this.movies = data.data.data;
       // console.log(data);
       // console.log(this.movies);
-    });
-
-    // ảnh 
-
-    this.HomeService.getImage().subscribe(data => { 
-      
-      if (typeof jQuery == 'undefined') {
-        console.log('jQuery chưa được tải');
-    } else {
-      this.image = data.data.data;
-      console.log(this.image);
-    }
     });
     
     //  Phim sắp chiếu

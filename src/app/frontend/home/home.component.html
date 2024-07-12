@@ -2193,48 +2193,7 @@
 			<h2>TOP MOVIES IN THEATRES</h2>
 		</div>
 		<div class="wrap-album-slider" >
-			<ul class="album-slider" >
-				<li class="album-slider__item" *ngFor="let top of topMovies">
-					<figure class="album">
-						<div  class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img width="262px" height="350px" src="{{top.photo}}" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">{{ top?.name }}</a></h2>
-									<p>{{top?.cate_name}}</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				
-				<!-- End album slider item -->
-			</ul>
-			<!-- End slider -->
+			<app-top-movie></app-top-movie>
 		</div>
 			<!-- End slider -->
 	</div>
@@ -2415,27 +2374,11 @@
 				</div>
 				<div class="prs_vp_main_slider_wrapper">
 					<div class="prs_vp_left_slidebar_wrapper">
+						<!-- video -->
 						<div class="wrap-album-slider">
-							<ul class="prs_vp_left_slider">
-								<li class="album-slider__item prs_vp_hover_overlay" *ngFor="let im of image">
-									<figure class="album">
-										<div class="prs_vp_img_overlay">
-											<img width="175px" height="175px" src="{{im?.photo}}" alt="vp_img">	<a href="../../../assets/images/content/vp1.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="fa fa-search"></i></a>
-										</div>
-									</figure>
-									<!-- End album -->
-								</li>
-								
-								<li class="album-slider__item prs_vp_hover_overlay">
-									<figure class="album">
-										<div class="prs_vp_img_overlay">
-											<img src="../../../assets/images/content/vp6.jpg" alt="vp_img">	<a href="../../../assets/images/content/vp6.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="fa fa-search"></i></a>
-										</div>
-									</figure>
-									<!-- End album -->
-								</li>
-							</ul>
+							<app-silder-video></app-silder-video>
 						</div>
+						<!-- end video -->
 					</div>
 					<div class="prs_vp_center_slidebar_wrapper">
 						<div class="prs_vp_center_slider">
@@ -2461,10 +2404,10 @@
 					<div class="prs_vp_right_slidebar_wrapper">
 						<div class="wrap-album-slider">
 							<ul class="prs_vp_right_slider">
-								<li class="album-slider__item prs_vp_hover_overlay" *ngFor="let ig of image">
+								<li class="album-slider__item prs_vp_hover_overlay" >
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img width="175px" height="175px" src="{{ig?.photo}}" alt="vp_img">	<a href="../../../assets/images/content/vp6.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="fa fa-search"></i></a>
+											<img width="175px" height="175px" src="" alt="vp_img">	<a href="../../../assets/images/content/vp6.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="fa fa-search"></i></a>
 										</div>
 									</figure>
 									<!-- End album -->

@@ -6,22 +6,22 @@ import { Observable } from 'rxjs';
 })
 export class HomeService {
   private apiUrl = 'http://localhost:8000/api/home-movie';
-  private topMoviesUrl = 'http://localhost:8000/api/top-movie-in-month';
-  private imageUrl = 'http://localhost:8000/api/image';
+  // private topMoviesUrl = 'http://localhost:8000/api/top-movie-in-month';
+  // private imageUrl = 'http://localhost:8000/api/image';
   private upcomingMovieUrl = 'http://localhost:8000/api/upcoming-movie';
   private blogHomeUrl = 'http://localhost:8000/api/blog-home';
   constructor(private http: HttpClient) { }
 
-  getTopMovies(): Observable<any> { 
-    return this.http.get(this.topMoviesUrl);
-  }
+  // getTopMovies(): Observable<any> { 
+  //   return this.http.get(this.topMoviesUrl);
+  // }
   getMovies(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
   
-  getImage(): Observable<any> { 
-    return this.http.get(this.imageUrl);
-  }
+  // getImage(): Observable<any> { 
+  //   return this.http.get(this.imageUrl);
+  // }
   getUpComingMovie(): Observable<any> { 
     return this.http.get(this.upcomingMovieUrl);
   }

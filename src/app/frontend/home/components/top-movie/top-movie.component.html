@@ -1,0 +1,31 @@
+<ul class="album-slider">
+    <li *ngFor="let item of topMovies" class="album-slider__item">
+      <figure class="album">
+        <div class="prs_upcom_movie_box_wrapper">
+          <div class="prs_upcom_movie_img_box">
+            <img  height="350px" [src]="item.photo" alt="movie_img" />
+            <div class="prs_upcom_movie_img_overlay"></div>
+            <div class="prs_upcom_movie_img_btn_wrapper">
+              <ul>
+                <li><a href="#">View Trailer</a></li>
+                <li><a href="#">View Details</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="prs_upcom_movie_content_box">
+            <div class="prs_upcom_movie_content_box_inner">
+              <h2><a href="#">{{ item.name }}</a></h2>
+              <p>{{ item.cate_name }}</p>
+              <i class="fa fa-star" *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+                 [class.fa-star-o]="i >= 3"></i>
+            </div>
+            <div class="prs_upcom_movie_content_box_inner_icon">
+              <ul>
+                <li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </li>
+  </ul>

@@ -1,0 +1,14 @@
+<ul class="prs_vp_left_slider">
+    <li class="album-slider__item prs_vp_hover_overlay" *ngFor="let im of image">
+      <figure class="album">
+        <div class="prs_vp_img_overlay">
+          <img width="175px" height="175px" [src]="im.photo" alt="vp_img">
+          <a [href]="im.photo" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12">
+            <i class="fa fa-search"></i>
+          </a>
+        </div>
+      </figure>
+      <!-- End album -->
+    </li>
+  </ul>
+  

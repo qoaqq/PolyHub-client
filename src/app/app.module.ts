@@ -15,7 +15,9 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
+import { SilderVideoComponent } from './frontend/home/components/silder-video/silder-video.component';
+import { TopMovieComponent } from './frontend/home/components/top-movie/top-movie.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +34,8 @@ import { HttpClientModule } from '@angular/common/http';
     SingleMovieComponent,
     CateBlogComponent,
     SingleBlogComponent,
+    SilderVideoComponent,
+    TopMovieComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,  HttpClientModule],
   providers: [],
