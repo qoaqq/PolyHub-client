@@ -1,4 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +17,9 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
+import { SigninComponent } from './frontend/signin/signin.component';
+import { SignupComponent } from './frontend/signup/signup.component';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -32,9 +37,11 @@ import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.com
     SingleMovieComponent,
     CateBlogComponent,
     SingleBlogComponent,
+    SigninComponent,
+    SignupComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule,],
+  providers: [AuthService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

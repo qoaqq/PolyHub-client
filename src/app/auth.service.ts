@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/admin/user'; // Địa chỉ API của Laravel
+  private apiUrl = 'http://127.0.0.1:8000/api/admin'; // Địa chỉ API của Laravel
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +17,9 @@ export class AuthService {
 
   logout(): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/logout`, {});
+  }
+  signup( email: string, password: string, name: string,) {
+    return this.http.post<any>(`${this.apiUrl}/signup`, {  email, password ,name})
   }
 }
 
