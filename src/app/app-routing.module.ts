@@ -9,8 +9,10 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
-import { SigninComponent } from './frontend/signin/signin.component';
-import { SignupComponent } from './frontend/signup/signup.component';
+import { SigninComponent } from './frontend/auth/signin/signin.component';
+import { SignupComponent } from './frontend/auth/signup/signup.component';
+import { UserComponent } from './frontend/user/user.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,6 +27,7 @@ const routes: Routes = [
   { path: 'blog', component: SingleBlogComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'user', component: UserComponent , canActivate: [AuthGuard] },
 ];
 
 @NgModule({

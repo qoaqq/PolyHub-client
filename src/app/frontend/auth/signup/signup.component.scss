@@ -1,9 +1,9 @@
 .form-container{
-    background: linear-gradient(#E9374C,#D31128);
+    background: #ff4444;
     font-family: 'Roboto', sans-serif;
     font-size: 0;
     padding: 0 15px;
-    border: 1px solid #DC2036;
+    border: 1px solid #ff4444;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
 	margin-top: 20%;
@@ -89,7 +89,7 @@
 }
 .form-horizontal .btn{
     color: rgba(255,255,255,0.8);
-    background: #E9374C;
+    background: #ff4444;
     font-size: 15px;
     font-weight: 500;
     text-transform: uppercase;
@@ -103,7 +103,7 @@
 .form-horizontal .btn:hover,
 .form-horizontal .btn:focus{
     color: #fff;
-    background-color: #D31128;
+    background-color:#ff4444;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 .form-horizontal .forgot-pass{
@@ -129,4 +129,5 @@
         width: 100%;
         margin: 0;
     }
+    
 }

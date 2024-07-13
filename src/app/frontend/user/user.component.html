@@ -1,0 +1,75 @@
+<div class="user-info" *ngIf="user; else loading">
+  <h2>User Information</h2>
+  <div class="form-container">
+    <div class="avatar">
+      <img [src]="user.avatar || 'default-avatar.png'" alt="User Avatar" class="avatar-image">
+      <input type="file" (change)="onFileChange($event)" class="file-input">
+    </div>
+    <form (ngSubmit)="updateUser()" class="user-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input id="name" [(ngModel)]="user.name" name="name" required class="form-control">
+          <p *ngIf="errors.name" class="error" style="color: red;">{{ errors.name[0] }}</p>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input id="email" [(ngModel)]="user.email" name="email" required type="email" class="form-control">
+          <p *ngIf="errors.email" class="error" style="color: red;">{{ errors.email[0] }}</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input id="address" [(ngModel)]="user.address" name="address" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="phonenumber">Phone Number:</label>
+          <input id="phonenumber" [(ngModel)]="user.phonenumber" name="phonenumber" class="form-control">
+          <p *ngIf="errors.phonenumber" class="error" style="color: red;">{{ errors.phonenumber[0] }}</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date_of_birth">Date of Birth:</label>
+          <input id="date_of_birth" [(ngModel)]="user.date_of_birth" name="date_of_birth" type="date" class="form-control">
+          <p *ngIf="errors.date_of_birth" class="error" style="color: red;">{{ errors.date_of_birth[0] }}</p>
+        </div>
+
+        <div class="form-group">
+          <label>Gender:</label>
+          <div>
+            <label>
+              <input type="radio" [(ngModel)]="user.gender" name="gender" value="male"> Male
+            </label>
+            <label>
+              <input type="radio" [(ngModel)]="user.gender" name="gender" value="female"> Female
+            </label>
+            <label>
+              <input type="radio" [(ngModel)]="user.gender" name="gender" value="other"> Other
+            </label>
+          </div>
+          <p *ngIf="errors.gender" class="error" style="color: red;">{{ errors.gender[0] }}</p>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Save</button>
+    </form>
+  </div>
+
+  <div *ngIf="successMessage" class="message success-message">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="message error-message">
+    {{ errorMessage }}
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading user information...</p>
+</ng-template>

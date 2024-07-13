@@ -1,0 +1,111 @@
+.user-info {
+    max-width: 800px; /* Tăng chiều rộng tối đa */
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between; /* Giữ khoảng cách giữa avatar và form */
+}
+
+.avatar {
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.avatar-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.file-input {
+    margin-top: 10px;
+}
+
+.user-form {
+    flex-grow: 1;
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+
+        .form-group {
+            width: 48%;
+            margin-bottom: 15px;
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-control {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                transition: border-color 0.3s;
+
+                &:focus {
+                    border-color: #ff4444;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    .btn {
+        display: block;
+        width: 100%; /* Để nút chiếm toàn bộ chiều rộng */
+        padding: 10px;
+        background-color: #ff4444;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #ff3333;
+        }
+    }
+}
+
+.message {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.gender-group {
+    label {
+        margin-right: 15px;
+    }
+}
