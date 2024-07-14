@@ -61,17 +61,14 @@ export class AuthService {
   }
 
   updateUser(user: any): Observable<any> {
-    console.log(user);
-    
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
     return this.http.put<any>(`${this.apiUrl}/user`, user, { headers })
       .pipe(
-        catchError((error) => {
-          return throwError(error.error.errors || 'Server error');
+        catchError((errors) => {
+          return throwError(errors.error.errors || 'Server error');
         })
       );
   }

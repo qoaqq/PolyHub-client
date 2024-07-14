@@ -9,57 +9,76 @@ import { Router } from '@angular/router';
 })
 export class UserComponent implements OnInit {
   user: any = {}; // Biến lưu trữ thông tin người dùng
-  errorMessage: string = '';
-  successMessage: string = '';
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
   errors: any = {};
+  showChangePassword: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
-
+  constructor(private authService: AuthService, private router: Router) {}
+  toggleChangePassword() {
+    this.showChangePassword = !this.showChangePassword;
+  }
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (token) {
       this.getUser();
-    }else{
+    } else {
       this.router.navigate(['/signin']);
     }
   }
-  
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // Xử lý file avatar, có thể upload lên server hoặc xử lý trực tiếp
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.user.avatar = e.target.result; // Cập nhật avatar trong user
-      };
-      reader.readAsDataURL(file);
-    }
+
+  showSuccess(message: string) {
+    this.successMessage = message;
+    setTimeout(() => {
+      this.successMessage = null;
+    }, 5000); // 5 giây
   }
+
+  showError(message: string) {
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000); // 5 giây
+  }
+
   getUser(): void {
     this.authService.getUser().subscribe({
       next: (response) => {
         this.user = response; // Gán dữ liệu người dùng vào biến
       },
       error: (error) => {
-        this.errorMessage = 'Unable to load user information. Please try again later.';
+        this.errorMessage =
+          'Unable to load user information. Please try again later.';
         if (error.status === 401 || error.status === 403) {
           this.router.navigate(['/signin']);
         }
-      }
+      },
     });
   }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            this.user.avatar = e.target.result; // Lưu base64 vào avatar
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
 
   updateUser(): void {
     this.authService.updateUser(this.user).subscribe({
       next: (response) => {
-        this.successMessage = 'Successfully updated!';
+        this.showSuccess('Successfully updated!');
         this.errorMessage = '';
       },
       error: (errors) => {
         this.errors = errors;
-        this.errorMessage = 'Unable to update information. Please try again.';
+        this.showError('Unable to update information. Please try again.');
         this.successMessage = '';
-      }
+      },
     });
   }
 }

@@ -1,22 +1,38 @@
 <div class="user-info" *ngIf="user; else loading">
-  <h2>User Information</h2>
   <div class="form-container">
     <div class="avatar">
-      <img [src]="user.avatar || 'default-avatar.png'" alt="User Avatar" class="avatar-image">
-      <input type="file" (change)="onFileChange($event)" class="file-input">
+      <img [src]="user.avatar && user.avatar.startsWith('data:image') ? user.avatar : 'http://127.0.0.1:8000/storage/' + user.avatar" alt="User Avatar" class="avatar-image">
+      <label class="file-label">
+        Select file
+        <input type="file" (change)="onFileChange($event)" class="file-input">
+      </label>
+      <p *ngIf="errors.avatar" class="error">{{ errors.avatar[0] }}</p>
+      <div class="form-row">
+        <button type="button" (click)="toggleChangePassword()" class="btn change-password-btn">Change Password</button>
+      </div>
+      <div class="points">
+        Points: {{ user.points }}
+      </div>
+      <div class="rank" *ngIf="user && user.rank_member">
+        Rank: {{ user.rank_member.rank }}
+      </div>
     </div>
+    
+    
     <form (ngSubmit)="updateUser()" class="user-form">
       <div class="form-row">
         <div class="form-group">
           <label for="name">Name:</label>
           <input id="name" [(ngModel)]="user.name" name="name" required class="form-control">
-          <p *ngIf="errors.name" class="error" style="color: red;">{{ errors.name[0] }}</p>
+          <p *ngIf="errors.name" class="error">{{ errors.name[0] }}</p>
         </div>
+      </div>
 
+      <div class="form-row">
         <div class="form-group">
           <label for="email">Email:</label>
           <input id="email" [(ngModel)]="user.email" name="email" required type="email" class="form-control">
-          <p *ngIf="errors.email" class="error" style="color: red;">{{ errors.email[0] }}</p>
+          <p *ngIf="errors.email" class="error">{{ errors.email[0] }}</p>
         </div>
       </div>
 
@@ -29,20 +45,18 @@
         <div class="form-group">
           <label for="phonenumber">Phone Number:</label>
           <input id="phonenumber" [(ngModel)]="user.phonenumber" name="phonenumber" class="form-control">
-          <p *ngIf="errors.phonenumber" class="error" style="color: red;">{{ errors.phonenumber[0] }}</p>
+          <p *ngIf="errors.phonenumber" class="error">{{ errors.phonenumber[0] }}</p>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="date_of_birth">Date of Birth:</label>
-          <input id="date_of_birth" [(ngModel)]="user.date_of_birth" name="date_of_birth" type="date" class="form-control">
-          <p *ngIf="errors.date_of_birth" class="error" style="color: red;">{{ errors.date_of_birth[0] }}</p>
+          <label>Date of Birth:</label>
+          <p>{{ user.date_of_birth | date: 'mediumDate' }}</p>
         </div>
-
         <div class="form-group">
           <label>Gender:</label>
-          <div>
+          <div class="gender-group">
             <label>
               <input type="radio" [(ngModel)]="user.gender" name="gender" value="male"> Male
             </label>
@@ -53,7 +67,21 @@
               <input type="radio" [(ngModel)]="user.gender" name="gender" value="other"> Other
             </label>
           </div>
-          <p *ngIf="errors.gender" class="error" style="color: red;">{{ errors.gender[0] }}</p>
+          <p *ngIf="errors.gender" class="error">{{ errors.gender[0] }}</p>
+        </div>
+      </div>
+
+
+      <div class="form-row" *ngIf="showChangePassword">
+        <div class="form-group">
+          <label for="password">New Password:</label>
+          <input id="password" [(ngModel)]="user.password" name="password" type="password" class="form-control">
+          <p *ngIf="errors.password" class="error">{{ errors.password[0] }}</p>
+        </div>
+        <div class="form-group">
+          <label for="password">Re Password:</label>
+          <input id="password" [(ngModel)]="user.repassword" name="repassword" type="password" class="form-control">
+          <p *ngIf="errors.repassword" class="error">{{ errors.repassword[0] }}</p>
         </div>
       </div>
 
