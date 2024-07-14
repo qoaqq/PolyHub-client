@@ -1,0 +1,179 @@
+.user-info {
+    max-width: 800px;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.avatar {
+    margin-right: 20px;
+    flex-shrink: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Sắp xếp theo chiều dọc */
+    align-items: center;
+}
+
+.avatar-image {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%; /* Bo tròn */
+    border: 2px solid #ddd;
+    object-fit: cover; /* Không bị vỡ */
+}
+
+.file-input {
+    display: none; /* Ẩn input mặc định */
+}
+
+.file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.file-label:hover {
+    background-color: #ff3333;
+}
+
+.file-label:active {
+    background-color: #ff2222;
+}
+
+.points, .rank {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+  
+.user-form {
+    flex-grow: 1;
+}
+
+.form-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px; /* Thêm khoảng cách giữa các hàng */
+}
+
+.form-group {
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    margin-bottom: 15px;
+
+    /* Thêm margin cho các trường trên cùng một hàng */
+    &:not(:last-child) {
+        margin-right: 10px; /* Khoảng cách giữa các trường trên cùng một hàng */
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+
+        &:focus {
+            border-color: #ff4444;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+        }
+    }
+}
+
+.btn {
+    display: block;
+    width: auto; /* Chiều rộng tự động */
+    padding: 8px 16px; /* Giảm padding */
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px; /* Giảm kích thước chữ */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #ff3333;
+    }
+}
+
+.message {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #ff2222;
+    border: 1px solid #f5c6cb;
+}
+
+.gender-group {
+    display: flex;
+    margin-top: 5px;
+
+    label {
+        margin-right: 15px;
+        font-weight: normal;
+    }
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.change-password-btn {
+    background-color: #ff2222;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.change-password-btn:hover {
+    background-color: #ff2222;
+}
