@@ -12,7 +12,8 @@ import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.com
 import { SigninComponent } from './frontend/auth/signin/signin.component';
 import { SignupComponent } from './frontend/auth/signup/signup.component';
 import { UserComponent } from './frontend/user/user.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { AuthUserGuard } from './guards/user/auth-user.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,9 +26,9 @@ const routes: Routes = [
   { path: 'movie', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
   { path: 'blog', component: SingleBlogComponent },
-  { path: 'signin', component: SigninComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'user', component: UserComponent , canActivate: [AuthGuard] },
+  { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
+  { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
+  { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },
 ];
 
 @NgModule({

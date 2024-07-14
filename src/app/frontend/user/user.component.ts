@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,12 @@ export class UserComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getUser();
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.getUser();
+    }else{
+      this.router.navigate(['/signin']);
+    }
   }
   
   onFileChange(event: any) {

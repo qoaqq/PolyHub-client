@@ -19,7 +19,7 @@ import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
 import { SigninComponent } from './frontend/auth/signin/signin.component';
 import { SignupComponent } from './frontend/auth/signup/signup.component';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth/auth.service';
 import { UserComponent } from './frontend/user/user.component';
 import { SignoutComponent } from './frontend/auth/signout/signout.component';
 @NgModule({
