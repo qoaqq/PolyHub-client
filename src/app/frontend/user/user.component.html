@@ -1,0 +1,103 @@
+<div class="user-info" *ngIf="user; else loading">
+  <div class="form-container">
+    <div class="avatar">
+      <img [src]="user.avatar && user.avatar.startsWith('data:image') ? user.avatar : 'http://127.0.0.1:8000/storage/' + user.avatar" alt="User Avatar" class="avatar-image">
+      <label class="file-label">
+        Select file
+        <input type="file" (change)="onFileChange($event)" class="file-input">
+      </label>
+      <p *ngIf="errors.avatar" class="error">{{ errors.avatar[0] }}</p>
+      <div class="form-row">
+        <button type="button" (click)="toggleChangePassword()" class="btn change-password-btn">Change Password</button>
+      </div>
+      <div class="points">
+        Points: {{ user.points }}
+      </div>
+      <div class="rank" *ngIf="user && user.rank_member">
+        Rank: {{ user.rank_member.rank }}
+      </div>
+    </div>
+    
+    
+    <form (ngSubmit)="updateUser()" class="user-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input id="name" [(ngModel)]="user.name" name="name" required class="form-control">
+          <p *ngIf="errors.name" class="error">{{ errors.name[0] }}</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input id="email" [(ngModel)]="user.email" name="email" required type="email" class="form-control">
+          <p *ngIf="errors.email" class="error">{{ errors.email[0] }}</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input id="address" [(ngModel)]="user.address" name="address" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="phonenumber">Phone Number:</label>
+          <input id="phonenumber" [(ngModel)]="user.phonenumber" name="phonenumber" class="form-control">
+          <p *ngIf="errors.phonenumber" class="error">{{ errors.phonenumber[0] }}</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date of Birth:</label>
+          <p>{{ user.date_of_birth | date: 'mediumDate' }}</p>
+        </div>
+        <div class="form-group">
+          <label>Gender:</label>
+          <div class="gender-group">
+            <label>
+              <input type="radio" [(ngModel)]="user.gender" name="gender" value="male"> Male
+            </label>
+            <label>
+              <input type="radio" [(ngModel)]="user.gender" name="gender" value="female"> Female
+            </label>
+            <label>
+              <input type="radio" [(ngModel)]="user.gender" name="gender" value="other"> Other
+            </label>
+          </div>
+          <p *ngIf="errors.gender" class="error">{{ errors.gender[0] }}</p>
+        </div>
+      </div>
+
+
+      <div class="form-row" *ngIf="showChangePassword">
+        <div class="form-group">
+          <label for="password">New Password:</label>
+          <input id="password" [(ngModel)]="user.password" name="password" type="password" class="form-control">
+          <p *ngIf="errors.password" class="error">{{ errors.password[0] }}</p>
+        </div>
+        <div class="form-group">
+          <label for="password">Re Password:</label>
+          <input id="password" [(ngModel)]="user.repassword" name="repassword" type="password" class="form-control">
+          <p *ngIf="errors.repassword" class="error">{{ errors.repassword[0] }}</p>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Save</button>
+    </form>
+  </div>
+
+  <div *ngIf="successMessage" class="message success-message">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="message error-message">
+    {{ errorMessage }}
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading user information...</p>
+</ng-template>
