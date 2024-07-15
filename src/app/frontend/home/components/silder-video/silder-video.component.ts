@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, Renderer2, RendererFactory2 } from '@angular/core';
-import { SilderVideoService } from 'src/app/services/frontend/home/components/silder-video/silder-video.service';
+import { SilderVideoService } from './../../../../services/home/silder-video/silder-video.service';
+import { AfterViewInit, Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-silder-video',
@@ -7,14 +8,10 @@ import { SilderVideoService } from 'src/app/services/frontend/home/components/si
   styleUrls: ['./silder-video.component.scss']
 })
 export class SilderVideoComponent implements AfterViewInit {
-  private renderer: Renderer2;
   image: any[] = [];
 
-  constructor(
-    private rendererFactory: RendererFactory2,
-    private SilderVideoService: SilderVideoService
-  ) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  constructor(private SilderVideoService: SilderVideoService) {
+  
   }
 
   async ngAfterViewInit() {
@@ -26,7 +23,6 @@ export class SilderVideoComponent implements AfterViewInit {
       } else {
         console.error('Dữ liệu trả về không phải là mảng hoặc không có thuộc tính data:', response);
       }
-
       console.log(this.image);
     } catch (error) {
       console.error('Lỗi khi lấy thông tin hình ảnh:', error);

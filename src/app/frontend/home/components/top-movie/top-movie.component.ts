@@ -1,5 +1,5 @@
-import { TopMovieService } from './../../../../services/frontend/home/components/top-movie/top-movie.service';
-import { Component, Renderer2, RendererFactory2, AfterViewInit } from '@angular/core';
+import { TopMovieService } from './../../../../services/home/top-movie/top-movie.service';
+import { Component, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-top-movie',
@@ -7,19 +7,16 @@ import { Component, Renderer2, RendererFactory2, AfterViewInit } from '@angular/
   styleUrls: ['./top-movie.component.scss']
 })
 export class TopMovieComponent implements AfterViewInit {
-  private renderer: Renderer2;
   topMovies: any[] = [];
 
   constructor(
-    private rendererFactory: RendererFactory2,
-    private topMovieService: TopMovieService
+    private TopMovieService: TopMovieService
   ) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  
   }
-
   async ngAfterViewInit() {
     try {
-      const data = await this.topMovieService.getTopMovies().toPromise();
+      const data = await this.TopMovieService.getTopMovies().toPromise();
       if (typeof jQuery == 'undefined') {
         console.log('jQuery chưa được tải');
     } else {
