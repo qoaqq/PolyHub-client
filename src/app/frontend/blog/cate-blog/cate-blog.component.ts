@@ -1,25 +1,58 @@
 import {
   Component,
+  OnInit,
   AfterViewInit,
   Renderer2,
   RendererFactory2,
 } from '@angular/core';
+import { BlogService } from '../../../services/blog.service';
 
 @Component({
   selector: 'app-cate-blog',
   templateUrl: './cate-blog.component.html',
   styleUrls: ['./cate-blog.component.scss'],
 })
-export class CateBlogComponent implements AfterViewInit {
+export class CateBlogComponent implements OnInit, AfterViewInit {
+  posts: any[] = [];
   private renderer: Renderer2;
 
-  constructor(private rendererFactory: RendererFactory2) {
+  constructor(
+    private rendererFactory: RendererFactory2,
+    private blogService: BlogService
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
+  }
+
+  ngOnInit(): void {
+    this.loadPosts();
   }
 
   ngAfterViewInit() {
     this.loadResources();
   }
+
+  loadPosts(): void {
+    const baseUrl = 'http://127.0.0.1:8000/'; // Thay thế bằng URL cơ sở thực tế của API
+
+    this.blogService.getPosts().subscribe({
+      next: (response: any) => {
+        console.log('Raw data:', response);
+        // Kiểm tra nếu dữ liệu trả về có thuộc tính 'data' chứa mảng
+        if (response && Array.isArray(response.data)) {
+          this.posts = response.data.map((post: any) => ({
+            ...post,
+            image: baseUrl + post.image // Cập nhật đường dẫn hình ảnh
+          }));
+        } else {
+          console.error('Invalid data format:', response);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading posts: ', error);
+      }
+    });
+  }
+
 
   private loadResources() {
     const stylesheets = [
@@ -75,9 +108,7 @@ export class CateBlogComponent implements AfterViewInit {
   }
 
   private loadStylesheets(urls: string[]): Promise<void> {
-    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(
-      () => {}
-    );
+    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(() => {});
   }
 
   private loadStylesheet(url: string): Promise<void> {

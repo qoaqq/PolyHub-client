@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'movies', component: CateMovieComponent },
   { path: 'movie', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
-  { path: 'blog', component: SingleBlogComponent },
+  { path: 'blogs/:id', component: SingleBlogComponent },
 ];
 
 @NgModule({
