@@ -1,53 +1,72 @@
-import { HomeService } from './../../services/home.service';
 import {
   Component,
   AfterViewInit,
   Renderer2,
   RendererFactory2,
+  AfterViewChecked,
 } from '@angular/core';
+import { HomeService } from './../../services/home.service';
+
+declare var jQuery: any; // Declare jQuery
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements AfterViewInit, AfterViewChecked {
   private renderer: Renderer2;
   movies: any[] = [];
-  // topMovies: any[] = [];
-  // image: any[]=[];
-  upcomingMovie: any[]=[];
+  upcomingMovie: any[] = [];
   blogHome: any[] = [];
-  constructor(private rendererFactory: RendererFactory2, private HomeService: HomeService) {
+  private bxSliderInitialized = false;
+
+  constructor(
+    private rendererFactory: RendererFactory2,
+    private homeService: HomeService
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-
-
   ngAfterViewInit() {
-
     this.loadResources();
-    
-    // phim đang chiếu
-    this.HomeService.getMovies().subscribe(data => {
+
+    // Fetch movie data
+    this.homeService.getMovies().subscribe((data) => {
       this.movies = data.data.data;
-      // console.log(data);
-      // console.log(this.movies);
-    });
-    
-    //  Phim sắp chiếu
-    this.HomeService.getUpComingMovie().subscribe(data => { 
-      this.upcomingMovie = data.data.data;
-      // console.log(this.upcomingMovie);
+      this.initBxSliderIfReady(); // Initialize bxSlider when movie data is fetched
     });
 
-    this.HomeService.getBlogHome().subscribe(data => {
-      this.blogHome = data.data;
-      // console.log(data);
-      // console.log(this.movies);
+    // Fetch upcoming movie data
+    this.homeService.getUpComingMovie().subscribe((data) => {
+      this.upcomingMovie = data.data.data;
+      this.initBxSliderIfReady(); // Initialize bxSlider when upcoming movie data is fetched
     });
-    
-  
+
+    // Fetch blog data
+    this.homeService.getBlogHome().subscribe((data) => {
+      this.blogHome = data.data;
+    });
+  }
+
+  ngAfterViewChecked() {
+    // Check if bxSlider hasn't been initialized and all necessary conditions are met
+    this.initBxSliderIfReady();
+  }
+
+  private initBxSliderIfReady() {
+    if (!this.bxSliderInitialized && this.isBxSliderReady()) {
+      this.initBxSlider();
+      this.bxSliderInitialized = true; // Mark as initialized to prevent re-initialization
+    }
+  }
+
+  private isBxSliderReady(): boolean {
+    return (
+      typeof jQuery !== 'undefined' &&
+      (jQuery('.bxslider').length > 0 &&
+        typeof jQuery('.bxslider').bxSlider === 'function')
+    );
   }
 
   private loadResources() {
@@ -79,7 +98,7 @@ export class HomeComponent implements AfterViewInit {
       '../../../assets/js/jquery.sticky.js',
       '../../../assets/js/jquery.nice-select.min.js',
       '../../../assets/js/jquery.magnific-popup.js',
-      '../../../assets/js/jquery.bxslider.min.js',
+      '../../../assets/js/jquery.bxslider.min.js', // Include bxslider in the scripts list
       '../../../assets/js/venobox.min.js',
       '../../../assets/js/smothscroll_part1.js',
       '../../../assets/js/smothscroll_part2.js',
@@ -103,10 +122,8 @@ export class HomeComponent implements AfterViewInit {
       .catch((error) => console.error('Error loading resources:', error));
   }
 
-  private loadStylesheets(urls: string[]): Promise<void> {
-    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(
-      () => {}
-    );
+  private loadStylesheets(urls: string[]): Promise<void[]> {
+    return Promise.all(urls.map((url) => this.loadStylesheet(url)));
   }
 
   private loadStylesheet(url: string): Promise<void> {
@@ -137,5 +154,17 @@ export class HomeComponent implements AfterViewInit {
       this.renderer.appendChild(document.head, script);
     });
   }
-}
 
+  private initBxSlider() {
+    if ((jQuery as any)('.bxslider').length > 0) {
+      (jQuery as any)('.bxslider').bxSlider({
+        mode: 'horizontal',
+        auto: true,
+        controls: true,
+        pager: false,
+      });
+    } else {
+      console.error('Error: bxSlider elements not found.');
+    }
+  }
+}

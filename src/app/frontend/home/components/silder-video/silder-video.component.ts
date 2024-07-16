@@ -21,8 +21,8 @@ export class SilderVideoComponent implements AfterViewInit {
     try {
       const response = await this.SilderVideoService.getImage().toPromise();
       
-      if (response && response.data && Array.isArray(response.data)) {
-        this.image = response.data;
+      if (response && response.data?.data && Array.isArray(response.data?.data)) {
+        this.image = response.data?.data;
       } else {
         console.error('Dữ liệu trả về không phải là mảng hoặc không có thuộc tính data:', response);
       }

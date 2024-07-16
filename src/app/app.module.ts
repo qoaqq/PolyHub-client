@@ -18,6 +18,7 @@ import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.com
 import { HttpClientModule } from '@angular/common/http';
 import { SilderVideoComponent } from './frontend/home/components/silder-video/silder-video.component';
 import { TopMovieComponent } from './frontend/home/components/top-movie/top-movie.component';
+import { SliderComponent } from './frontend/home/components/slider/slider.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +37,7 @@ import { TopMovieComponent } from './frontend/home/components/top-movie/top-movi
     SingleBlogComponent,
     SilderVideoComponent,
     TopMovieComponent,
+    SliderComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,  HttpClientModule],
   providers: [],
