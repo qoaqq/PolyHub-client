@@ -1,0 +1,58 @@
+<div class="form-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8">
+                <div class="form-container">
+                    <div class="form-icon">
+                        <i class="fa fa-user-circle"></i>
+                        <span class="signup"><a routerLink="/signin">Do you already have an account? Sign in</a></span>
+                    </div>
+                    <form class="form-horizontal" (ngSubmit)="onSubmit()">
+                        <h3 class="title">Member Sign up</h3>
+
+                        <div class="form-group">
+                            <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                            <input class="form-control" type="email" [(ngModel)]="email" name="email" placeholder="Email Address" required>
+                        </div>
+                        <p *ngIf="errors.email" class="form-control error" style="color: red;">{{ errors.email[0] }}</p>
+                        
+                        <div class="form-group">
+                            <span class="input-icon"><i class="fa fa-user-circle"></i></span>
+                            <input class="form-control" type="text" [(ngModel)]="name" name="name" placeholder="Name" required>
+                        </div>
+                        <p *ngIf="errors.name" class="form-control error" style="color: red;">{{ errors.name[0] }}</p>
+                        
+
+                        <!-- New phone field -->
+                        <div class="form-group">
+                            <span class="input-icon"><i class="fa fa-phone"></i></span>
+                            <input class="form-control" type="text" [(ngModel)]="phonenumber" name="phone" placeholder="Phone" required>
+                        </div>
+                        <p *ngIf="errors.phonenumber" class="form-control error" style="color: red;">{{ errors.phonenumber[0] }}</p>
+
+                        <!-- New dateOfBirth field -->
+                        <div class="form-group">
+                            <span class="input-icon"><i class="fa fa-calendar"></i></span>
+                            <input class="form-control" type="date" [(ngModel)]="date_of_birth" name="dateOfBirth" placeholder="Date of Birth" required>
+                        </div>
+                        <p *ngIf="errors.date_of_birth" class="form-control error" style="color: red;">{{ errors.date_of_birth[0] }}</p>
+
+                        <div class="form-group">
+                            <span class="input-icon"><i class="fa fa-lock"></i></span>
+                            <input class="form-control" type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
+                        </div>
+                        <p *ngIf="errors.password" class="form-control error" style="color: red;">{{ errors.password[0] }}</p>
+
+                        <div class="form-group">
+                            <span class="input-icon"><i class="fa fa-lock"></i></span>
+                            <input class="form-control" type="password" [(ngModel)]="repassword" name="repassword" placeholder="Re-Password" required>
+                        </div>
+                        <p *ngIf="errors.repassword" class="form-control error" style="color: red;">{{ errors.repassword[0] }}</p>
+
+                        <button class="btn signin" type="submit">Signup</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
