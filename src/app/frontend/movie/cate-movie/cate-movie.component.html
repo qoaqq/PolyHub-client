@@ -114,7 +114,7 @@
 														<ul>
 															<li><a href="#">View Trailer</a>
 															</li>
-															<li><a href="#">View Details</a>
+															<li><a [routerLink]="['/movie', movie.id]">View Details</a>
 															</li>
 														</ul>
 													</div>
@@ -190,7 +190,7 @@
 													<div class="prs_mcc_list_bottom_cont_wrapper">
 														<p>{{ movie.description }}</p>
 														<ul>
-															<li><a href="#">View Details</a>
+															<li><a [routerLink]="['/movie', movie.id]">View Details</a>
 															</li>
 														</ul>
 													</div>
@@ -216,29 +216,13 @@
 					<div class="prs_mcc_bro_title_wrapper">
 						<h2>browse title</h2>
 						<ul>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">All
-									<span>23,124</span></a>
+							<li>
+								<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
+								<a (click)="getAllMovies($event)" href="#">All <span>{{ countAllMovies }}</span></a>
 							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Action
-									<span>512</span></a>
-							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Romantic
-									<span>548</span></a>
-							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Love
-									<span>557</span></a>
-							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Musical
-									<span>554</span></a>
-							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Drama
-									<span>567</span></a>
-							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Thriller
-									<span>689</span></a>
-							</li>
-							<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Horror
-									<span>478</span></a>
+							<!-- list categories -->
+							<li *ngFor="let category of categories"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;&nbsp;
+								<a (click)="getMoviesByCategoryID(category.id, $event)" href="#">{{ category.name }} <span>{{ category.movies_count }}</span></a>
 							</li>
 						</ul>
 					</div>
@@ -277,7 +261,7 @@
 								<ul>
 									<li><a href="#">View Trailer</a>
 									</li>
-									<li><a href="#">View Details</a>
+									<li><a [routerLink]="['/movie', movie?.id]">View Details</a>
 									</li>
 								</ul>
 							</div>

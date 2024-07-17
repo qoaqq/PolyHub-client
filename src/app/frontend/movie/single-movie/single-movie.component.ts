@@ -27,7 +27,6 @@ export class SingleMovieComponent implements AfterViewInit {
     this.movieId = this.route.snapshot.paramMap.get('id');
     this.movieService.getMovieById(this.movieId).subscribe(movie => {
       this.movie = movie.data;
-      console.log(this.movie.name);
     })
     
   }
