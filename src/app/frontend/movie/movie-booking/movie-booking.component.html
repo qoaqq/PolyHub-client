@@ -102,12 +102,13 @@
 								<div class="tab-content">
 									<div id="home" class="tab-pane active">
 										<div class="st_calender_contant_main_wrapper float_left">
+											<div *ngFor="let cinema of cinemas">
 											<div class="st_calender_row_cont float_left">
 												<div class="st_calender_asc">
 													<div class="st_calen_asc_heart"><a href="#">	<i class="fa fa-heart"></i></a>
 													</div>
 													<div class="st_calen_asc_heart_cont">
-														<h3>Ariesplex SL Cinemas</h3>
+														<h3>{{ cinema.name }}</h3>
 														<ul>
 															<li>
 																<img src="../../../../assets/images/content/fast-food.png">
@@ -119,15 +120,17 @@
 													</div>
 												</div>
 												<div class="st_calen_asc_tecket_time_select">
+													<div *ngIf="cinema.rooms.length > 0">
 													<ul>
-														<li>	<span>
+														<li *ngFor="let room of cinema.rooms">	
+															<span>
 															<h4>Rs.160.00</h4>
 															<p class="asc_pera1">Executive</p>
 															<p class="asc_pera2">Filling Fast</p>
 															</span>
-															<a href="seat_booking.html">11:30 AM</a>
+															<a href="seat_booking.html"> {{ room.name }}</a>
 														</li>
-														<li>	<span>
+														<!-- <li>	<span>
 															<h4>Rs.160.00</h4>
 															<p class="asc_pera1">Executive</p>
 															<p class="asc_pera2">Filling Fast</p>
@@ -147,11 +150,16 @@
 															<p class="asc_pera2">Filling Fast</p>
 															</span>
 															<a href="seat_booking.html">10:00 PM</a>
-														</li>
+														</li> -->
 													</ul>
+													</div>
+													<div *ngIf="cinema.rooms.length === 0">
+														<p>No rooms available</p>
+													</div>
 												</div>
 											</div>
-											<div class="st_calender_row_cont st_calender_row_cont2 float_left">
+											</div>
+										<!--	<div class="st_calender_row_cont st_calender_row_cont2 float_left">
 												<div class="st_calender_asc">
 													<div class="st_calen_asc_heart"><a href="#">	<i class="fa fa-heart"></i></a>
 													</div>
@@ -462,7 +470,7 @@ Mahathma Gandhi Road</h3>
 													</ul>
 													<p class="asc_bottom_pera">Cancellation Available</p>
 												</div>
-											</div>
+											</div> -->
 										</div>
 									</div>
 									<div id="menu1" class="tab-pane fade">
