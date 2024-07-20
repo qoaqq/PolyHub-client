@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'payment-method', component: BookingTypeComponent },
   { path: 'seat-booking', component: SeatBookingComponent },
   { path: 'movie-booking', component: MovieBookingComponent },
+  { path: 'booking-type', component: BookingTypeComponent },
   { path: 'confirmation', component: ConfirmationComponent },
   { path: 'movies', component: CateMovieComponent },
   { path: 'movie', component: SingleMovieComponent },

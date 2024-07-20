@@ -11,7 +11,7 @@ import { PreloadStartComponent } from './components/preload-start/preload-start.
 import { NewsletterComponent } from './components/newsletter/newsletter.component';
 import { BookingTypeComponent } from './frontend/booking-type/booking-type.component';
 import { SeatBookingComponent } from './frontend/seat-booking/seat-booking.component';
-import { MovieBookingComponent } from './frontend/movie/movie-booking/movie-booking.component';
+import {MovieBookingComponent} from './frontend/movie/movie-booking/movie-booking.component';
 import { ConfirmationComponent } from './frontend/confirmation/confirmation.component';
 import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.component';
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';

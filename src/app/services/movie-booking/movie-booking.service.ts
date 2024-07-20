@@ -30,6 +30,7 @@ import { Observable } from 'rxjs';
 export class MovieBookingService {
   private cinemaUrl = 'http://127.0.0.1:8000/api/cinemas';
   private roomUrl = 'http://127.0.0.1:8000/api/rooms';
+  private showingUrl = 'http://127.0.0.1:8000/api/admin/showingrelease';
 
   constructor(private http: HttpClient) { }
 
@@ -39,5 +40,8 @@ export class MovieBookingService {
 
   getRooms(): Observable<any> {
     return this.http.get<any>(this.roomUrl);
+  }
+  getShowingRelease(): Observable<any> {
+    return this.http.get<any>(this.showingUrl);
   }
 }
