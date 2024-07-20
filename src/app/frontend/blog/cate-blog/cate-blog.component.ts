@@ -1,111 +1,88 @@
-import {
-  Component,
-  AfterViewInit,
-  Renderer2,
-  RendererFactory2,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BlogService } from '../../../services/blog/blog.service';
 
 @Component({
   selector: 'app-cate-blog',
   templateUrl: './cate-blog.component.html',
   styleUrls: ['./cate-blog.component.scss'],
 })
-export class CateBlogComponent implements AfterViewInit {
-  private renderer: Renderer2;
+export class CateBlogComponent implements OnInit {
+  blogs: any[] = [];
+  categories: any[] = [];
+  selectedCategoryId: number | null = null;
+  baseUrl = 'http://127.0.0.1:8000/';
+  constructor(private blogService: BlogService) {}
 
-  constructor(private rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  ngOnInit(): void {
+    this.loadCategories();
+    this.loadBlogs();
   }
 
-  ngAfterViewInit() {
-    this.loadResources();
-  }
-
-  private loadResources() {
-    const stylesheets = [
-      '../../../assets/css/animate.css',
-      '../../../assets/css/bootstrap.css',
-      '../../../assets/css/font-awesome.css',
-      '../../../assets/css/fonts.css',
-      '../../../assets/css/flaticon.css',
-      '../../../assets/css/owl.carousel.css',
-      '../../../assets/css/owl.theme.default.css',
-      '../../../assets/css/dl-menu.css',
-      '../../../assets/css/nice-select.css',
-      '../../../assets/css/magnific-popup.css',
-      '../../../assets/css/venobox.css',
-      '../../../assets/js/plugin/rs_slider/layers.css',
-      '../../../assets/js/plugin/rs_slider/navigation.css',
-      '../../../assets/js/plugin/rs_slider/settings.css',
-      '../../../assets/css/style.css',
-      '../../../assets/css/responsive.css',
-    ];
-
-    const scripts = [
-      '../../../assets/js/jquery_min.js',
-      '../../../assets/js/modernizr.js',
-      '../../../assets/js/bootstrap.js',
-      '../../../assets/js/owl.carousel.js',
-      '../../../assets/js/jquery.dlmenu.js',
-      '../../../assets/js/jquery.sticky.js',
-      '../../../assets/js/jquery.nice-select.min.js',
-      '../../../assets/js/jquery.magnific-popup.js',
-      '../../../assets/js/jquery.bxslider.min.js',
-      '../../../assets/js/venobox.min.js',
-      '../../../assets/js/smothscroll_part1.js',
-      '../../../assets/js/smothscroll_part2.js',
-      '../../../assets/js/plugin/rs_slider/jquery.themepunch.revolution.min.js',
-      '../../../assets/js/plugin/rs_slider/jquery.themepunch.tools.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.addon.snow.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.actions.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.carousel.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.kenburn.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.layeranimation.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.migration.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.navigation.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.parallax.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.slideanims.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.video.min.js',
-      '../../../assets/js/custom.js',
-    ];
-
-    this.loadStylesheets(stylesheets)
-      .then(() => this.loadScriptsSequentially(scripts))
-      .catch((error) => console.error('Error loading resources:', error));
-  }
-
-  private loadStylesheets(urls: string[]): Promise<void> {
-    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(
-      () => {}
-    );
-  }
-
-  private loadStylesheet(url: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const link = this.renderer.createElement('link');
-      this.renderer.setAttribute(link, 'rel', 'stylesheet');
-      this.renderer.setAttribute(link, 'type', 'text/css');
-      this.renderer.setAttribute(link, 'href', url);
-      link.onload = () => resolve();
-      link.onerror = (error: ErrorEvent) => reject(error);
-      this.renderer.appendChild(document.head, link);
+  loadCategories(): void {
+    this.blogService.getAllCategories().subscribe({
+      next: (response: any) => {
+        console.log('Received categories:', response);
+        if (response && response.data && Array.isArray(response.data)) {
+          this.categories = response.data;
+        } else {
+          console.error('Invalid categories format:', response);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading categories:', error);
+      }
     });
   }
 
-  private loadScriptsSequentially(urls: string[]): Promise<void> {
-    return urls.reduce((promise, url) => {
-      return promise.then(() => this.loadScript(url));
-    }, Promise.resolve());
-  }
-
-  private loadScript(url: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const script = this.renderer.createElement('script');
-      this.renderer.setAttribute(script, 'type', 'text/javascript');
-      this.renderer.setAttribute(script, 'src', url);
-      script.onload = () => resolve();
-      script.onerror = (error: ErrorEvent) => reject(error);
-      this.renderer.appendChild(document.head, script);
+  loadBlogs(): void {
+    this.blogService.getAllBlogs().subscribe({
+      next: (response: any) => {
+        console.log('Received blogs:', response);
+        if (response && response.data && Array.isArray(response.data)) {
+          this.blogs = response.data.map((blog: any) => ({
+            ...blog,
+            image: this.baseUrl + blog.image // Xử lý ảnh của bài viết
+          }));
+        } else {
+          console.error('Invalid blogs format:', response);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading blogs:', error);
+      }
     });
   }
+
+  onCategorySelected(categoryId: number | null): void {
+    this.selectedCategoryId = categoryId;
+    if (categoryId !== null) {
+      this.blogService.getBlogsByCategory(categoryId).subscribe({
+        next: (response: any) => {
+          console.log('Received blogs by category:', response);
+          if (response && response.data) {
+            // Convert object to array of blogs
+            this.blogs = Object.keys(response.data).map(key => ({
+              id: response.data[key].id,
+              title: response.data[key].title,
+              short_desc: response.data[key].short_desc,
+              content: response.data[key].content,
+              image: this.baseUrl + response.data[key].image,
+              categories_id: response.data[key].categories_id,
+              created_at: response.data[key].created_at,
+              updated_at: response.data[key].updated_at
+            }));
+          } else {
+            console.error('Invalid blogs format:', response);
+          }
+        },
+        error: (error: any) => {
+          console.error('Error loading blogs by category:', error);
+        }
+      });
+    } else {
+      // Load all blogs
+      this.loadBlogs();
+    }
+  }
+  
 }

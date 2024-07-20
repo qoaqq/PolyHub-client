@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'movies', component: CateMovieComponent },
   { path: 'movie/:id', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
-  { path: 'blog', component: SingleBlogComponent },
+  { path: 'blog/:id', component: SingleBlogComponent },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
   { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },
