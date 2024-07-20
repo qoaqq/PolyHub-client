@@ -6,7 +6,7 @@
 						<div class="st_video_slider_overlay"></div>
 						<div class="st_video_slide_sec float_left">
 							<div *ngFor="let attribute of movie?.attributes">
-								<div *ngIf="attribute.name === 'Trailer'">
+								<div *ngIf="attribute?.name === 'Trailer'">
 									<a rel='external' href='{{ attribute?.attribute_values[0]?.value }}' title='title' class="test-popup-link">
 										<img src="../../../../assets/images/index_III/icon.png" alt="img">
 									</a>
@@ -14,7 +14,7 @@
 							</div>
 							<h3>{{ movie?.name }}</h3>
 							<p>VietNamese</p>
-							<h4>{{ movie?.category.name }}</h4>
+							<h4><span *ngFor="let category of movie?.categories">{{ category?.name }} . </span></h4>
 							<h5><span>2d</span> <span>3d</span> <span>D 4DX</span> <span>Imax 3D</span></h5>
 						</div>
 						<div class="st_video_slide_social float_left">
@@ -189,7 +189,7 @@
 									<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#home" aria-controls="best" role="tab" data-toggle="tab">Summary</a>
 							</li>
-							<li role="presentation"><a href="#menu2" aria-controls="trand" role="tab" data-toggle="tab">Behind The Scenes</a>
+							<li role="presentation"><a href="#menu2" aria-controls="trand" role="tab" data-toggle="tab">Movie of images</a>
 							</li>
 						</ul>
 								</div>
@@ -218,91 +218,24 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-12">
-												<div class="st_md_summ_client_slider float_left">
-													<p>Crew</p>
-													<div class="owl-carousel owl-theme">
-														<div class="item">
-															<div class="st_summ_slider_cont float_left">
-																<img src="../../../../assets/images/content/c5.jpg" alt="img">
-																<h4><a href="#">James Wan.</a></h4>
-																<h5>Actor</h5>
-																<h6>As Arthur</h6>
-															</div>
-														</div>
-														<div class="item">
-															<div class="st_summ_slider_cont float_left">
-																<img src="../../../../assets/images/content/c6.jpg" alt="img">
-																<h4><a href="#">Peter Safran</a></h4>
-																<h5>Actor</h5>
-																<h6>As Arthur</h6>
-															</div>
-														</div>
-														<div class="item">
-															<div class="st_summ_slider_cont float_left">
-																<img src="../../../../assets/images/content/c7.jpg" alt="img">
-																<h4><a href="#">Rob Cowan</a></h4>
-																<h5>Actor</h5>
-																<h6>As Arthur</h6>
-															</div>
-														</div>
-														<div class="item">
-															<div class="st_summ_slider_cont float_left">
-																<img src="../../../../assets/images/content/c8.jpg" alt="img">
-																<h4><a href="#">Geoff Johns</a></h4>
-																<h5>Actor</h5>
-																<h6>As Arthur</h6>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
 										</div>
 									</div>
 									<div id="menu2" class="tab-pane fade">
 										<div class="row">
-											<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-												<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
-													<img src="../../../../assets/images/content/movie_single/sc1.jpg" alt="scene_img">
-													<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc1.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
+											<!-- images list start -->
+											<div *ngFor="let attribute of movie?.attributes">
+												<div *ngIf="attribute?.name === 'Image'">
+													<h1>huy nguyen</h1>
+													<div *ngFor="let image of attribute.attribute_values" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+														<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
+															<img width="264px" height="150px" src="{{ image?.value }}" alt="scene_img">
+															<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc1.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
-											<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-												<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
-													<img src="../../../../assets/images/content/movie_single/sc2.jpg" alt="scene_img">
-													<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc2.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
-													</div>
-												</div>
-											</div>
-											<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-												<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
-													<img src="../../../../assets/images/content/movie_single/sc3.jpg" alt="scene_img">
-													<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc3.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
-													</div>
-												</div>
-											</div>
-											<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-												<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
-													<img src="../../../../assets/images/content/movie_single/sc4.jpg" alt="scene_img">
-													<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc4.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
-													</div>
-												</div>
-											</div>
-											<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-												<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
-													<img src="../../../../assets/images/content/movie_single/sc5.jpg" alt="scene_img">
-													<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc5.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
-													</div>
-												</div>
-											</div>
-											<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-												<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
-													<img src="../../../../assets/images/content/movie_single/sc6.jpg" alt="scene_img">
-													<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc6.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
-													</div>
-												</div>
-											</div>
+										    <!-- images list end -->
 										</div>
 									</div>
 								</div>
@@ -357,237 +290,16 @@
 	<div class="prs_theater_main_slider_wrapper">
 		<div class="prs_theater_img_overlay"></div>
 		<div class="prs_theater_sec_heading_wrapper">
-			<h2>TOP MOVIES IN THEATRES</h2>
+			<h2>TOP MOVIES IN the month</h2>
 		</div>
 		<div class="wrap-album-slider">
+			<!-- list top movie start -->
 			<ul class="album-slider">
-				<li class="album-slider__item">
+				<li *ngFor="let movie of topMovies" class="album-slider__item">
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
 								<img src="../../../../assets/images/content/up1.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up2.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up3.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up4.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up5.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up6.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up7.jpg" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>

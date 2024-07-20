@@ -14,6 +14,7 @@ import { MovieService } from 'src/app/services/movie/movie.service';
 export class SingleMovieComponent implements AfterViewInit {
   movie: any;
   movieId: string | null = null;
+  topMovies: any[] = [];
 
   constructor(private route: ActivatedRoute, private movieService: MovieService) {
   }
@@ -22,8 +23,11 @@ export class SingleMovieComponent implements AfterViewInit {
     this.movieId = this.route.snapshot.paramMap.get('id');
     this.movieService.getMovieById(this.movieId).subscribe(movie => {
       this.movie = movie.data;
+      console.log(this.movie);
     })
-    
-  }
 
+    this.movieService.getTopMoviesInMonth().subscribe(movies => {
+      this.topMovies = movies.data;
+    })
+  }
 }

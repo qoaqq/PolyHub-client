@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -9,8 +9,10 @@ export class MovieService {
   constructor(private http: HttpClient) { 
   }
 
-  getList(): Observable<any>{
-    return this.http.get<any>('http://127.0.0.1:8000/api/movie');
+  getList(page: number = 1): Observable<any>{
+    let params = new HttpParams()
+    .set('page', page.toString())
+    return this.http.get<any>('http://127.0.0.1:8000/api/movie',{ params });
   }
 
   searchMovies(title: string): Observable<any> {

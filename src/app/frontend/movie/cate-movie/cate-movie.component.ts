@@ -1,10 +1,12 @@
 import {
   Component,
   AfterViewInit,
+  EventEmitter,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from 'src/app/services/movie/movie.service';
+
 
 @Component({
   selector: 'app-cate-movie',
@@ -17,9 +19,11 @@ export class CateMovieComponent implements AfterViewInit {
   searchForm: FormGroup;
   categories: any[] = [];
   topMovies: any[] = [];
+  pageChange: EventEmitter<number> = new EventEmitter<number>();
+  currentPage: number = 1;
 
   
-  constructor(private route: ActivatedRoute,private movie: MovieService, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute,private movie: MovieService, private fb: FormBuilder, private router: Router) {
     this.searchForm = this.fb.group({
       title: ['']
     });
@@ -81,6 +85,16 @@ export class CateMovieComponent implements AfterViewInit {
       this.movies = movie.data.data;
       console.log(this.movies);
     })
+  }
+
+  viewDetails(movieId: number): void {
+    this.router.navigate(['/movie', movieId]).then(() => {
+      window.location.reload();
+    });
+  }
+
+  onPageChange(page: number) {
+    this.pageChange.emit(page);
   }
 
 }
