@@ -1,4 +1,4 @@
-import { SilderVideoService } from './../../../../services/home/silder-video/silder-video.service';
+import { HomeService } from 'src/app/services/home/home.service';
 import { AfterViewInit, Component } from '@angular/core';
 
 
@@ -10,13 +10,13 @@ import { AfterViewInit, Component } from '@angular/core';
 export class SilderVideoComponent implements AfterViewInit {
   image: any[] = [];
 
-  constructor(private SilderVideoService: SilderVideoService) {
+  constructor(private HomeService: HomeService) {
   
   }
 
   async ngAfterViewInit() {
     try {
-      const response = await this.SilderVideoService.getImage().toPromise();
+      const response = await this.HomeService.getImage().toPromise();
       
       if (response && response.data?.data && Array.isArray(response.data?.data)) {
         this.image = response.data?.data;

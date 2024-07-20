@@ -1,4 +1,4 @@
-import { UpcomingMovieService } from './../../../../services/home/upcoming-movie/upcoming-movie.service';
+import { HomeService } from 'src/app/services/home/home.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,11 +8,11 @@ import { Component } from '@angular/core';
 })
 export class UpcomingMovieComponent {
   upcomingMovie: any[]=[];
-  constructor( private UpcomingMovieService: UpcomingMovieService) {
+  constructor( private HomeService: HomeService) {
 
   }
   ngAfterViewInit() {
-    this.UpcomingMovieService.getUpComingMovie().subscribe(data => { 
+    this.HomeService.getUpComingMovie().subscribe(data => { 
       this.upcomingMovie = data.data.data;
       // console.log(this.upcomingMovie);
     });
