@@ -24,13 +24,21 @@
 							<div class="col-md-12">
 								<div class="st_dtts_ineer_box float_left">
 									<ul>
-										<li><span class="dtts1">Date</span>  <span class="dtts2">19-Dec-2022</span>
+										<!-- <li><span class="dtts1">Date</span>  <span class="dtts2">19-Dec-2022</span>
 										</li>
 										<li><span class="dtts1">Time</span>  <span class="dtts2">10:00PM</span>
 										</li>
 										<li><span class="dtts1">Theater</span>  <span class="dtts2">Ariesplex SL Cinemas</span>
 										</li>
 										<li><span class="dtts1">Seat</span>  <span class="dtts2">PLATINUM - PB7, PB8 (2 Tickets) </span>
+										</li> -->
+										<li><span class="dtts1">Date</span>  <span class="dtts2">{{ formatTime2(selectedShowingRelease?.time_release) }}</span>
+										</li>
+										<li><span class="dtts1">Time</span>  <span class="dtts2"> {{ formatTime(selectedShowingRelease?.time_release) }} </span>
+										</li>
+										<li><span class="dtts1">Theater</span>  <span class="dtts2">{{ selectedCinema?.name }}</span>
+										</li>
+										<li><span class="dtts1">Seat</span>  <span class="dtts2">{{ selectedSeats }} - {{ selectedRoom?.name }}</span>
 										</li>
 									</ul>
 								</div>
@@ -57,7 +65,7 @@
 										</li>
 										<li><a href="#"><i class="flaticon-tickets"></i> &nbsp;Box office Pickup </a>
 										</li>
-										<li><a href="confirmation_screen.html">Proceed to Pay </a>
+										<li><a (click)="confirmBooking()">Proceed to Pay </a>
 										</li>
 									</ul>
 								</div>
@@ -74,7 +82,7 @@
 								</div>
 								<div class="st_dtts_sb_ul float_left">
 									<ul>
-										<li>Platinum - PB7, PB8
+										<li> {{ selectedSeats }} 	
 											<br>( 2 Tickets ) AUDI-5 <span>Rs . 790.00</span>
 										</li>
 										<li>Internet handling fees <span>Rs.70.80</span>
