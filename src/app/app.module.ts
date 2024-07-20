@@ -17,11 +17,20 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
+import { SilderVideoComponent } from './frontend/home/components/silder-video/silder-video.component';
+import { TopMovieComponent } from './frontend/home/components/top-movie/top-movie.component';
+<<<<<<< HEAD
+import { RelesedMovieComponent } from './frontend/home/components/relesed-movie/relesed-movie.component';
+import { UpcomingMovieComponent } from './frontend/home/components/upcoming-movie/upcoming-movie.component';
+import { BlogMovieComponent } from './frontend/home/components/blog-movie/blog-movie.component';
 import { SigninComponent } from './frontend/auth/signin/signin.component';
 import { SignupComponent } from './frontend/auth/signup/signup.component';
 import { AuthService } from './services/auth/auth.service';
 import { UserComponent } from './frontend/user/user.component';
 import { SignoutComponent } from './frontend/auth/signout/signout.component';
+=======
+import { SliderComponent } from './frontend/home/components/slider/slider.component';
+>>>>>>> 3f6c1d41250455d223014f5b8dcf8ab4c325018b
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,10 +47,19 @@ import { SignoutComponent } from './frontend/auth/signout/signout.component';
     SingleMovieComponent,
     CateBlogComponent,
     SingleBlogComponent,
+    SilderVideoComponent,
+    TopMovieComponent,
+<<<<<<< HEAD
+    RelesedMovieComponent,
+    UpcomingMovieComponent,
+    BlogMovieComponent,
     SigninComponent,
     SignupComponent,
     UserComponent,
     SignoutComponent,
+=======
+    SliderComponent,
+>>>>>>> 3f6c1d41250455d223014f5b8dcf8ab4c325018b
   ],
   imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule,],
   providers: [AuthService],
