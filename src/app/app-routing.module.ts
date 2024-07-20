@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'movie-booking', component: MovieBookingComponent },
   { path: 'confirmation', component: ConfirmationComponent },
   { path: 'movies', component: CateMovieComponent },
-  { path: 'movie', component: SingleMovieComponent },
+  { path: 'movie/:id', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
   { path: 'blog', component: SingleBlogComponent },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
