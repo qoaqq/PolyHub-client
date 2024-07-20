@@ -1,4 +1,4 @@
-import { BlogMovieService } from './../../../../services/home/blog-movie/blog-movie.service';
+import { HomeService } from 'src/app/services/home/home.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,11 +8,11 @@ import { Component } from '@angular/core';
 })
 export class BlogMovieComponent {
   blogHome: any[] = [];
-  constructor(private BlogMovieService: BlogMovieService) {
+  constructor(private HomeService: HomeService) {
    
   }
   ngAfterViewInit() {
-    this.BlogMovieService.getBlogHome().subscribe(data => {
+    this.HomeService.getBlogHome().subscribe(data => {
       this.blogHome = data.data;
       // console.log(data);
       // console.log(this.movies);

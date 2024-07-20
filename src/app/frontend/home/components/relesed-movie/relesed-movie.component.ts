@@ -1,4 +1,4 @@
-import { RelesedMovieService } from './../../../../services/home/relesed-movie/relesed-movie.service';
+import { HomeService } from 'src/app/services/home/home.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,11 +8,11 @@ import { Component } from '@angular/core';
 })
 export class RelesedMovieComponent {
   movies: any[] = [];
-  constructor(private RelesedMovieService: RelesedMovieService) {
+  constructor(private HomeService: HomeService) {
   }
   ngAfterViewInit() {
     // phim đang chiếu
-    this.RelesedMovieService.getMovies().subscribe(data => {
+    this.HomeService.getMovies().subscribe(data => {
       this.movies = data.data.data;
       // console.log(data);
       // console.log(this.movies);
