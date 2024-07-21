@@ -1,120 +1,149 @@
 import {
-  Component, OnInit, OnDestroy
+  Component,
+  AfterViewInit,
+  Renderer2,
+  RendererFactory2,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
+import 'isotope-layout';
+import 'imagesloaded';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-booking-type',
   templateUrl: './booking-type.component.html',
   styleUrls: ['./booking-type.component.scss'],
 })
-export class BookingTypeComponent implements OnInit, OnDestroy {
-  selectedCinema: any;
-  selectedRoom: any;
-  selectedShowingRelease: any;
-  selectedSeats: number[] = [];
-  private sessionTimeout: any;
-  private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
+export class BookingTypeComponent implements AfterViewInit {
+  private renderer: Renderer2;
 
-  constructor(private router: Router, private seatBookingService: SeatBookingService) {}
-
-  ngOnInit(): void {
-    const cinema = sessionStorage.getItem('selectedCinema');
-    const room = sessionStorage.getItem('selectedRoom');
-    const showingRelease = sessionStorage.getItem('selectedShowing');
-    const seats = sessionStorage.getItem('selectedSeats');
-
-    if (cinema) {
-      this.selectedCinema = JSON.parse(cinema);
-    }
-
-    if (room) {
-      this.selectedRoom = JSON.parse(room);
-    }
-
-    if (showingRelease) {
-      this.selectedShowingRelease = JSON.parse(showingRelease);
-      console.log(this.selectedShowingRelease);
-    }
-
-    if (seats) {
-      this.selectedSeats = JSON.parse(seats);
-    }
-
-    // Set a timeout to clear the session after the defined duration
-    this.sessionTimeout = setTimeout(() => {
-      this.clearSessionAndRedirect();
-    }, this.SESSION_DURATION);
+  constructor(private rendererFactory: RendererFactory2) {
+    this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  ngOnDestroy(): void {
-    clearTimeout(this.sessionTimeout);
+  ngAfterViewInit() {
+    this.loadResources();
+    this.initJQueryFunctions();
   }
 
-  formatTime(dateString: string): string {
-    const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+  private loadResources() {
+    const stylesheets = [
+      '../../../assets/css/animate.css',
+      '../../../assets/css/bootstrap.css',
+      '../../../assets/css/font-awesome.css',
+      '../../../assets/css/fonts.css',
+      '../../../assets/css/flaticon.css',
+      '../../../assets/css/owl.carousel.css',
+      '../../../assets/css/owl.theme.default.css',
+      '../../../assets/css/dl-menu.css',
+      '../../../assets/css/nice-select.css',
+      '../../../assets/css/magnific-popup.css',
+      '../../../assets/css/venobox.css',
+      '../../../assets/js/plugin/rs_slider/layers.css',
+      '../../../assets/js/plugin/rs_slider/navigation.css',
+      '../../../assets/js/plugin/rs_slider/settings.css',
+      '../../../assets/css/style.css',
+      '../../../assets/css/responsive.css',
+    ];
+
+    const scripts = [
+      '../../../assets/js/jquery_min.js',
+      '../../../assets/js/modernizr.js',
+      '../../../assets/js/bootstrap.js',
+      '../../../assets/js/owl.carousel.js',
+      '../../../assets/js/jquery.dlmenu.js',
+      '../../../assets/js/jquery.sticky.js',
+      '../../../assets/js/jquery.nice-select.min.js',
+      '../../../assets/js/jquery.magnific-popup.js',
+      '../../../assets/js/jquery.bxslider.min.js',
+      '../../../assets/js/venobox.min.js',
+      '../../../assets/js/smothscroll_part1.js',
+      '../../../assets/js/smothscroll_part2.js',
+      '../../../assets/js/plugin/rs_slider/jquery.themepunch.revolution.min.js',
+      '../../../assets/js/plugin/rs_slider/jquery.themepunch.tools.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.addon.snow.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.actions.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.carousel.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.kenburn.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.layeranimation.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.migration.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.navigation.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.parallax.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.slideanims.min.js',
+      '../../../assets/js/plugin/rs_slider/revolution.extension.video.min.js',
+      '../../../assets/js/custom.js',
+    ];
+
+    this.loadStylesheets(stylesheets)
+      .then(() => this.loadScriptsSequentially(scripts))
+      .catch((error) => console.error('Error loading resources:', error));
   }
 
-  formatTime2(dateString: string): string {
-    if (!dateString) {
-      throw new Error('Date string is undefined or empty');
-    }
-
-    const formattedDateString = dateString.replace(' ', 'T');
-    const date = new Date(formattedDateString);
-
-    if (isNaN(date.getTime())) {
-      throw new Error('Invalid date string');
-    }
-
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+  private loadStylesheets(urls: string[]): Promise<void> {
+    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(
+      () => {}
+    );
   }
 
-  confirmBooking(): void {
-    clearTimeout(this.sessionTimeout); // Clear the timeout when booking is confirmed
-    // Add logic to confirm the booking here
-    // For example, you can call a service to save the booking information
-    alert('Booking confirmed!'); // Temporary placeholder for booking confirmation logic
-    this.router.navigate(['/confirmation']); // Navigate to a confirmation page or similar
+  private loadStylesheet(url: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const link = this.renderer.createElement('link');
+      this.renderer.setAttribute(link, 'rel', 'stylesheet');
+      this.renderer.setAttribute(link, 'type', 'text/css');
+      this.renderer.setAttribute(link, 'href', url);
+      link.onload = () => resolve();
+      link.onerror = (error: ErrorEvent) => reject(error);
+      this.renderer.appendChild(document.head, link);
+    });
   }
- // clearSessionAndRedirect(): void {
-  //   sessionStorage.removeItem('selectedSeats');
 
-  //   alert('Session has expired. You will be redirected to the seat selection page.');
-  //   this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
-  // }
-  clearSessionAndRedirect(): void {
-    // Ensure selectedSeats is not empty
-    if (this.selectedSeats.length > 0) {
-      // Update the status of each selected seat
-      const seatUpdateRequests = this.selectedSeats.map(seatId => {
-        // Set newStatus to false
-        const newStatus = false;
-        return this.seatBookingService.updateSeatStatus(this.selectedShowingRelease.id, seatId, newStatus).toPromise();
-      });
+  private loadScriptsSequentially(urls: string[]): Promise<void> {
+    return urls.reduce((promise, url) => {
+      return promise.then(() => this.loadScript(url));
+    }, Promise.resolve());
+  }
 
-      Promise.all(seatUpdateRequests).then(() => {
-        // On successful update of all seats, clear the session and redirect
-        sessionStorage.removeItem('selectedSeats');
-        alert('Session has expired. You will be redirected to the seat selection page.');
-        this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
-      }).catch(error => {
-        // Handle any errors during seat status update
-        console.error('Error updating seat status:', error);
-        alert('Failed to update seat status. Please try again.');
-      });
-    } else {
-      // If there are no selected seats, just clear the session and redirect
-      sessionStorage.removeItem('selectedSeats');
-      alert('Session has expired. You will be redirected to the seat selection page.');
-      this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
-    }
+  private loadScript(url: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const script = this.renderer.createElement('script');
+      this.renderer.setAttribute(script, 'type', 'text/javascript');
+      this.renderer.setAttribute(script, 'src', url);
+      script.onload = () => resolve();
+      script.onerror = (error: ErrorEvent) => reject(error);
+      this.renderer.appendChild(document.head, script);
+    });
+  }
+
+  private initJQueryFunctions() {
+    const protfolioIsotope = () => {
+      if ($('.st_fb_filter_left_box_wrapper').length) {
+        $('.protfoli_inner, .portfoli_inner').imagesLoaded(function () {
+          $('.protfoli_inner, .portfoli_inner').isotope({
+            layoutMode: 'masonry',
+          });
+        });
+
+        $('.protfoli_filter li').on('click', function () {
+          $('.protfoli_filter li').removeClass('active');
+          $(this).addClass('active');
+          const selector = $(this).attr('data-filter');
+          $('.protfoli_inner, .portfoli_inner').isotope({
+            filter: selector,
+          });
+          return false;
+        });
+      }
+    };
+
+    const changeQty = (increase: boolean) => {
+      let qty = parseInt($('.select_number').find('input').val() as string);
+      if (!isNaN(qty)) {
+        qty = increase ? qty + 1 : qty > 1 ? qty - 1 : 1;
+        $('.select_number').find('input').val(qty);
+      } else {
+        $('.select_number').find('input').val(1);
+      }
+    };
+
+    protfolioIsotope();
   }
 }
