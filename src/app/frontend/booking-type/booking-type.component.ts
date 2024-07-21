@@ -40,6 +40,7 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
 
     if (seats) {
       this.selectedSeats = JSON.parse(seats);
+      console.log(this.selectedSeats);
     }
 
     // Set a timeout to clear the session after the defined duration

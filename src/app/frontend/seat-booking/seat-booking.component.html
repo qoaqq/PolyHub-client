@@ -63,8 +63,10 @@
 									[disabled]="seat.status === 1" (change)="onSeatChange(seat.seat_id)">
 								<label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)">
 									{{ seat.name }}
+
 								</label>
 							</li>
+							<h1>{{ seat.seat.row }}</h1>
 						</ul>
 					</div>
 				</div>
