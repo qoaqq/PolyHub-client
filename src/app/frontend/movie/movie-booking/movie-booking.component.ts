@@ -1,111 +1,196 @@
-import {
-  Component,
-  AfterViewInit,
-  Renderer2,
-  RendererFactory2,
-} from '@angular/core';
+// import {
+//   Component
+// } from '@angular/core';
+// import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
+// import { Router } from '@angular/router';
+// @Component({
+//   selector: 'app-movie-booking',
+//   templateUrl: './movie-booking.component.html',
+//   styleUrls: ['./movie-booking.component.scss']
+// })
+// export default class MovieBookingComponent {
+// [x: string]: any;
+
+//   // cinemas: any[] = [];
+
+//   // constructor(private movieBookingService: MovieBookingService, private router: Router) {}
+
+//   // ngOnInit(): void {
+//   //   this.movieBookingService.getCinemas().subscribe(data => {
+//   //     this.cinemas = data.data.data;
+//   //   });
+//   // }
+
+ 
+//   // selectCinema(cinema: any): void {
+//   //   // Lưu cinemaId vào session storage
+   
+//   //   sessionStorage.setItem('selectedCinema', JSON.stringify(cinema));
+//   //   // Điều hướng đến trang rooms
+   
+//   // }
+//   // selectCinemaID(cinemaId:number): void {
+//   //   sessionStorage.setItem('selectedCinemaId', cinemaId.toString());
+//   //   this.router.navigate(['/rooms']);
+//   //}
+//   // cinemas: any[] = [];
+//   // rooms: any[] = [];
+
+//   // constructor(private movieBookingService: MovieBookingService) { }
+
+//   // ngOnInit(): void {
+//   //   this.fetchData();
+//   // }
+
+//   // fetchData(): void {
+//   //   this.movieBookingService.getCinemas().subscribe(cinemaResponse => {
+//   //     this.cinemas = cinemaResponse.data.data;
+
+//   //     this.movieBookingService.getRooms().subscribe(roomResponse => {
+//   //       this.rooms = roomResponse.data.data;
+//   //       this.mergeCinemasAndRooms();
+//   //     });
+//   //   });
+//   // }
+
+//   // mergeCinemasAndRooms(): void {
+//   //   this.cinemas.forEach(cinema => {
+//   //     cinema.rooms = this.rooms.filter(room => room.cinema_id === cinema.id);
+//   //   });
+//   // }
+
+
+//   cinemas: any[] = [];
+//   rooms: any[] = [];
+//   showingReleases: any[] = [];
+//   selectedShowing: any;
+//   selectedRoomId: number | null = null;
+//   selectedCinemaId: number | null = null;
+//   constructor(private movieBookingService: MovieBookingService) { }
+
+//   ngOnInit(): void {
+//     this.fetchData();
+//   }
+
+//   fetchData(): void {
+//     this.movieBookingService.getCinemas().subscribe(cinemaResponse => {
+//       this.cinemas = cinemaResponse.data.data;
+
+//       this.movieBookingService.getRooms().subscribe(roomResponse => {
+//         this.rooms = roomResponse.data.data;
+
+//         this.movieBookingService.getShowingRelease().subscribe(showingReleaseResponse => {
+//           this.showingReleases = showingReleaseResponse.data.data;
+//           this.mergeData();
+//         });
+//       });
+//     });
+//   }
+//   mergeData(): void {
+//     // Gắn showing releases vào các rooms
+//     this.rooms.forEach(room => {
+//       room['showingReleases'] = this.showingReleases.filter(showing => showing.room_id === room.id);
+//     });
+
+//     // Gắn rooms vào các cinemas
+//     this.cinemas.forEach(cinema => {
+//       cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id);
+//     });
+//   }
+//   formatTime(dateString: string): string {
+//     const date = new Date(dateString);
+//     const hours = date.getHours().toString().padStart(2, '0');
+//     const minutes = date.getMinutes().toString().padStart(2, '0');
+//     const seconds = date.getSeconds().toString().padStart(2, '0');
+//     return `${hours}:${minutes}:${seconds}`;
+//   }
+//   selectShowing(showing: any, roomId: number, cinemaId: number): void {
+//     this.selectedShowing = showing;
+//     this.selectedRoomId = roomId;
+//     this.selectedCinemaId = cinemaId;
+
+//     // Lưu thông tin đã chọn vào sessionStorage
+//     sessionStorage.setItem('selectedShowing', JSON.stringify(showing));
+//     sessionStorage.setItem('selectedRoomId', JSON.stringify(roomId));
+//     sessionStorage.setItem('selectedCinemaId', JSON.stringify(cinemaId));
+
+//     // Chuyển hướng đến trang chọn ghế
+//     this.router.navigate(['seat-booking']);
+//   }
+//   }
+ 
+
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
 
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
   styleUrls: ['./movie-booking.component.scss']
 })
-export class MovieBookingComponent implements AfterViewInit {
-  private renderer: Renderer2;
+export class MovieBookingComponent implements OnInit {
 
-  constructor(private rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  cinemas: any[] = [];
+  rooms: any[] = [];
+  showingReleases: any[] = [];
+  selectedShowing: any;
+  selectedRoom: any;
+  selectedCinema: any;
+
+  constructor(private movieBookingService: MovieBookingService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.fetchData();
   }
 
-  ngAfterViewInit() {
-    this.loadResources();
-  }
+  fetchData(): void {
+    this.movieBookingService.getCinemas().subscribe(cinemaResponse => {
+      this.cinemas = cinemaResponse.data.data;
 
-  private loadResources() {
-    const stylesheets = [
-      '../../../assets/css/animate.css',
-      '../../../assets/css/bootstrap.css',
-      '../../../assets/css/font-awesome.css',
-      '../../../assets/css/fonts.css',
-      '../../../assets/css/flaticon.css',
-      '../../../assets/css/owl.carousel.css',
-      '../../../assets/css/owl.theme.default.css',
-      '../../../assets/css/dl-menu.css',
-      '../../../assets/css/nice-select.css',
-      '../../../assets/css/magnific-popup.css',
-      '../../../assets/css/venobox.css',
-      '../../../assets/js/plugin/rs_slider/layers.css',
-      '../../../assets/js/plugin/rs_slider/navigation.css',
-      '../../../assets/js/plugin/rs_slider/settings.css',
-      '../../../assets/css/style.css',
-      '../../../assets/css/responsive.css',
-    ];
+      this.movieBookingService.getRooms().subscribe(roomResponse => {
+        this.rooms = roomResponse.data.data;
 
-    const scripts = [
-      '../../../assets/js/jquery_min.js',
-      '../../../assets/js/modernizr.js',
-      '../../../assets/js/bootstrap.js',
-      '../../../assets/js/owl.carousel.js',
-      '../../../assets/js/jquery.dlmenu.js',
-      '../../../assets/js/jquery.sticky.js',
-      '../../../assets/js/jquery.nice-select.min.js',
-      '../../../assets/js/jquery.magnific-popup.js',
-      '../../../assets/js/jquery.bxslider.min.js',
-      '../../../assets/js/venobox.min.js',
-      '../../../assets/js/smothscroll_part1.js',
-      '../../../assets/js/smothscroll_part2.js',
-      '../../../assets/js/plugin/rs_slider/jquery.themepunch.revolution.min.js',
-      '../../../assets/js/plugin/rs_slider/jquery.themepunch.tools.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.addon.snow.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.actions.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.carousel.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.kenburn.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.layeranimation.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.migration.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.navigation.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.parallax.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.slideanims.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.video.min.js',
-      '../../../assets/js/custom.js',
-    ];
-
-    this.loadStylesheets(stylesheets)
-      .then(() => this.loadScriptsSequentially(scripts))
-      .catch((error) => console.error('Error loading resources:', error));
-  }
-
-  private loadStylesheets(urls: string[]): Promise<void> {
-    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(
-      () => {}
-    );
-  }
-
-  private loadStylesheet(url: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const link = this.renderer.createElement('link');
-      this.renderer.setAttribute(link, 'rel', 'stylesheet');
-      this.renderer.setAttribute(link, 'type', 'text/css');
-      this.renderer.setAttribute(link, 'href', url);
-      link.onload = () => resolve();
-      link.onerror = (error: ErrorEvent) => reject(error);
-      this.renderer.appendChild(document.head, link);
+        this.movieBookingService.getShowingRelease().subscribe(showingReleaseResponse => {
+          this.showingReleases = showingReleaseResponse.data.data;
+          this.mergeData();
+        });
+      });
     });
   }
 
-  private loadScriptsSequentially(urls: string[]): Promise<void> {
-    return urls.reduce((promise, url) => {
-      return promise.then(() => this.loadScript(url));
-    }, Promise.resolve());
+  mergeData(): void {
+    this.rooms.forEach(room => {
+      room['showingReleases'] = this.showingReleases.filter(showing => showing.room_id === room.id);
+    });
+
+    this.cinemas.forEach(cinema => {
+      cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id);
+    });
   }
 
-  private loadScript(url: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const script = this.renderer.createElement('script');
-      this.renderer.setAttribute(script, 'type', 'text/javascript');
-      this.renderer.setAttribute(script, 'src', url);
-      script.onload = () => resolve();
-      script.onerror = (error: ErrorEvent) => reject(error);
-      this.renderer.appendChild(document.head, script);
-    });
+  formatTime(dateString: string): string {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+  formatTime2(dateString: string): string {
+    const date = new Date(dateString);
+    return `${date}`;
+  }
+
+  selectShowing(showing: any, room: any, cinema: any): void {
+    this.selectedShowing = showing;
+    this.selectedRoom = room;
+    this.selectedCinema = cinema;
+
+    // Lưu thông tin đã chọn vào sessionStorage
+    sessionStorage.setItem('selectedShowing', JSON.stringify(showing));
+    sessionStorage.setItem('selectedRoom', JSON.stringify(room));
+    sessionStorage.setItem('selectedCinema', JSON.stringify(cinema));
+
+    // Chuyển hướng đến trang chọn ghế
+    this.router.navigate(['/seat-booking']);
   }
 }
