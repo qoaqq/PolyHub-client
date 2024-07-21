@@ -1,5 +1,6 @@
 import { HomeService } from 'src/app/services/home/home.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-relesed-movie',
@@ -8,14 +9,21 @@ import { Component } from '@angular/core';
 })
 export class RelesedMovieComponent {
   movies: any[] = [];
-  constructor(private HomeService: HomeService) {
+  constructor(private HomeService: HomeService ,private Router: Router) {
   }
   ngAfterViewInit() {
     // phim đang chiếu
     this.HomeService.getMovies().subscribe(data => {
       this.movies = data.data.data;
-      // console.log(data);
+      console.log(data);
       // console.log(this.movies);
     });
   }
+  viewDetails(movieId: number): void {
+    this.Router.navigate(['/movie', movieId]).then(() => {
+      window.location.reload();
+    });
+  }
+  
 }
+
