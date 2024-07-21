@@ -14,6 +14,7 @@ import { SignupComponent } from './frontend/auth/signup/signup.component';
 import { UserComponent } from './frontend/user/user.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { AuthUserGuard } from './guards/user/auth-user.guard';
+import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: 'movies', component: CateMovieComponent },
   { path: 'movie/:id', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
-  { path: 'blog', component: SingleBlogComponent },
+  { path: 'blog/:id', component: SingleBlogComponent },
+  { path: 'food-combo', component: FoodComboComponent },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
   { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },

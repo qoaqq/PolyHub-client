@@ -1,0 +1,6 @@
+.truncate-content {
+    white-space: nowrap; /* Ngăn chặn từng dòng xuống dòng */
+    overflow: hidden; /* Ẩn nội dung bị tràn */
+    text-overflow: ellipsis;
+  }
+  

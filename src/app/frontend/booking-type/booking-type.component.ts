@@ -1,6 +1,4 @@
-import {
-  Component, OnInit, OnDestroy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 
@@ -17,7 +15,10 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
   private sessionTimeout: any;
   private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
 
-  constructor(private router: Router, private seatBookingService: SeatBookingService) {}
+  constructor(
+    private router: Router,
+    private seatBookingService: SeatBookingService
+  ) {}
 
   ngOnInit(): void {
     const cinema = sessionStorage.getItem('selectedCinema');
@@ -85,7 +86,7 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     alert('Booking confirmed!'); // Temporary placeholder for booking confirmation logic
     this.router.navigate(['/confirmation']); // Navigate to a confirmation page or similar
   }
- // clearSessionAndRedirect(): void {
+  // clearSessionAndRedirect(): void {
   //   sessionStorage.removeItem('selectedSeats');
 
   //   alert('Session has expired. You will be redirected to the seat selection page.');
@@ -95,26 +96,34 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     // Ensure selectedSeats is not empty
     if (this.selectedSeats.length > 0) {
       // Update the status of each selected seat
-      const seatUpdateRequests = this.selectedSeats.map(seatId => {
+      const seatUpdateRequests = this.selectedSeats.map((seatId) => {
         // Set newStatus to false
         const newStatus = false;
-        return this.seatBookingService.updateSeatStatus(this.selectedShowingRelease.id, seatId, newStatus).toPromise();
+        return this.seatBookingService
+          .updateSeatStatus(this.selectedShowingRelease.id, seatId, newStatus)
+          .toPromise();
       });
 
-      Promise.all(seatUpdateRequests).then(() => {
-        // On successful update of all seats, clear the session and redirect
-        sessionStorage.removeItem('selectedSeats');
-        alert('Session has expired. You will be redirected to the seat selection page.');
-        this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
-      }).catch(error => {
-        // Handle any errors during seat status update
-        console.error('Error updating seat status:', error);
-        alert('Failed to update seat status. Please try again.');
-      });
+      Promise.all(seatUpdateRequests)
+        .then(() => {
+          // On successful update of all seats, clear the session and redirect
+          sessionStorage.removeItem('selectedSeats');
+          alert(
+            'Session has expired. You will be redirected to the seat selection page.'
+          );
+          this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
+        })
+        .catch((error) => {
+          // Handle any errors during seat status update
+          console.error('Error updating seat status:', error);
+          alert('Failed to update seat status. Please try again.');
+        });
     } else {
       // If there are no selected seats, just clear the session and redirect
       sessionStorage.removeItem('selectedSeats');
-      alert('Session has expired. You will be redirected to the seat selection page.');
+      alert(
+        'Session has expired. You will be redirected to the seat selection page.'
+      );
       this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
     }
   }
