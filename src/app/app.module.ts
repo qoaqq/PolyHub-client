@@ -26,7 +26,6 @@ import { SigninComponent } from './frontend/auth/signin/signin.component';
 import { SignupComponent } from './frontend/auth/signup/signup.component';
 import { AuthService } from './services/auth/auth.service';
 import { UserComponent } from './frontend/user/user.component';
-import { SignoutComponent } from './frontend/auth/signout/signout.component';
 import { SliderComponent } from './frontend/home/components/slider/slider.component';
 @NgModule({
   declarations: [
@@ -52,7 +51,6 @@ import { SliderComponent } from './frontend/home/components/slider/slider.compon
     SigninComponent,
     SignupComponent,
     UserComponent,
-    SignoutComponent,
     SliderComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule,],

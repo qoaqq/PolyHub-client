@@ -1,8 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders  } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +9,32 @@ import { throwError, of } from 'rxjs';
 export class AuthService {
 
   private apiUrl = 'http://127.0.0.1:8000/api/admin'; // Địa chỉ API của Laravel
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  private user = new BehaviorSubject<any>(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    // Kiểm tra token khi khởi tạo service
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loggedIn.next(true);
+      this.loadUser();
+    }
+  }
 
   signin(email: string, password: string) {
     return this.http.post<any>(`${this.apiUrl}/signin`, { email, password })
       .pipe(
+        tap(response => {
+          if (response && response.token) {
+            localStorage.setItem('token', response.token);
+            this.loggedIn.next(true);
+            this.loadUser();
+          }
+        }),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 422 && error.error.errors || error.status === 403 && error.error.errors) {
             return throwError(error.error.errors);
           }
-          // Trả về một observable rỗng hoặc giá trị tùy chỉnh để tránh lỗi console
           return of({});
         })
       );
@@ -28,17 +42,19 @@ export class AuthService {
 
   signout(): Observable<any> {
     localStorage.removeItem('token');
+    this.loggedIn.next(false);
+    this.user.next(null);
     return this.http.post<any>(`${this.apiUrl}/signout`, {});
   }
 
-  signup(name: string, email: string, password: string, repassword: string, phonenumber: string, date_of_birth: string) {
-    return this.http.post<any>(`${this.apiUrl}/signup`, { name, email, password, repassword, phonenumber, date_of_birth})
+  signup(name: string, email: string, password: string, repassword: string, phonenumber: string, date_of_birth: string, gender: string) {
+    return this.http.post<any>(`${this.apiUrl}/signup`, { name, email, password, repassword, phonenumber, date_of_birth,gender })
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 422 && error.error.errors) {
             return throwError(error.error.errors);
           }
-          return of({}); // Trả về một object rỗng để tránh lỗi console
+          return of({});
         })
       );
   }
@@ -55,9 +71,13 @@ export class AuthService {
           if (error.status === 422 && error.error.errors) {
             return throwError(error.error.errors);
           }
-          return of({}); // Trả về một object rỗng để tránh lỗi console
+          return of({});
         })
       );
+  }
+
+  loadUser() {
+    this.getUser().subscribe(user => this.user.next(user));
   }
 
   updateUser(user: any): Observable<any> {
@@ -72,5 +92,12 @@ export class AuthService {
         })
       );
   }
-}
 
+  isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
+
+  getUserInfo(): Observable<any> {
+    return this.user.asObservable();
+  }
+}
