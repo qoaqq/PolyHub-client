@@ -28,6 +28,8 @@ import { AuthService } from './services/auth/auth.service';
 import { UserComponent } from './frontend/user/user.component';
 import { SignoutComponent } from './frontend/auth/signout/signout.component';
 import { SliderComponent } from './frontend/home/components/slider/slider.component';
+import { PaymentComponent } from './frontend/payment/payment.component';
+import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +56,8 @@ import { SliderComponent } from './frontend/home/components/slider/slider.compon
     UserComponent,
     SignoutComponent,
     SliderComponent,
+    PaymentComponent,
+    FoodComboComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule,],
   providers: [AuthService],
