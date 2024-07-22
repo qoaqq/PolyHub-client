@@ -31,8 +31,14 @@
 										</li>
 										<li><span class="dtts1">Theater</span>  <span class="dtts2">{{ selectedCinema?.name }}</span>
 										</li>
-										<li><span class="dtts1">Seat</span>  <span class="dtts2">{{ selectedSeats }} - {{ selectedRoom?.name }}</span>
+										
+											<li>
+												<div *ngFor=" let seat of selectedSeats"><span class="dtts1">Seat</span>  <span  class="dtts2">{{ seat.seat.row + seat.seat.column }} - {{ selectedRoom?.name }}</span>
+											
+											</div>
 										</li>
+										
+										
 									</ul>
 								</div>
 							</div>
@@ -74,17 +80,30 @@
 									<p>Booking summary</p>
 								</div>
 								<div class="st_dtts_sb_ul float_left">
+									
 									<ul>
-										<li> {{ selectedSeats }} 	
-											<br>( 2 Tickets ) AUDI-5 <span>Rs . 790.00</span>
-										</li>
-										<li>Internet handling fees <span>Rs.70.80</span>
-										</li>
+										<div *ngFor=" let seat of selectedSeats">
+											<li > Seat: <span  class="dtts2">  {{ seat.seat.row + seat.seat.column }} </span>
+												<br>   
+											</li>
+										</div>
+										<!-- <li>Internet handling fees <span>Rs.70.80</span>
+										</li> -->
+										<div *ngIf="selectedFoodCombos.length > 0">
+											
+											<ul>
+											  <li *ngFor="let combo of selectedFoodCombos">
+												Combo: {{ combo.name }}	
+												<br>   <span>Price: {{ combo.price | currency }}</span>
+											
+											  </li>
+											</ul>
+										  </div>
 									</ul>
-									<p>Booking Fees <span>Rs.60.00</span>
+									<!-- <p>Booking Fees <span>Rs.60.00</span>
 									</p>
 									<p>Integrated GST (IGST) @ 18% <span>Rs.60.00</span>
-									</p>
+									</p> -->
 								</div>
 								<div class="st_dtts_sb_h2 float_left">
 									<h3>Sub total <span>Rs.860.80</span></h3>

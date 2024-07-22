@@ -11,7 +11,10 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
   selectedCinema: any;
   selectedRoom: any;
   selectedShowingRelease: any;
-  selectedSeats: number[] = [];
+  selectedSeats: any;
+  selectedFoodCombos: any[] = [];
+  totalCost: number = 0;
+
   private sessionTimeout: any;
   private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
 
@@ -25,7 +28,8 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     const room = sessionStorage.getItem('selectedRoom');
     const showingRelease = sessionStorage.getItem('selectedShowing');
     const seats = sessionStorage.getItem('selectedSeats');
-
+    const foodCombos = sessionStorage.getItem('selectedFoodCombos');
+    const cost = sessionStorage.getItem('totalCost');
     if (cinema) {
       this.selectedCinema = JSON.parse(cinema);
     }
@@ -44,6 +48,14 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
       console.log(this.selectedSeats);
     }
 
+    if (foodCombos) {
+      this.selectedFoodCombos = JSON.parse(foodCombos); // Parse the selected food combos
+      console.log(this.selectedFoodCombos);
+    }
+    if (cost) {
+      this.totalCost = JSON.parse(cost); // Add this line
+      console.log("total: ",this.totalCost);
+    }
     // Set a timeout to clear the session after the defined duration
     this.sessionTimeout = setTimeout(() => {
       this.clearSessionAndRedirect();
@@ -86,21 +98,65 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     alert('Booking confirmed!'); // Temporary placeholder for booking confirmation logic
     this.router.navigate(['/confirmation']); // Navigate to a confirmation page or similar
   }
+
+
   // clearSessionAndRedirect(): void {
   //   sessionStorage.removeItem('selectedSeats');
 
   //   alert('Session has expired. You will be redirected to the seat selection page.');
   //   this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
   // }
+
+
+
+
+  // clearSessionAndRedirect(): void {
+  //   // Ensure selectedSeats is not empty
+  //   if (this.selectedSeats.length > 0) {
+  //     // Update the status of each selected seat
+  //     const seatUpdateRequests = this.selectedSeats.map((seatId) => {
+  //       // Set newStatus to false
+  //       const newStatus = false;
+  //       return this.seatBookingService
+  //         .updateSeatStatus(this.selectedShowingRelease.id, seatId, newStatus)
+  //         .toPromise();
+  //     });
+
+  //     Promise.all(seatUpdateRequests)
+  //       .then(() => {
+  //         // On successful update of all seats, clear the session and redirect
+  //         sessionStorage.removeItem('selectedSeats');
+  //         alert(
+  //           'Session has expired. You will be redirected to the seat selection page.'
+  //         );
+  //         this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
+  //       })
+  //       .catch((error) => {
+  //         // Handle any errors during seat status update
+  //         console.error('Error updating seat status:', error);
+  //         alert('Failed to update seat status. Please try again.');
+  //       });
+  //   } else {
+  //     // If there are no selected seats, just clear the session and redirect
+  //     sessionStorage.removeItem('selectedSeats');
+  //     alert(
+  //       'Session has expired. You will be redirected to the seat selection page.'
+  //     );
+  //     this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
+  //   }
+  // }
+
+
+
   clearSessionAndRedirect(): void {
     // Ensure selectedSeats is not empty
     if (this.selectedSeats.length > 0) {
       // Update the status of each selected seat
-      const seatUpdateRequests = this.selectedSeats.map((seatId) => {
+      const seatUpdateRequests = this.selectedSeats.map((seat: { id: number; }) => {
         // Set newStatus to false
         const newStatus = false;
         return this.seatBookingService
-          .updateSeatStatus(this.selectedShowingRelease.id, seatId, newStatus)
+          .updateSeatStatus(this.selectedShowingRelease.id, seat.id, newStatus)
           .toPromise();
       });
 
@@ -108,6 +164,11 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
         .then(() => {
           // On successful update of all seats, clear the session and redirect
           sessionStorage.removeItem('selectedSeats');
+          sessionStorage.removeItem('totalSeatCost'); // Remove seat cost from session
+          sessionStorage.removeItem('selectedFoodCombos'); // Remove food combos from session
+          sessionStorage.removeItem('totalFoodComboCost'); // Remove food combo cost from session
+          sessionStorage.removeItem('totalCost'); // Remove total cost from session
+
           alert(
             'Session has expired. You will be redirected to the seat selection page.'
           );
@@ -121,10 +182,16 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     } else {
       // If there are no selected seats, just clear the session and redirect
       sessionStorage.removeItem('selectedSeats');
+      sessionStorage.removeItem('totalSeatCost'); // Remove seat cost from session
+      sessionStorage.removeItem('selectedFoodCombos'); // Remove food combos from session
+      sessionStorage.removeItem('totalFoodComboCost'); // Remove food combo cost from session
+      sessionStorage.removeItem('totalCost'); // Remove total cost from session
+
       alert(
         'Session has expired. You will be redirected to the seat selection page.'
       );
       this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
     }
   }
+  
 }
