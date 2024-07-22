@@ -8,15 +8,21 @@ import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.s
   styleUrls: ['./booking-type.component.scss'],
 })
 export class BookingTypeComponent implements OnInit, OnDestroy {
+combo: any;
+parseInt(arg0: any) {
+throw new Error('Method not implemented.');
+}
   selectedCinema: any;
   selectedRoom: any;
   selectedShowingRelease: any;
   selectedSeats: any;
   selectedFoodCombos: any[] = [];
   totalCost: number = 0;
-
+  movie: any;
+  seatCost : any;
   private sessionTimeout: any;
   private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
+ 
 
   constructor(
     private router: Router,
@@ -30,6 +36,16 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     const seats = sessionStorage.getItem('selectedSeats');
     const foodCombos = sessionStorage.getItem('selectedFoodCombos');
     const cost = sessionStorage.getItem('totalCost');
+    const movieData = sessionStorage.getItem('movie');
+   const totalSeatCost = sessionStorage.getItem('totalSeatCost')
+   if (totalSeatCost) {
+    this.seatCost = JSON.parse(totalSeatCost);
+    console.log(this.seatCost);
+  }
+    if (movieData) {
+      this.movie = JSON.parse(movieData);
+      console.log(this.movie);
+    }
     if (cinema) {
       this.selectedCinema = JSON.parse(cinema);
     }

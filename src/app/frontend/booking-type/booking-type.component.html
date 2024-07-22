@@ -7,7 +7,7 @@
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 					<div class="st_bt_top_center_heading float_left">
-						<h3>Aquaman - English - (2:47)</h3>
+						<h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3>
 					</div>
 				</div>
 			</div>
@@ -84,21 +84,27 @@
 									<ul>
 										<div *ngFor=" let seat of selectedSeats">
 											<li > Seat: <span  class="dtts2">  {{ seat.seat.row + seat.seat.column }} </span>
-												<br>   
+												
 											</li>
 										</div>
+										
+											<li>
+												<h6>Sub total: - <b>{{ seatCost }}</b>  VND</h6>
+											</li>
+										<li>
+											<div *ngIf="selectedFoodCombos.length > 0">
+											
+												<ul>
+												  <li *ngFor="let combo of selectedFoodCombos">
+													Combo: {{ combo.name }}	 - {{ combo.price }} VND
+												
+												  </li>
+												</ul>
+											  </div>
+										</li>
 										<!-- <li>Internet handling fees <span>Rs.70.80</span>
 										</li> -->
-										<div *ngIf="selectedFoodCombos.length > 0">
-											
-											<ul>
-											  <li *ngFor="let combo of selectedFoodCombos">
-												Combo: {{ combo.name }}	
-												<br>   <span>Price: {{ combo.price | currency }}</span>
-											
-											  </li>
-											</ul>
-										  </div>
+										
 									</ul>
 									<!-- <p>Booking Fees <span>Rs.60.00</span>
 									</p>
@@ -106,9 +112,8 @@
 									</p> -->
 								</div>
 								<div class="st_dtts_sb_h2 float_left">
-									<h3>Sub total <span>Rs.860.80</span></h3>
-									<h4>Current State is <span>Kerala</span></h4>
-									<h5>Payable Amount <span>Rs.860.80</span></h5>
+									
+									<h5>Payable Amount: <span>{{ totalCost }} VND </span></h5>
 								</div>
 							</div>
 						</div>

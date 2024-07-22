@@ -20,8 +20,8 @@
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 				<div class="st_bt_top_center_heading st_bt_top_center_heading_seat_book_page float_left">
-					<h3>Aquaman - English - (2:47)</h3>
-					<h4>Today, 19 Dec, 10:00 PM</h4>
+					<h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3>
+					<h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -82,7 +82,7 @@
 							  <input type="checkbox" [id]="seat.id" [checked]="isSelected(seat.id)"
 									 [disabled]="seat.status === 1" (change)="onSeatChange(seat)">
 							  <label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)" >
-								{{ seat.seat.row }}-{{ seat.seat.column }} - {{ seat.seat.type }} 
+								{{ seat.seat.row }}{{ seat.seat.column }} 
 							  </label>
 							</li>
 						  </ul>
