@@ -137,10 +137,15 @@ export class MovieBookingComponent implements OnInit {
   selectedShowing: any;
   selectedRoom: any;
   selectedCinema: any;
+  movie: any;
 
   constructor(private movieBookingService: MovieBookingService, private router: Router) { }
 
   ngOnInit(): void {
+    const movieData = sessionStorage.getItem('movie');
+    if (movieData) {
+      this.movie = JSON.parse(movieData);
+    }
     this.fetchData();
   }
 

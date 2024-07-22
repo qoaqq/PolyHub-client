@@ -247,7 +247,6 @@
 // }
 
 
-
 import { Component, OnInit } from '@angular/core';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { Router } from '@angular/router';
@@ -266,7 +265,8 @@ export class SeatBookingComponent implements OnInit {
   totalSeatCost: number = 0;
   seatPrice: number = 50000;  // Giá ghế cố định là 50,000
   rows: any[][] = [];
-
+  movie: any;
+  showing: any;
   constructor(private seatBookingService: SeatBookingService, private router: Router) { }
 
   ngOnInit(): void {
@@ -276,8 +276,38 @@ export class SeatBookingComponent implements OnInit {
     }
     this.loadSelectedSeats();
     this.calculateTotalSeatCost();
+    const movieData = sessionStorage.getItem('movie');
+    if (movieData) {
+      this.movie = JSON.parse(movieData);
+    }
+    const showingRelease = sessionStorage.getItem('selectedShowing');
+    if (showingRelease) {
+      this.showing = JSON.parse(showingRelease);
+    }
   }
+  formatTime(dateString: string): string {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+  formatTime2(dateString: string): string {
+    if (!dateString) {
+      throw new Error('Date string is undefined or empty');
+    }
 
+    const formattedDateString = dateString.replace(' ', 'T');
+    const date = new Date(formattedDateString);
+
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid date string');
+    }
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
   loadShowingId(): void {
     const showingId = sessionStorage.getItem('selectedShowing');
     if (showingId) {
@@ -365,3 +395,6 @@ export class SeatBookingComponent implements OnInit {
     this.router.navigate(['/food-combo']);
   }
 }
+
+
+
