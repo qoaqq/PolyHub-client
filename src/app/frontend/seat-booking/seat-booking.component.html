@@ -28,7 +28,7 @@
 				<div class="st_bt_top_close_btn st_bt_top_close_btn2 float_left"> <a href="#"><i
 							class="fa fa-times"></i></a>
 				</div>
-				<div class="st_seatlay_btn float_left"> <button (click)=" confirmSelection() ">Proceed to Pay</button>
+				<div class="st_seatlay_btn float_left"> <button (click)=" confirmSelection() ">Continue</button>
 				</div>
 			</div>
 		</div>
@@ -53,20 +53,44 @@
 					<h3>Executive + 3d glasss - rs 190.00</h3>
 				</div>
 				<div class="st_seat_lay_row float_left">
-					<div *ngFor="let seat of seats">
+					<!-- <div *ngFor="let seat of seats">
 						<ul class="">
 							<li class="col-lg-3" [ngClass]="{
 							'seat_disable': seat.status === 1,
 							'seat_available': seat.status === 0
 						  }">
-								<input type="checkbox" [id]="seat.id" [checked]="isSelected(seat.id)"
+								<input type="checkbox" id="c1" [id]="seat.id" [checked]="isSelected(seat.id)"
 									[disabled]="seat.status === 1" (change)="onSeatChange(seat.seat_id)">
 								<label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)">
 									{{ seat.name }}
+
 								</label>
 							</li>
+							<h1>{{ seat.seat.type }}</h1>
 						</ul>
-					</div>
+					</div> -->
+					<div *ngFor="let row of rows; let rowIndex = index" class="row">
+						<div *ngFor="let seat of row" class="col-lg-1">
+						  <ul>
+							<li [ngClass]="{
+								'seat_disable': seat.status === 1,
+								'seat_available': seat.status === 0,
+								'seat_type_1': seat.seat.type === 1,
+								'seat_type_2': seat.seat.type === 2,
+								'seat_type_3': seat.seat.type === 3
+							  }">
+							  <input type="checkbox" [id]="seat.id" [checked]="isSelected(seat.id)"
+									 [disabled]="seat.status === 1" (change)="onSeatChange(seat)">
+							  <label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)" >
+								{{ seat.seat.row }}-{{ seat.seat.column }} - {{ seat.seat.type }} 
+							  </label>
+							</li>
+						  </ul>
+						</div>
+					  </div>
+					  
+					  
+					  
 				</div>
 
 			</div>
