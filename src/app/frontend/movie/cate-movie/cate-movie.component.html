@@ -121,7 +121,7 @@
 												</div>
 												<div class="prs_upcom_movie_content_box">
 													<div class="prs_upcom_movie_content_box_inner">
-														<h2 class="truncate-text"><a href="#">{{ movie?.name }}</a></h2>
+														<h2 class="truncate-text"><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h2>
 														<i class="fa fa-star"></i>
 														<i class="fa fa-star"></i>
 														<i class="fa fa-star"></i>
@@ -171,11 +171,11 @@
 											class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div class="prs_mcc_list_movie_main_wrapper">
 												<div class="prs_mcc_list_movie_img_wrapper">
-													<img width="262px" height="350px" src="{{ movie.photo }}" alt="categoty_img">
+													<img width="262px" height="350px" src="{{ movie?.photo }}" alt="categoty_img">
 												</div>
 												<div class="prs_mcc_list_movie_img_cont_wrapper">
 													<div class="prs_mcc_list_left_cont_wrapper">
-														<h2>{{ movie.name }}</h2>
+														<h2><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h2>
 														<p>
 															<i class="fa fa-star"></i>
 															<i class="fa fa-star"></i>
@@ -183,7 +183,7 @@
 															<i class="fa fa-star-o"></i>
 															<i class="fa fa-star-o"></i>
 														</p>
-														<h4>Movie Director - {{ movie.director.name }}</h4>
+														<h4>Movie Director - {{ movie?.director?.name }}</h4>
 													</div>
 													<div class="prs_mcc_list_right_cont_wrapper">
 														<a href="#"><i class="flaticon-cart-of-ecommerce"></i></a>
@@ -269,7 +269,7 @@
 						</div>
 						<div class="prs_upcom_movie_content_box">
 							<div style="height: 100%;" class="prs_upcom_movie_content_box_inner">
-								<h2 class="truncate-text"><a href="#">{{ movie?.name }}</a></h2>
+								<h2 class="truncate-text"><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h2>
 								<p>{{ movie.cate_name }}</p> <i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
