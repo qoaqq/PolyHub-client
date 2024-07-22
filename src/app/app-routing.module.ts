@@ -15,6 +15,7 @@ import { UserComponent } from './frontend/user/user.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { AuthUserGuard } from './guards/user/auth-user.guard';
 import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
+import { PaymentComponent } from './frontend/payment/payment.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'blogs', component: CateBlogComponent },
   { path: 'blog/:id', component: SingleBlogComponent },
   { path: 'food-combo', component: FoodComboComponent },
+  { path: 'payment', component: PaymentComponent },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
   { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },
