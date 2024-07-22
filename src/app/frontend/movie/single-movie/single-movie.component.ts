@@ -3,7 +3,7 @@ import {
   AfterViewInit,
   
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from 'src/app/services/movie/movie.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class SingleMovieComponent implements AfterViewInit {
   movieId: string | null = null;
   topMovies: any[] = [];
 
-  constructor(private route: ActivatedRoute, private movieService: MovieService) {
+  constructor(private route: ActivatedRoute, private movieService: MovieService, private router: Router) {
   }
 
   ngAfterViewInit() {
@@ -29,5 +29,12 @@ export class SingleMovieComponent implements AfterViewInit {
     this.movieService.getTopMoviesInMonth().subscribe(movies => {
       this.topMovies = movies.data;
     })
+  }
+
+  bookingNow(): void {
+    this.router.navigate(['/movie-booking']).then(() => {
+      sessionStorage.setItem('movie', JSON.stringify(this.movie));
+      window.location.reload();
+    });
   }
 }

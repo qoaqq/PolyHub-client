@@ -13,6 +13,7 @@ export class SignupComponent {
   repassword: string = '';
   phonenumber: string = '';
   date_of_birth: string = '';
+  gender: string = '';
   errors: any = {};
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -32,7 +33,8 @@ export class SignupComponent {
         this.password,
         this.repassword,
         this.phonenumber,
-        this.date_of_birth
+        this.date_of_birth,
+        this.gender
       )
       .subscribe(
         (success) => {
