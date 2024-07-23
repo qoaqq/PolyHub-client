@@ -20,7 +20,7 @@ import { PaymentComponent } from './frontend/payment/payment.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'payment-method', component: BookingTypeComponent },
+  { path: 'bill', component: BookingTypeComponent },
   { path: 'seat-booking', component: SeatBookingComponent },
   { path: 'movie-booking', component: MovieBookingComponent },
   { path: 'booking-type', component: BookingTypeComponent },
@@ -30,7 +30,7 @@ const routes: Routes = [
   { path: 'blogs', component: CateBlogComponent },
   { path: 'blog/:id', component: SingleBlogComponent },
   { path: 'food-combo', component: FoodComboComponent },
-  { path: 'payment', component: PaymentComponent },
+  { path: 'payment-method', component: PaymentComponent },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
   { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },
