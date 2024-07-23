@@ -361,7 +361,7 @@ export class SeatBookingComponent implements OnInit {
     
         console.log(`Toggling seat ${seat.id}. Current selected: ${isSelected}. New status: ${newStatus}`);
     
-        this.seatBookingService.updateSeatStatus(this.showingId.id, seat.id, newStatus).subscribe(
+        this.seatBookingService.updateSeatStatus(this.showingId.id, seat.seat_id, newStatus).subscribe(
           (response) => {
             console.log(`Server response:`, response);
     
