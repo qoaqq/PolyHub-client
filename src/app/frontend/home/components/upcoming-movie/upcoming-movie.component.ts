@@ -1,5 +1,6 @@
 import { HomeService } from 'src/app/services/home/home.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upcoming-movie',
@@ -8,13 +9,18 @@ import { Component } from '@angular/core';
 })
 export class UpcomingMovieComponent {
   upcomingMovie: any[]=[];
-  constructor( private HomeService: HomeService) {
+  constructor( private HomeService: HomeService, private Router: Router) {
 
   }
   ngAfterViewInit() {
     this.HomeService.getUpComingMovie().subscribe(data => { 
       this.upcomingMovie = data.data.data;
-      // console.log(this.upcomingMovie);
+      console.log(this.upcomingMovie);
+    });
+  }
+  viewDetails(movieId: number): void {
+    this.Router.navigate(['/movie', movieId]).then(() => {
+      window.location.reload();
     });
   }
 }
