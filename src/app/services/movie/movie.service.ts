@@ -15,16 +15,20 @@ export class MovieService {
     return this.http.get<any>('http://127.0.0.1:8000/api/movie',{ params });
   }
 
-  searchMovies(title: string): Observable<any> {
-    return this.http.get<any>(`http://127.0.0.1:8000/api/movie-search?title=${title}`);
+  searchMovies(title: string, page: number): Observable<any> {
+    let params = new HttpParams()
+    .set('page', page.toString())
+    return this.http.get<any>(`http://127.0.0.1:8000/api/movie-search?title=${title}`, { params });
   }
 
   getCategories(): Observable<any> {
     return this.http.get<any>(`http://127.0.0.1:8000/api/movie-categories`);
   }
 
-  getMoviesByCategory(id : number): Observable<any> {
-    return this.http.get<any>(`http://127.0.0.1:8000/api/movies-by-category/${id}`);
+  getMoviesByCategory(id : number, page: number): Observable<any> {
+    let params = new HttpParams()
+    .set('page', page.toString())
+    return this.http.get<any>(`http://127.0.0.1:8000/api/movies-by-category/${id}`, { params });
   }
 
   getTopMoviesInMonth(): Observable<any>{

@@ -147,13 +147,13 @@
 									<div class="pager_wrapper gc_blog_pagination">
 										<ul class="pagination">
 											<li>
-												<a href="#"><i class="flaticon-left-arrow"></i></a>
+												<a (click)="previousPage()" href="javascript:void(0);" [class.disabled]="currentPage === 1"><i class="flaticon-left-arrow"></i></a>
 											</li>
-											<li *ngFor="let page of [].constructor(totalPages); let i = index">
-												<a  [class.active]="currentPage === i + 1" (click)="onPageChange(i + 1)" href="javascript:void(0);">{{ i + 1 }}</a>
+											<li *ngFor="let page of getPages()">
+												<a [class.active1]="currentPage === page" (click)="onPageChange(page)" href="javascript:void(0);">{{ page }}</a>
 											</li>
 											<li>
-												<a href="#"><i class="flaticon-right-arrow"></i></a>
+												<a (click)="nextPage()"  href="javascript:void(0);" [class.disabled]="currentPage === totalPages"><i class="flaticon-right-arrow"></i></a>
 											</li>
 										</ul>
 									</div>

@@ -45,16 +45,17 @@ export class CateMovieComponent implements AfterViewInit {
   loadMovies(page: number = this.currentPage) {
     if (this.searchTerm) {
       // Tìm kiếm theo tiêu đề
-      this.movieService.searchMovies(this.searchTerm).subscribe(response => {
+      this.movieService.searchMovies(this.searchTerm, page).subscribe(response => {
         this.movies = response.data.data;
         this.totalPages = response.data.last_page; // Assuming API response includes total_pages
         this.currentPage = response.data.current_page; // Assuming API response includes current_page
       });
     } else if (this.selectedCategory !== null) {
       // Lấy phim theo danh mục
-      this.movieService.getMoviesByCategory(this.selectedCategory).subscribe(response => {
-        this.movies = response.data;
-        this.totalPages = response.data.last_page; // Assuming API response includes total_pages
+      this.movieService.getMoviesByCategory(this.selectedCategory, page).subscribe(response => {
+        this.movies = response.data.data;
+        this.totalPages = response.data.last_page;
+         // Assuming API response includes total_pages
         this.currentPage = response.data.current_page; // Assuming API response includes current_page
       });
     } else {
@@ -70,6 +71,7 @@ export class CateMovieComponent implements AfterViewInit {
   // for search input 
   onSearch(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
+    this.selectedCategory = null;
     this.searchTerm = inputElement.value;
     this.currentPage = 1; // Reset page to 1 for new search
     this.loadMovies();
@@ -79,23 +81,17 @@ export class CateMovieComponent implements AfterViewInit {
   // get movies by category
   getMoviesByCategoryID(id: number, event: Event): void{
     event.preventDefault();
-    this.movieService.getMoviesByCategory(id).subscribe(
-      movies => {
-        this.movies = movies.data.data;
-        console.log(this.movies);
-      },
-      error => {
-        console.error('having no record', error);
-      }
-    );
+    this.selectedCategory = id;
+    this.currentPage = 1; // Reset page to 1 for new search
+    this.loadMovies();
+    
   }
 
   getAllMovies(event: Event){
     event.preventDefault();
-    this.movieService.getList().subscribe(movie => {
-      this.movies = movie.data.data;
-      console.log(this.movies);
-    })
+    this.selectedCategory = null;
+    this.currentPage = 1; // Reset page to 1 for new search
+    this.loadMovies();
   }
 
   viewDetails(movieId: number): void {
@@ -106,10 +102,37 @@ export class CateMovieComponent implements AfterViewInit {
 
   // pagination
   onPageChange(page: number) {
-    if (page > 0) {
-      console.log(page);
+    if (page > 0 && page <= this.totalPages) {
       this.currentPage = page;
       this.loadMovies(page);
+    }
+  }
+
+  // lấy ra danh sách số page hiển thị
+  getPages(): number[] {
+    const pages = [];
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, this.currentPage + 3);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+  previousPage() {
+    console.log(1);
+    
+    if (this.currentPage > 1) {
+      this.currentPage -= 1;
+      this.onPageChange(this.currentPage);
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage += 1;
+      this.onPageChange(this.currentPage);
     }
   }
 

@@ -5,3 +5,16 @@
     width: 200px;               /* Độ rộng của phần tử */
     padding: 5px;               /* Khoảng cách nội dung và đường viền */
   }
+
+  a.disabled {
+    pointer-events: none;
+    background-color: gray !important;
+    border: none !important;
+    cursor: default;
+  }
+  
+  a.active1 {
+    font-weight: bold;
+    background-color: black !important;
+    color: white;
+  }
