@@ -21,13 +21,13 @@
 //   //   });
 //   // }
 
- 
+
 //   // selectCinema(cinema: any): void {
 //   //   // Lưu cinemaId vào session storage
-   
+
 //   //   sessionStorage.setItem('selectedCinema', JSON.stringify(cinema));
 //   //   // Điều hướng đến trang rooms
-   
+
 //   // }
 //   // selectCinemaID(cinemaId:number): void {
 //   //   sessionStorage.setItem('selectedCinemaId', cinemaId.toString());
@@ -118,7 +118,7 @@
 //     this.router.navigate(['seat-booking']);
 //   }
 //   }
- 
+
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -156,21 +156,44 @@ export class MovieBookingComponent implements OnInit {
       this.movieBookingService.getRooms().subscribe(roomResponse => {
         this.rooms = roomResponse.data.data;
 
-        this.movieBookingService.getShowingRelease().subscribe(showingReleaseResponse => {
-          this.showingReleases = showingReleaseResponse.data.data;
-          this.mergeData();
-        });
+          this.movieBookingService.getShowingReleasebyMovieId(this.movie.id).subscribe(showingbyMovie => {
+            this.showingReleases = showingbyMovie.data;
+            console.log(this.movie.id);
+            console.log(this.showingReleases);
+            this.mergeData();
+          });
+        
       });
-    });
+    })
   }
 
+  // mergeData(): void {
+  //   this.rooms.forEach(room => {
+  //     room['showingReleases'] = this.showingReleases.filter(showing => showing.room_id === room.id);
+  //   });
+
+  //   this.cinemas.forEach(cinema => {
+  //     cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id);
+  //   });
+  // }
   mergeData(): void {
+    const movieId = this.movie.id; // Lấy movie_id từ session
+
+    if (!movieId) {
+      console.error('movie_id not found in session storage');
+      return;
+    }
+
+    // Convert movieId to the appropriate type if necessary
+    const movieIdNumber = parseInt(movieId, 10);
+
     this.rooms.forEach(room => {
-      room['showingReleases'] = this.showingReleases.filter(showing => showing.room_id === room.id);
+      room['showingReleases'] = this.showingReleases
+        .filter(showing => showing.room_id === room.id && showing.movie_id === movieIdNumber);
     });
 
     this.cinemas.forEach(cinema => {
-      cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id);
+      cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id && room['showingReleases'].length > 0);
     });
   }
 
