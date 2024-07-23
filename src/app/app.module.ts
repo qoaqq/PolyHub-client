@@ -1,5 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import FormsModule
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { AppRoutingModule } from './app-routing.module';
@@ -57,7 +57,7 @@ import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
     PaymentComponent,
     FoodComboComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule,],
+  imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule, ReactiveFormsModule],
   providers: [AuthService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
