@@ -23,53 +23,33 @@
                     <h2>Select Food Combos</h2>
                 </div>
             </div>
-            
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="prs_feature_img_box_wrapper prs_ec_ue_inner_feat_wrapper" *ngFor="let combo of foodCombos" class="food-combo-item">
-                     <div class="prs_feature_img">
-                        <img src="images/content/ft1.jpg" alt="feature_img">
-                        <div class="prs_ft_btn_wrapper">
-                            <ul>
-                                <li><a href="#">Book Now</a>
-                                </li>
-                            </ul>
+            <div *ngFor="let combo of foodCombos">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div>
+                        <h3>{{ combo.name }}</h3>
+                        <p>{{ combo.description }}</p>
+                        <p>Giá: {{ combo.price }}</p>
+                        <button (click)="onFoodComboSelect(combo, 1)">Chọn</button>
+                        <div *ngIf="isSelected(combo.id)">
+                            <label for="quantity">Số lượng:</label>
+                            <input type="number" [value]="getQuantity(combo.id)"
+                                (input)="onQuantityChange(combo, $event)" min="1">
                         </div>
-                    </div>
-                    <div class="prs_feature_img_cont">
-                        <h2><a href="#">   {{ combo.name }} </a> </h2> 
-                          
-                        <div class="prs_ft_small_cont_left">
-                            <p>{{ combo.price | currency }}</p>  <input type="checkbox" [id]="combo.id" [value]="combo.id" (change)="onFoodComboSelect(combo)"
-                            [checked]="isSelected(combo.id)">
-                        <label [attr.for]="combo.id">
-                            &ensp; &ensp;  Tick to select                        </label> 
-                        </div>
-                        <div class="prs_ft_small_cont_right">
-                            
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                        </div>
-                        <ul>
-                            <li> {{ combo.description }} </li>
-                            
-                        </ul>
-                    </div> 
-                    <div >
-                       
                     </div>
                 </div>
             </div>
-            
+            <p>Tổng chi phí Combo Thực phẩm: {{ totalFoodComboCost }}</p>
+            <button (click)="confirmSelection()">Xác nhận lựa chọn</button>
+
+
+
             <div class="st_bcc_ticket_boxes_bottom_wrapper float_left">
                 <p>You can access your ticket from your Profile. We will send you
                     <br>an e-Mail/SMS Confirmation with in 15 Minutes.
                 </p>
-              <ul>
-                    
-                </ul> 
+                <ul>
+
+                </ul>
                 <button (click)="confirmSelection()">Confirm Selection</button>
             </div>
         </div>

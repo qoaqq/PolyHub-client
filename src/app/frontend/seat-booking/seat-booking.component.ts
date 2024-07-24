@@ -267,6 +267,7 @@ export class SeatBookingComponent implements OnInit {
   rows: any[][] = [];
   movie: any;
   showing: any;
+  organizedSeats: any = {}; // { row: { column: seatData } }
   constructor(private seatBookingService: SeatBookingService, private router: Router) { }
 
   ngOnInit(): void {
@@ -314,34 +315,90 @@ export class SeatBookingComponent implements OnInit {
       this.showingId = JSON.parse(showingId);
     }
   }
-
+  // loadSeats(): void {
+  //       if (this.showingId !== null) {
+  //         console.log(this.showingId);
+  //         this.seatBookingService.getSeats(this.showingId.id).subscribe(
+  //           (data) => {
+  //             this.seats = data;
+  //             console.log('Seats:', this.seats); // Hiển thị dữ liệu ghế trong console
+  //           },
+  //           (error) => {
+  //             console.error('Error fetching seats:', error); // Xử lý lỗi
+  //           }
+  //         );
+  //       }
+  //     }
   loadSeats(): void {
     if (this.showingId !== null) {
+      console.log(this.showingId);
       this.seatBookingService.getSeats(this.showingId.id).subscribe(
         (data) => {
           this.seats = data;
-          this.seats.sort((a, b) => {
-            if (a.seat.row !== b.seat.row) {
-              return a.seat.row - b.seat.row;
-            }
-            return a.seat.column - b.seat.column;
-          });
-          this.createRows();
+          this.organizeSeats();
+          console.log('Seats:', this.seats); // Display seats in console
         },
         (error) => {
-          console.error('Error fetching seats:', error);
+          console.error('Error fetching seats:', error); // Handle errors
         }
       );
     }
   }
 
-  createRows(): void {
-    const seatsPerRow = Math.ceil(this.seats.length / 7);
-    this.rows = [];
-    for (let i = 0; i < 7; i++) {
-      this.rows.push(this.seats.slice(i * seatsPerRow, (i + 1) * seatsPerRow));
-    }
+  organizeSeats(): void {
+    this.organizedSeats = this.seats.reduce((acc, seat) => {
+      const { row, column } = seat;
+      if (!acc[row]) {
+        acc[row] = {};
+      }
+      acc[row][column] = seat;
+      return acc;
+    }, {});
   }
+
+
+      
+
+  // loadSeats(): void {
+  //   if (this.showingId !== null) {
+  //     this.seatBookingService.getSeats(this.showingId.id).subscribe(
+  //       (data) => {
+  //         this.seats = data;
+  //         this.seats.sort((a, b) => {
+  //           if (a.seat.row !== b.seat.row) {
+  //             return a.seat.row - b.seat.row;
+  //           }
+  //           return a.seat.column - b.seat.column;
+  //         });
+  //         // this.createRows();
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching seats:', error);
+  //       }
+  //     );
+  //   }
+  // }
+
+  // createRows(): void {
+  //   const seatsPerRow = Math.ceil(this.seats.length / 7);
+  //   this.rows = [];
+  //   for (let i = 0; i < 7; i++) {
+  //     this.rows.push(this.seats.slice(i * seatsPerRow, (i + 1) * seatsPerRow));
+  //   }
+  // }
+  getSortedRows(): number[] {
+    return Object.keys(this.organizedSeats).map(row => +row).sort((a, b) => a - b);
+  }
+  
+  getSortedColumns(row: number): number[] {
+    return Object.keys(this.organizedSeats[row]).map(column => +column).sort((a, b) => a - b);
+  }
+  
+  getSeatClass(seat: any): string {
+    // You can customize this based on seat status or type
+    return seat.status === 'available' ? 'available-seat' : 'unavailable-seat';
+  }
+  
 
   loadSelectedSeats(): void {
     const storedSeats = sessionStorage.getItem('selectedSeats');

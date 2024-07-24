@@ -1,0 +1,14 @@
+ .seat_type_1 input[type="checkbox"]+label:before {
+    border: 1px solid green;
+}
+
+.st_seat_lay_row .seat_type_2 input[type="checkbox"]+label:before {
+    border: 1px solid red;
+}
+
+
+.st_seat_lay_row .seat_type_3 input[type="checkbox"]+label:before {
+    border: 1px solid blue;
+}
+
+

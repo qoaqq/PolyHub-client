@@ -27,3 +27,67 @@
 // .iconheight {
 //   vertical-align: middle;
 // }
+.seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.seat-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2px;
+}
+
+.seat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.seat_disable {
+    background-color: red; /* Grey for disabled */
+}
+
+.seat_available {
+    background-color: #f0f0f0; /* Light grey for available */
+}
+
+.seat_type_1 {
+    border: 2px solid #ff0000; /* Red border for type 1 */
+}
+
+.seat_type_2 {
+    border: 2px solid #00ff00; /* Green border for type 2 */
+}
+
+.seat_type_3 {
+    border: 2px solid #0000ff; /* Blue border for type 3 */
+}
+
+input[type="checkbox"] {
+    display: none; /* Hide the checkbox */
+}
+
+label {
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+label.selected {
+    background-color: #007bff; /* Blue background for selected */
+    color: red;
+}
+
+label:hover {
+    background-color: #e0e0e0; /* Light grey on hover */
+}
