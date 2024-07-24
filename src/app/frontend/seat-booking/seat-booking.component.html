@@ -5,30 +5,14 @@
 				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a href="movie_booking.html"><i
 							class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
 				</div>
-				<div class="cc_ps_quantily_info cc_ps_quantily_info_tecket">
-					<p>Select Ticket</p>
-					<div class="select_number">
-						<button onclick="changeQty(1); return false;" class="increase"><i class="fa fa-plus"></i>
-						</button>
-						<input type="text" name="quantity" value="{{ selectedSeatCount }}" size="2" id="input-quantity"
-							class="form-control" />
-						<button onclick="changeQty(0); return false;" class="decrease"><i class="fa fa-minus"></i>
-						</button>
-					</div>
-					<input type="hidden" name="product_id" />
+				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a href="movie_booking.html"><i
+					class="fas fa-long-arrow-alt-left"></i> &nbsp;Continue</a>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 				<div class="st_bt_top_center_heading st_bt_top_center_heading_seat_book_page float_left">
-					<h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3>
-					<h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<div class="st_bt_top_close_btn st_bt_top_close_btn2 float_left"> <a href="#"><i
-							class="fa fa-times"></i></a>
-				</div>
-				<div class="st_seatlay_btn float_left"> <button (click)=" confirmSelection() ">Continue</button>
+					<!-- <h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3> -->
+					<!-- <h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4> -->
 				</div>
 			</div>
 		</div>
@@ -44,28 +28,41 @@
 		<div class="st_seat_full_container">
 			<div class="st_seat_lay_economy_wrapper float_left">
 				<div class="screen">
-					<img src="../../../assets/images/content/screen.png">
+				  <img src="../../../assets/images/content/screen.png" alt="Screen">
 				</div>
-
-			</div>
+				<div class="seat-legend">
+				  <ul>
+					<li class="seat-type seat-type-standard">Standard Ticket - <span class="color-indicator" style="background-color: green;"></span> Green</li>
+					<li class="seat-type seat-type-vip">VIP Ticket - <span class="color-indicator" style="background-color: red;"></span> Red</li>
+					<li class="seat-type seat-type-couple">Couple Ticket - <span class="color-indicator" style="background-color: pink;"></span> Pink</li>
+					<li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span> Gray</li>
+				  </ul>
+				</div>
+			  </div>
+			  
 			<div class="st_seat_lay_economy_wrapper st_seat_lay_economy_wrapperexicutive float_left">
 				<div class="st_seat_lay_economy_heading float_left">
 					<h3>Executive + 3d glasss - rs 190.00</h3>
 				</div>
 				<div class="st_seat_lay_row float_left"  >
 					
-					<div *ngFor="let column of " class="row">
-						<div *ngFor="let seat of seats" class="col-lg-1">
-						  <ul >
-							
-							<li [ngClass]="seat.seat.type == 1 ? 'seat_type_1' : (seat.seat.type == 2 ? 'seat_type_2' : (seat.seat.type == 3 ? 'seat_type_3' : ''))">	
-								<input type="checkbox" id="{{seat.id}}" [checked]="isSelected(seat.id)"
-								[disabled]="seat.status === 1" (change)="onSeatChange(seat)" name="cb" class="c">
-								<label for="{{seat.id}}" >   </label>
+					<!-- Đối với từng hàng -->
+					<div *ngFor="let row of getRows()" class="row">
+						<!-- Hiển thị ghế trong hàng đó -->
+						<div class="seats">
+							<h4 style="text-transform: uppercase;">{{ row }}</h4>
+						<div *ngFor="let seat of seatsByRow[row]" class="seat-col">
+							<ul>
+							<li [ngClass]="seat.seat.type == 1 && seat.status == 0 ? 'seat_type_1' : (seat.seat.type == 2 ? 'seat_type_2' : (seat.seat.type == 3 ? 'seat_type_3' : (seat.status == 1 ? 'seat_disable' : '')))">
+								<input type="checkbox" id="{{seat.id}}" name="cb" class="c">
+								{{seat.seat.column}}
+								<label for="{{seat.id}}"></label> <!-- Hiển thị cột -->
 							</li>
-						  </ul>
+							</ul>
 						</div>
-					  </div>
+						</div>
+					</div>
+					  
 					  
 					  
 					  

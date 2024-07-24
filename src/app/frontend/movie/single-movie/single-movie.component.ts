@@ -30,11 +30,4 @@ export class SingleMovieComponent implements AfterViewInit {
       this.topMovies = movies.data;
     })
   }
-
-  bookingNow(): void {
-    this.router.navigate(['/movie-booking']).then(() => {
-      sessionStorage.setItem('movie', JSON.stringify(this.movie));
-      window.location.reload();
-    });
-  }
 }

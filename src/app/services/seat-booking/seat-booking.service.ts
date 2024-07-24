@@ -12,10 +12,10 @@ export class SeatBookingService {
   constructor(private http: HttpClient) { }
 
   // Phương thức lấy thông tin ghế theo showing release ID
-  getSeats(showingReleaseId: number): Observable<any> {
+  getSeats(showingReleaseId: any): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/showingrelease/${showingReleaseId}/seats`);
   }
-  updateSeatStatus(showtimeId: number, seat_Id: number, status: boolean): Observable<any> {
+  updateSeatStatus(showtimeId: any, seat_Id: number, status: boolean): Observable<any> {
     const url = `${this.baseUrl}/showingrelease/${showtimeId}/${seat_Id}/status`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
