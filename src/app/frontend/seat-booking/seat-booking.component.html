@@ -52,38 +52,16 @@
 				<div class="st_seat_lay_economy_heading float_left">
 					<h3>Executive + 3d glasss - rs 190.00</h3>
 				</div>
-				<div class="st_seat_lay_row float_left">
-					<!-- <div *ngFor="let seat of seats">
-						<ul class="">
-							<li class="col-lg-3" [ngClass]="{
-							'seat_disable': seat.status === 1,
-							'seat_available': seat.status === 0
-						  }">
-								<input type="checkbox" id="c1" [id]="seat.id" [checked]="isSelected(seat.id)"
-									[disabled]="seat.status === 1" (change)="onSeatChange(seat.seat_id)">
-								<label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)">
-									{{ seat.name }}
-
-								</label>
-							</li>
-							<h1>{{ seat.seat.type }}</h1>
-						</ul>
-					</div> -->
-					<div *ngFor="let row of rows; let rowIndex = index" class="row">
-						<div *ngFor="let seat of row" class="col-lg-1">
-						  <ul>
-							<li [ngClass]="{
-								'seat_disable': seat.status === 1,
-								'seat_available': seat.status === 0,
-								'seat_type_1': seat.seat.type === 1,
-								'seat_type_2': seat.seat.type === 2,
-								'seat_type_3': seat.seat.type === 3
-							  }">
-							  <input type="checkbox" [id]="seat.id" [checked]="isSelected(seat.id)"
-									 [disabled]="seat.status === 1" (change)="onSeatChange(seat)">
-							  <label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)" >
-								{{ seat.seat.row }}{{ seat.seat.column }} 
-							  </label>
+				<div class="st_seat_lay_row float_left"  >
+					
+					<div *ngFor="let column of " class="row">
+						<div *ngFor="let seat of seats" class="col-lg-1">
+						  <ul >
+							
+							<li [ngClass]="seat.seat.type == 1 ? 'seat_type_1' : (seat.seat.type == 2 ? 'seat_type_2' : (seat.seat.type == 3 ? 'seat_type_3' : ''))">	
+								<input type="checkbox" id="{{seat.id}}" [checked]="isSelected(seat.id)"
+								[disabled]="seat.status === 1" (change)="onSeatChange(seat)" name="cb" class="c">
+								<label for="{{seat.id}}" >   </label>
 							</li>
 						  </ul>
 						</div>
@@ -98,29 +76,3 @@
 	</div>
 </div>
 
-<style>
-	input[type="checkbox"] {
-		display: hidden;
-	}
-
-	label {
-		display: inline-block;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	/* External CSS file */
-	.seat_disable {
-		color: #f2dede;
-		/* Light red for unavailable seats */
-		cursor: not-allowed;
-		/* Change cursor to indicate seat is disabled */
-	}
-
-	.seat_available {
-		color: #dff0d8;
-		/* Light green for available seats */
-	}
-</style>
