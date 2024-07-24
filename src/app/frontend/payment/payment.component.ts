@@ -21,6 +21,7 @@ export class PaymentComponent {
     const formValue = this.paymentForm.value;
     this.http.post('http://localhost:8000/api/bill', formValue).subscribe(
       (response: any) => {
+        console.log('API Response:', response);
         if (response.redirect_url) {
           window.location.href = response.redirect_url;
         } else {
@@ -29,6 +30,7 @@ export class PaymentComponent {
       },
       (error) => {
         console.error('Error:', error);
+        console.log('Error Details:', error.error);
       }
     );
   }
