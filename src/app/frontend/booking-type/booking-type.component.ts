@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
+import { HttpClient } from '@angular/common/http';
+import { FormGroup,FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-booking-type',
@@ -8,10 +10,8 @@ import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.s
   styleUrls: ['./booking-type.component.scss'],
 })
 export class BookingTypeComponent implements OnInit, OnDestroy {
-combo: any;
-parseInt(arg0: any) {
-throw new Error('Method not implemented.');
-}
+  combo: any;
+  paymentForm: FormGroup;
   selectedCinema: any;
   selectedRoom: any;
   selectedShowingRelease: any;
@@ -22,12 +22,20 @@ throw new Error('Method not implemented.');
   seatCost : any;
   private sessionTimeout: any;
   private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
- 
+  public apiUrl = 'http://127.0.0.1:8000/api/payment';
 
   constructor(
     private router: Router,
-    private seatBookingService: SeatBookingService
-  ) {}
+    private seatBookingService: SeatBookingService,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    
+  ) {
+    this.paymentForm = this.fb.group({
+      subtotal: [0],
+      paymentMethod: [''],
+    });
+  }
 
   ngOnInit(): void {
     const cinema = sessionStorage.getItem('selectedCinema');
@@ -76,6 +84,7 @@ throw new Error('Method not implemented.');
     this.sessionTimeout = setTimeout(() => {
       this.clearSessionAndRedirect();
     }, this.SESSION_DURATION);
+    this.sendData();
   }
 
   ngOnDestroy(): void {
@@ -106,13 +115,36 @@ throw new Error('Method not implemented.');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+  sendData() {
+    const storedValue = sessionStorage.getItem('totalCost');
+    console.log("them thanh cong:", storedValue);
+    return this.http.post(this.apiUrl, { storedValue });
+  }
+  onSubmit() {
+    const formValue = this.paymentForm.value;
+    this.http.post('http://localhost:8000/api/bill', formValue).subscribe(
+      (response: any) => {
+        console.log('API Response:', response);
+        if (response.redirect_url) {
+          window.location.href = response.redirect_url;
+        } else {
+          console.log('Payment response:', response);
+        }
+      },
+      (error) => {
+        console.error('Error:', error);
+        console.log('Error Details:', error.error);
+      }
+    );
+  }
+  
 
   confirmBooking(): void {
     clearTimeout(this.sessionTimeout); // Clear the timeout when booking is confirmed
     // Add logic to confirm the booking here
     // For example, you can call a service to save the booking information
-    alert('Booking confirmed!'); // Temporary placeholder for booking confirmation logic
-    this.router.navigate(['/confirmation']); // Navigate to a confirmation page or similar
+     // Temporary placeholder for booking confirmation logic
+    //this.router.navigate(['/payment-method']); // Navigate to a confirmation page or similar
   }
 
 
