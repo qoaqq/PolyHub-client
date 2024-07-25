@@ -4,7 +4,7 @@
     <div *ngFor="let list of movies" class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
         <div class="prs_upcom_movie_box_wrapper">
             <div class="prs_upcom_movie_img_box">
-                <img src="{{list?.photo}}"  width="250px" height="350px" alt="movie_img" />
+                <img [src]="'http://127.0.0.1:8000/'+list?.photo"   width="250px" height="350px" alt="movie_img" />
                 <div class="prs_upcom_movie_img_overlay"></div>
                 <div class="prs_upcom_movie_img_btn_wrapper">
                     <ul>
@@ -17,7 +17,7 @@
             </div>
             <div class="prs_upcom_movie_content_box">
                 <div class="prs_upcom_movie_content_box_inner">
-                    <h2><a href="#">{{list?.name}}</a></h2>
+                    <h2><a (click)="viewDetails(list?.id)" href="javascript:void(0);">{{list?.name}}</a></h2>
                    <!-- <div *ngFor = "let category of list.categories"><p>{{category.name}}</p></div> 	 -->
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
