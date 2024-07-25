@@ -13,6 +13,9 @@ export class SeatBookingComponent implements OnInit {
   rows: any[][] = [];
   seatsByRow: { [row: string]: any[] } = {};
   showingId: string | null = null;
+  seatTypes: any[] = [];
+  selectedSeats: any[] = [];
+  showingrelease: any[] = [];
   constructor(private seatBookingService: SeatBookingService, private router: Router,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -21,6 +24,65 @@ export class SeatBookingComponent implements OnInit {
       
     });
     this.loadSeats();
+    this.loadSeatTypes();
+    this.seatBookingService.getShowingRelease(this.showingId).subscribe(data => {
+      this.showingrelease =  data.data;
+    });
+    console.log(this.showingrelease);
+    
+  }
+
+  loadSeatTypes() {
+    this.seatBookingService.getSeatTypes().subscribe(data => {
+      this.seatTypes =  data;      
+    });
+  }
+
+  isSelected(seat: any): boolean {
+    return this.selectedSeats.includes(seat);
+  }
+
+  toggleSeat(seat: any): void {
+    const index = this.selectedSeats.indexOf(seat);
+    if (index > -1) {
+      this.selectedSeats.splice(index, 1);
+    } else {
+      this.selectedSeats.push(seat);
+    }
+    console.log(this.selectedSeats);
+  }
+
+  // bookSeats() {
+  //   this.seatBookingService.bookSeats(this.selectedSeats).subscribe(response => {
+  //     console.log('Seats booked successfully', response);
+  //     // Xử lý sau khi đặt vé thành công, ví dụ: hiển thị thông báo hoặc chuyển hướng
+  //   });
+  // }
+
+  getSeatTypeClass(seatType: any): string {
+    switch (seatType.name.toLowerCase()) {
+      case 'standard':
+        return 'seat-type seat-type-standard';
+      case 'vip':
+        return 'seat-type seat-type-vip';
+      case 'couple':
+        return 'seat-type seat-type-couple';
+      default:
+        return 'seat-type';
+    }
+  }
+
+  getColor(seatType: any): string {
+    switch (seatType.name.toLowerCase()) {
+      case 'standard':
+        return 'green';
+      case 'vip':
+        return 'red';
+      case 'couple':
+        return 'pink';
+      default:
+        return 'gray';
+    }
   }
   formatTime(dateString: string): string {
     const date = new Date(dateString);

@@ -2,11 +2,13 @@
 	<div class="container container_seat">
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a href="movie_booking.html"><i
+				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a><i
 							class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
 				</div>
-				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a href="movie_booking.html"><i
-					class="fas fa-long-arrow-alt-left"></i> &nbsp;Continue</a>
+				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
+					<a [routerLink]="['/booking-type']" [queryParams]="{ selectedSeats: selectedSeats | json ,showingrelease: showingrelease | json }">
+					  <i class="fas fa-long-arrow-alt-left"></i> &nbsp; Continue
+					</a>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -31,12 +33,13 @@
 				  <img src="../../../assets/images/content/screen.png" alt="Screen">
 				</div>
 				<div class="seat-legend">
-				  <ul>
-					<li class="seat-type seat-type-standard">Standard Ticket - <span class="color-indicator" style="background-color: green;"></span> Green</li>
-					<li class="seat-type seat-type-vip">VIP Ticket - <span class="color-indicator" style="background-color: red;"></span> Red</li>
-					<li class="seat-type seat-type-couple">Couple Ticket - <span class="color-indicator" style="background-color: pink;"></span> Pink</li>
-					<li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span> Gray</li>
-				  </ul>
+					<ul>
+					  <li *ngFor="let seatType of seatTypes" [ngClass]="getSeatTypeClass(seatType)">
+						{{ seatType.name }} - {{ seatType.price | currency:'': 'symbol' : '1.0-0'}} 
+						<span class="color-indicator" [ngStyle]="{'background-color': getColor(seatType)}"></span> 
+					  </li>
+					  <li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span></li>
+					</ul>
 				</div>
 			  </div>
 			  
@@ -53,9 +56,11 @@
 							<h4 style="text-transform: uppercase;">{{ row }}</h4>
 						<div *ngFor="let seat of seatsByRow[row]" class="seat-col">
 							<ul>
-							<li [ngClass]="seat.seat.type == 1 && seat.status == 0 ? 'seat_type_1' : (seat.seat.type == 2 ? 'seat_type_2' : (seat.seat.type == 3 ? 'seat_type_3' : (seat.status == 1 ? 'seat_disable' : '')))">
-								<input type="checkbox" id="{{seat.id}}" name="cb" class="c">
-								{{seat.seat.column}}
+							<li [ngClass]="seat.seat.seat_type_id == 1 && seat.status == 0 ? 'seat_type_1' : (seat.seat.seat_type_id == 2 ? 'seat_type_2' : (seat.seat.seat_type_id == 3 ? 'seat_type_3' : (seat.status == 1 ? 'seat_disable' : '')))">
+								<input type="checkbox" id="{{seat.id}}" name="cb" class="c" [ngClass]="{'selected': isSelected(seat)}"
+								(click)="toggleSeat(seat)">
+								{{ seat.seat.column }}
+								<!-- {{seat.seat.seat_type.price}} -->
 								<label for="{{seat.id}}"></label> <!-- Hiển thị cột -->
 							</li>
 							</ul>

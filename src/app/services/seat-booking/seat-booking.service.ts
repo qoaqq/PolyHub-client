@@ -15,6 +15,12 @@ export class SeatBookingService {
   getSeats(showingReleaseId: any): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/showingrelease/${showingReleaseId}/seats`);
   }
+  getShowingRelease(showingReleaseId: any): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/showingrelease/${showingReleaseId}`);
+  }
+  getSeatTypes(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/seattypes`);
+  }
   updateSeatStatus(showtimeId: any, seat_Id: number, status: boolean): Observable<any> {
     const url = `${this.baseUrl}/showingrelease/${showtimeId}/${seat_Id}/status`;
     const headers = new HttpHeaders({
