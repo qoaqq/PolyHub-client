@@ -36,6 +36,8 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       if (params['selectedSeats']) {
         this.selectedSeats = JSON.parse(params['selectedSeats']);
+        console.log(this.selectedSeats);
+        
       }
       if (params['showingrelease']) {
         try {
