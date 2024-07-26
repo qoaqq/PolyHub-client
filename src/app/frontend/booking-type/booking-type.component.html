@@ -7,7 +7,7 @@
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 					<div class="st_bt_top_center_heading float_left">
-						<h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3>
+						<!-- <h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3> -->
 					</div>
 				</div>
 			</div>
@@ -24,30 +24,26 @@
 							<div class="col-md-12">
 								<div class="st_dtts_ineer_box float_left">
 									<ul>
-										
-										<li><span class="dtts1">Date</span>  <span class="dtts2">{{ formatTime2(selectedShowingRelease?.time_release) }}</span>
-										</li>
-										<li><span class="dtts1">Time</span>  <span class="dtts2"> {{ formatTime(selectedShowingRelease?.time_release) }} </span>
-										</li>
-										<li><span class="dtts1">Theater</span>  <span class="dtts2">{{ selectedCinema?.name }}</span>
-										</li>
-										
-											<li>
-												<div *ngFor=" let seat of selectedSeats"><span class="dtts1">Seat</span>  <span  class="dtts2">{{ seat.seat.row + seat.seat.column }} - {{ selectedRoom?.name }}</span>
-											
-											</div>
+											<li><span class="dtts1">Date</span> {{ showingrelease.date_release }} <span class="dtts2"></span></li>
+											<li><span class="dtts1">Time</span> {{ showingrelease.time_release }} <span class="dtts2"></span></li>
+											<li><span class="dtts1">Movie</span> {{ showingrelease.movie.name }} <span class="dtts2"></span></li>
+											<li><span class="dtts1">Room</span> {{ showingrelease.room.name }}  <span class="dtts2"></span></li>
+											<li><span class="dtts1">Cinema</span> {{ showingrelease.room.cinema.name }}  <span class="dtts2"></span></li>
+										<li>
+											<span class="dtts1">Seat</span> <span *ngFor=" let seat of selectedSeats"> {{ seat.seat.row + seat.seat.column }}</span>
 										</li>
 										
 										
 									</ul>
 								</div>
 							</div>
+							<app-food-combo></app-food-combo>
 							<div class="col-md-12">
 								<div class="st_cherity_section float_left">
 									<div class="st_cherity_img float_left">
 										<div class="col-12 bg-dark">
 											<div class="p-3" style="display: flex; justify-content: center;">
-											  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+											  <form [formGroup]="paymentForm">
 												<div style="width: 545px;" class="text-white">
 												  <h2 class="fw-bold my-5" style="color: white; padding-left: 85px;">Payment Method</h2>
 												  <div style="padding-left: 105px;" class="form-check my-3">
@@ -85,9 +81,9 @@
 										<li><a href="#"><i class="flaticon-tickets"></i> &nbsp;Box office Pickup </a>
 										</li>
 										<li>
-											<form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+											<!-- <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
 											<button type="submit">Proceed to Pay </button>
-										</form>
+										</form> -->
 										</li>
 										
 									</ul>
@@ -107,13 +103,13 @@
 									
 									<ul>
 										<div *ngFor=" let seat of selectedSeats">
-											<li > Seat: <span  class="dtts2">  {{ seat.seat.row + seat.seat.column }} </span>
+											<li > Seat: <span  class="dtts2" style="text-transform: uppercase;">  {{ seat.seat.row + seat.seat.column }} </span>
 												
 											</li>
 										</div>
 										
 											<li>
-												<h6>Sub total: - <b>{{ seatCost }}</b>  VND</h6>
+												<h6>Sub total: - <b></b>  VND</h6>
 											</li>
 										<li>
 											<div *ngIf="selectedFoodCombos.length > 0">
@@ -141,7 +137,7 @@
 										
 										<input  formControlName="paymentMethod" value="{{ totalCost }}">
 									</form> -->
-									<h4>Total: <span> {{ totalCost }} </span>  </h4>
+									<h4>Total: <span>  </span>  </h4>
 								</div>
 							</div>
 						</div>
