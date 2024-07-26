@@ -37,7 +37,10 @@
 									</ul>
 								</div>
 							</div>
-							<app-food-combo></app-food-combo>
+							<app-food-combo
+							[foodCombos]="foodCombos"
+							(quantityChange)="updateQuantity($event.combo, $event.quantity)">
+						  	</app-food-combo>
 							<div class="col-md-12">
 								<div class="st_cherity_section float_left">
 									<div class="st_cherity_img float_left">
@@ -102,29 +105,44 @@
 								<div class="st_dtts_sb_ul float_left">
 									
 									<ul>
-										<div *ngFor=" let seat of selectedSeats">
-											<li > Seat: <span  class="dtts2" style="text-transform: uppercase;">  {{ seat.seat.row + seat.seat.column }} </span>
-												
-											</li>
+										<div class="">
+											<h3>Tickets</h3>
+											<div *ngFor=" let seat of selectedSeats">
+												<li  style="text-transform: uppercase;"> {{ seat.seat.row + seat.seat.column }}
+													<span class="dtts2">
+														{{ seat.seat.seat_type.price | currency: 'USD' }}
+													</span>
+												</li>
+											</div>
+											<hr style="border: 1px solid #000; margin: 10px 0;">
+											<div class="">
+												<li>Sub total:
+													<span class="dtts2" style="text-transform: uppercase;">
+													{{ totalPriceTicketSeat | currency: 'USD' }}
+													</span>
+												</li>
+											</div>
 										</div>
-										
-											<li>
-												<h6>Sub total: - <b></b>  VND</h6>
-											</li>
-										<li>
-											<div *ngIf="selectedFoodCombos.length > 0">
-											
-												<ul>
-												  <li *ngFor="let combo of selectedFoodCombos">
-													Combo: {{ combo.combo.name }}	 - {{ combo.combo.price }} VND - {{combo.quantity}} pcs
-												
-												  </li>
-												</ul>
-											  </div>
-										</li>
-										<!-- <li>Internet handling fees <span>Rs.70.80</span>
-										</li> -->
-										
+										<div class="mt-4">
+											<h3>Food Combos</h3>
+											<ul>
+											  <li *ngFor="let food of selectedFoodCombos" style="text-transform: uppercase;">
+												{{ food.name }} - Quantity: {{ food.quantity }}: 
+												<span class="dtts2">
+												  {{ (food.price * food.quantity) | currency: 'USD' }}
+												</span>
+											  </li>
+											</ul>
+											<hr style="border: 1px solid #000; margin: 10px 0;">
+											<div class="">
+											  <li>Sub total:
+												<span class="dtts2" style="text-transform: uppercase;">
+												  {{ totalPriceFoodCombo | currency: 'USD' }}
+												</span>
+											  </li>
+											</div>
+										  </div>
+										  
 									</ul>
 									<!-- <p>Booking Fees <span>Rs.60.00</span>
 									</p>
@@ -137,7 +155,7 @@
 										
 										<input  formControlName="paymentMethod" value="{{ totalCost }}">
 									</form> -->
-									<h4>Total: <span>  </span>  </h4>
+									<h4>Total:  {{ grandTotal | currency: 'USD' }}  </h4>
 								</div>
 							</div>
 						</div>
