@@ -1,255 +1,6 @@
-// import { Component, OnInit } from '@angular/core';
-// import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-seat-booking',
-//   templateUrl: './seat-booking.component.html',
-//   styleUrls: ['./seat-booking.component.scss']
-// })
-// export class SeatBookingComponent implements OnInit {
-
-//   seats: any[] = [];
-//   showingId: any;
-//   selectedSeats: Set<number> = new Set();
-//   selectedSeatCount: number = 0;
-//   constructor(private seatBookingService: SeatBookingService, private router: Router) { }
-
-//   ngOnInit(): void {
-//     this.loadShowingId();
-//     if (this.showingId !== null) {
-//       this.loadSeats();
-//     }
-//     this.loadSelectedSeats();
-//   }
-
-//   loadShowingId(): void {
-//     // Lấy ID của showing từ sessionStorage
-//     const showingId = sessionStorage.getItem('selectedShowing');
-//     if (showingId) {
-//       this.showingId = JSON.parse(showingId);
-//       console.log(this.showingId);
-//     }
-//   }
-
-//   loadSeats(): void {
-//     if (this.showingId !== null) {
-//       this.seatBookingService.getSeats(this.showingId.id).subscribe(
-//         (data) => {
-//           this.seats = data;
-//           console.log('Seats:', this.seats); // Hiển thị dữ liệu ghế trong console
-//         },
-//         (error) => {
-//           console.error('Error fetching seats:', error); // Xử lý lỗi
-//         }
-//       );
-//     }
-//   }
-
-//   loadSelectedSeats(): void {
-//     // Tải thông tin ghế đã chọn từ sessionStorage nếu có
-//     const storedSeats = sessionStorage.getItem('selectedSeats');
-//     if (storedSeats) {
-//       this.selectedSeats = new Set(JSON.parse(storedSeats));
-//     }
-//   }
-
-//   isSelected(seatId: number): boolean {
-//     return this.selectedSeats.has(seatId);
-//   }
-
-//   // onSeatChange(seatId: number): void {
-//   //   if (this.selectedSeats.has(seatId)) {
-//   //     this.selectedSeats.delete(seatId);
-//   //   } else {
-//   //     this.selectedSeats.add(seatId);
-//   //   }
-//   //   // Lưu thông tin ghế đã chọn vào sessionStorage
-//   //   sessionStorage.setItem('selectedSeats', JSON.stringify(Array.from(this.selectedSeats)));
-
-//   // }
-//   onSeatChange(seatId: number): void {
-//     // Determine if the seat is currently selected
-//     const isSelected = this.selectedSeats.has(seatId);
-//     const newStatus = !isSelected; // Toggle status for the seat
-  
-//     console.log(`Toggling seat ${seatId}. Current selected: ${isSelected}. New status: ${newStatus}`);
-  
-//     // Update seat status on the server
-//     this.seatBookingService.updateSeatStatus(this.showingId.id, seatId, newStatus).subscribe(
-//       (response) => {
-//         console.log(`Server response:`, response); // Log server response
-  
-//         // On success, update the selectedSeats Set
-//         if (isSelected) {
-//           this.selectedSeats.delete(seatId); // Remove seat if previously selected
-//         } else {
-//           this.selectedSeats.add(seatId); // Add seat if not previously selected
-//         }
-  
-//         // Save updated selection to sessionStorage
-//         sessionStorage.setItem('selectedSeats', JSON.stringify(Array.from(this.selectedSeats)));
-//         this.updateSelectedSeatCount();
-//       },
-//       (error) => {
-//         console.error('Error updating seat status:', error);
-  
-//         // Optionally, show a user-friendly message or revert changes if necessary
-//         // this.showErrorMessage('Failed to update seat status. Please try again.');
-//       }
-//     );
-//   }
-//   updateSelectedSeatCount(): void {
-//     this.selectedSeatCount = this.selectedSeats.size;
-//   }
-  
-
-//   confirmSelection(): void {
-//     // Điều hướng đến trang tóm tắt
-//     this.router.navigate(['/booking-type']);
-//   }
-// }
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-seat-booking',
-//   templateUrl: './seat-booking.component.html',
-//   styleUrls: ['./seat-booking.component.scss']
-// })
-// export class SeatBookingComponent implements OnInit {
-
-//   seats: any[] = [];
-//   showingId: any;
-//   selectedSeats: Set<number> = new Set();
-//   selectedSeatCount: number = 0;
-//   totalSeatCost: number = 0;
-//   seatPrices: { [type: number]: number } = { 1: 50000, 2: 70000, 3: 100000 };
-//   rows: any[][] = [];
-
-//   // Define seat prices
-  
-//   constructor(private seatBookingService: SeatBookingService, private router: Router) { }
-
-//   ngOnInit(): void {
-//     this.loadShowingId();
-//     if (this.showingId !== null) {
-//       this.loadSeats();
-//     }
-//     this.loadSelectedSeats();
-//     this.calculateTotalSeatCost();
-//   }
-
-//   loadShowingId(): void {
-//     const showingId = sessionStorage.getItem('selectedShowing');
-//     if (showingId) {
-//       this.showingId = JSON.parse(showingId);
-//       console.log(this.showingId);
-//     }
-//   }
-
-//   loadSeats(): void {
-//     if (this.showingId !== null) {
-//       this.seatBookingService.getSeats(this.showingId.id).subscribe(
-//         (data) => {
-//           this.seats = data;
-//           // Sort seats by type and then by row and column
-//           this.seats.sort((a, b) => {
-//             if (a.seat.type !== b.seat.type) {
-//               return a.seat.type - b.seat.type;
-//             }
-//             if (a.seat.row !== b.seat.row) {
-//               return a.seat.row - b.seat.row;
-//             }
-//             return a.seat.column - b.seat.column;
-//           });
-//           this.createRows();
-//           console.log('Seats:', this.seats);
-//         },
-//         (error) => {
-//           console.error('Error fetching seats:', error);
-//         }
-//       );
-//     }
-//   }
-
-//   createRows(): void {
-//     const seatsPerRow = Math.ceil(this.seats.length / 7);
-//     this.rows = [];
-//     for (let i = 0; i < 7; i++) {
-//       this.rows.push(this.seats.slice(i * seatsPerRow, (i + 1) * seatsPerRow));
-//     }
-//   }
-
-//   loadSelectedSeats(): void {
-//     const storedSeats = sessionStorage.getItem('selectedSeats');
-//     if (storedSeats) {
-//       this.selectedSeats = new Set(JSON.parse(storedSeats));
-//       this.calculateTotalSeatCost();
-//     }
-//   }
-
-//   isSelected(seatId: number): boolean {
-//     return this.selectedSeats.has(seatId);
-//   }
-
-//   onSeatChange(seat: any): void {
-//     const isSelected = this.selectedSeats.has(seat.id);
-//     const newStatus = !isSelected;
-
-//     console.log(`Toggling seat ${seat.id}. Current selected: ${isSelected}. New status: ${newStatus}`);
-
-//     this.seatBookingService.updateSeatStatus(this.showingId.id, seat.id, newStatus).subscribe(
-//       (response) => {
-//         console.log(`Server response:`, response);
-
-//         if (isSelected) {
-//           this.selectedSeats.delete(seat);
-//         } else {
-//           this.selectedSeats.add(seat);
-//           console.log(this.selectedSeats);
-//         }
-
-//         sessionStorage.setItem('selectedSeats', JSON.stringify(Array.from(this.selectedSeats)));
-//         this.calculateTotalSeatCost();
-//         this.updateSelectedSeatCount();
-//       },
-//       (error) => {
-//         console.error('Error updating seat status:', error);
-//       }
-//     );
-//   }
-//   calculateTotalSeatCost(): void {
-//     this.totalSeatCost = Array.from(this.selectedSeats).reduce((total, seatId) => {
-//       const seat = this.seats.find(s => s.seat.id === seatId);
-     
-//       if (seat) {
-//         return total + (this.seatPrices[seat.seat.type] || 0);
-        
-//       }
-//       return total;
-//     }, 0);
-//     sessionStorage.setItem('totalSeatCost', JSON.stringify(this.totalSeatCost));
-//     console.log('Total seat cost:', this.totalSeatCost);
-//   }
-
-//   updateSelectedSeatCount(): void {
-//     this.selectedSeatCount = this.selectedSeats.size;
-//   }
-
-//   confirmSelection(): void {
-//     this.router.navigate(['/food-combo']);
-//   }
-// }
-
-
 import { Component, OnInit } from '@angular/core';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-seat-booking',
@@ -259,31 +10,78 @@ import { Router } from '@angular/router';
 export class SeatBookingComponent implements OnInit {
 
   seats: any[] = [];
-  showingId: any;
-  selectedSeats: Set<number> = new Set();
-  selectedSeatCount: number = 0;
-  totalSeatCost: number = 0;
-  seatPrice: number = 50000;  // Giá ghế cố định là 50,000
   rows: any[][] = [];
-  movie: any;
-  showing: any;
-  organizedSeats: any = {}; // { row: { column: seatData } }
-  constructor(private seatBookingService: SeatBookingService, private router: Router) { }
+  seatsByRow: { [row: string]: any[] } = {};
+  showingId: string | null = null;
+  seatTypes: any[] = [];
+  selectedSeats: any[] = [];
+  showingrelease: any[] = [];
+  constructor(private seatBookingService: SeatBookingService, private router: Router,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loadShowingId();
-    if (this.showingId !== null) {
-      this.loadSeats();
+    this.route.paramMap.subscribe(params => {
+      this.showingId = params.get('id');
+      
+    });
+    this.loadSeats();
+    this.loadSeatTypes();
+    this.seatBookingService.getShowingRelease(this.showingId).subscribe(data => {
+      this.showingrelease =  data.data;
+    });
+    console.log(this.showingrelease);
+    
+  }
+
+  loadSeatTypes() {
+    this.seatBookingService.getSeatTypes().subscribe(data => {
+      this.seatTypes =  data;      
+    });
+  }
+
+  isSelected(seat: any): boolean {
+    return this.selectedSeats.includes(seat);
+  }
+
+  toggleSeat(seat: any): void {
+    const index = this.selectedSeats.indexOf(seat);
+    if (index > -1) {
+      this.selectedSeats.splice(index, 1);
+    } else {
+      this.selectedSeats.push(seat);
     }
-    this.loadSelectedSeats();
-    this.calculateTotalSeatCost();
-    const movieData = sessionStorage.getItem('movie');
-    if (movieData) {
-      this.movie = JSON.parse(movieData);
+    console.log(this.selectedSeats);
+  }
+
+  // bookSeats() {
+  //   this.seatBookingService.bookSeats(this.selectedSeats).subscribe(response => {
+  //     console.log('Seats booked successfully', response);
+  //     // Xử lý sau khi đặt vé thành công, ví dụ: hiển thị thông báo hoặc chuyển hướng
+  //   });
+  // }
+
+  getSeatTypeClass(seatType: any): string {
+    switch (seatType.name.toLowerCase()) {
+      case 'standard':
+        return 'seat-type seat-type-standard';
+      case 'vip':
+        return 'seat-type seat-type-vip';
+      case 'couple':
+        return 'seat-type seat-type-couple';
+      default:
+        return 'seat-type';
     }
-    const showingRelease = sessionStorage.getItem('selectedShowing');
-    if (showingRelease) {
-      this.showing = JSON.parse(showingRelease);
+  }
+
+  getColor(seatType: any): string {
+    switch (seatType.name.toLowerCase()) {
+      case 'standard':
+        return 'green';
+      case 'vip':
+        return 'red';
+      case 'couple':
+        return 'pink';
+      default:
+        return 'gray';
     }
   }
   formatTime(dateString: string): string {
@@ -309,148 +107,37 @@ export class SeatBookingComponent implements OnInit {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-  loadShowingId(): void {
-    const showingId = sessionStorage.getItem('selectedShowing');
-    if (showingId) {
-      this.showingId = JSON.parse(showingId);
-    }
-  }
-  // loadSeats(): void {
-  //       if (this.showingId !== null) {
-  //         console.log(this.showingId);
-  //         this.seatBookingService.getSeats(this.showingId.id).subscribe(
-  //           (data) => {
-  //             this.seats = data;
-  //             console.log('Seats:', this.seats); // Hiển thị dữ liệu ghế trong console
-  //           },
-  //           (error) => {
-  //             console.error('Error fetching seats:', error); // Xử lý lỗi
-  //           }
-  //         );
-  //       }
-  //     }
   loadSeats(): void {
     if (this.showingId !== null) {
-      console.log(this.showingId);
-      this.seatBookingService.getSeats(this.showingId.id).subscribe(
+      this.seatBookingService.getSeats(this.showingId).subscribe(
         (data) => {
           this.seats = data;
-          this.organizeSeats();
-          console.log('Seats:', this.seats); // Display seats in console
+          this.groupSeatsByRow();
         },
         (error) => {
-          console.error('Error fetching seats:', error); // Handle errors
+          console.error('Error fetching seats:', error); // Xử lý lỗi
         }
       );
     }
   }
-
-  organizeSeats(): void {
-    this.organizedSeats = this.seats.reduce((acc, seat) => {
-      const { row, column } = seat;
+  
+  groupSeatsByRow(): void {
+    this.seatsByRow = this.seats.reduce((acc, seat) => {
+      const row = seat.seat.row;
       if (!acc[row]) {
-        acc[row] = {};
+        acc[row] = [];
       }
-      acc[row][column] = seat;
+      acc[row].push(seat);
       return acc;
     }, {});
   }
-
-
+  
+  getRows(): string[] {
+    return Object.keys(this.seatsByRow).sort(); // Sắp xếp ký tự theo thứ tự bảng chữ cái
+  }
+  
       
 
-  // loadSeats(): void {
-  //   if (this.showingId !== null) {
-  //     this.seatBookingService.getSeats(this.showingId.id).subscribe(
-  //       (data) => {
-  //         this.seats = data;
-  //         this.seats.sort((a, b) => {
-  //           if (a.seat.row !== b.seat.row) {
-  //             return a.seat.row - b.seat.row;
-  //           }
-  //           return a.seat.column - b.seat.column;
-  //         });
-  //         // this.createRows();
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching seats:', error);
-  //       }
-  //     );
-  //   }
-  // }
-
-  // createRows(): void {
-  //   const seatsPerRow = Math.ceil(this.seats.length / 7);
-  //   this.rows = [];
-  //   for (let i = 0; i < 7; i++) {
-  //     this.rows.push(this.seats.slice(i * seatsPerRow, (i + 1) * seatsPerRow));
-  //   }
-  // }
-  getSortedRows(): number[] {
-    return Object.keys(this.organizedSeats).map(row => +row).sort((a, b) => a - b);
-  }
-  
-  getSortedColumns(row: number): number[] {
-    return Object.keys(this.organizedSeats[row]).map(column => +column).sort((a, b) => a - b);
-  }
-  
-  getSeatClass(seat: any): string {
-    // You can customize this based on seat status or type
-    return seat.status === 'available' ? 'available-seat' : 'unavailable-seat';
-  }
-  
-
-  loadSelectedSeats(): void {
-    const storedSeats = sessionStorage.getItem('selectedSeats');
-    if (storedSeats) {
-      this.selectedSeats = new Set(JSON.parse(storedSeats));
-      this.calculateTotalSeatCost();
-    }
-  }
-
-  isSelected(seatId: number): boolean {
-    return this.selectedSeats.has(seatId);
-  }
-
-  onSeatChange(seat: any): void {
-        const isSelected = this.selectedSeats.has(seat.id);
-        const newStatus = !isSelected;
-    
-        console.log(`Toggling seat ${seat.id}. Current selected: ${isSelected}. New status: ${newStatus}`);
-    
-        this.seatBookingService.updateSeatStatus(this.showingId.id, seat.seat_id, newStatus).subscribe(
-          (response) => {
-            console.log(`Server response:`, response);
-    
-            if (isSelected) {
-              this.selectedSeats.delete(seat);
-            } else {
-              this.selectedSeats.add(seat);
-              console.log(this.selectedSeats);
-            }
-    
-            sessionStorage.setItem('selectedSeats', JSON.stringify(Array.from(this.selectedSeats)));
-            this.calculateTotalSeatCost();
-            this.updateSelectedSeatCount();
-          },
-          (error) => {
-            console.error('Error updating seat status:', error);
-          }
-        );
-      }
-
-  calculateTotalSeatCost(): void {
-    this.totalSeatCost = this.selectedSeats.size * this.seatPrice;
-    console.log('Total seat cost:', this.totalSeatCost);
-    sessionStorage.setItem('totalSeatCost', JSON.stringify(this.totalSeatCost));
-  }
-  updateSelectedSeatCount(): void {
-         this.selectedSeatCount = this.selectedSeats.size;
-       }
-
-  confirmSelection(): void {
-    this.router.navigate(['/food-combo']);
-  }
 }
 
 
