@@ -5,6 +5,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from 'src/app/services/movie/movie.service';
+import * as $ from 'jquery';
 
 
 @Component({
