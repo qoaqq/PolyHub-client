@@ -2,7 +2,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-					<div class="st_bt_top_back_btn float_left">	<a href="index.html"><i class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
+					<div class="st_bt_top_back_btn float_left">	<a routerLink="/food-combo"><i class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
 					</div>
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -17,6 +17,7 @@
 	<!-- st dtts section Start -->
 	<div class="st_dtts_wrapper float_left">
 		<div class="container">
+			
 			<div class="row">
 				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
 					<div class="st_dtts_left_main_wrapper float_left">
@@ -24,6 +25,7 @@
 							<div class="col-md-12">
 								<div class="st_dtts_ineer_box float_left">
 									<ul>
+										<app-session-timer></app-session-timer>
 											<li><span class="dtts1">Date</span> {{ showingrelease.date_release }} <span class="dtts2"></span></li>
 											<li><span class="dtts1">Time</span> {{ showingrelease.time_release }} <span class="dtts2"></span></li>
 											<li><span class="dtts1">Movie</span> {{ showingrelease.movie.name }} <span class="dtts2"></span></li>
@@ -37,10 +39,6 @@
 									</ul>
 								</div>
 							</div>
-							<app-food-combo
-							[foodCombos]="foodCombos"
-							(quantityChange)="updateQuantity($event.combo, $event.quantity)">
-						  	</app-food-combo>
 							<div class="col-md-12">
 								<div class="st_cherity_section float_left">
 									<div class="st_cherity_img float_left">

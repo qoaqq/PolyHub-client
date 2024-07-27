@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'bill', component: BookingTypeComponent ,canActivate: [AuthUserGuard]},
-  { path: 'seat-booking/:id', component: SeatBookingComponent ,canActivate: [AuthUserGuard]},
+  { path: 'seat-booking', component: SeatBookingComponent ,canActivate: [AuthUserGuard]},
   { path: 'movie-booking/:id', component: MovieBookingComponent ,canActivate: [AuthUserGuard]},
   { path: 'booking-type', component: BookingTypeComponent },
   { path: 'confirmation', component: ConfirmationComponent },
