@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
+import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-movie-booking',
@@ -20,6 +21,7 @@ export class MovieBookingComponent implements OnInit {
   private sessionEndTime: number = 0;
 
   constructor(
+    private seatBookingService: SeatBookingService, 
     private movieBookingService: MovieBookingService,
      private router: Router,
      private route: ActivatedRoute,
@@ -80,8 +82,15 @@ export class MovieBookingComponent implements OnInit {
     return `${date}`;
   }
   onContinue(showing: any): void {
+    this.seatBookingService.getShowingRelease(showing.id).subscribe(
+      (data) => {
+        sessionStorage.setItem('showingRelease', JSON.stringify(data.data));
+      },
+      (error) => {
+        console.error('Error fetching seats:', error); // Xử lý lỗi
+      }
+    );
     // Lưu dữ liệu showing release vào session storage
-    sessionStorage.setItem('showingRelease', JSON.stringify(showing));
     sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
     sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
     // Đặt thời gian kết thúc phiên

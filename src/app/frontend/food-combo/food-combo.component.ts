@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
 
 @Component({
@@ -11,9 +12,10 @@ export class FoodComboComponent implements OnInit {
   foodCombos: { id: number; name: string; description: string; price: number; quantity: number }[] = [];
   selectedFoodCombos: { id: number; name: string; quantity: number; price: number }[] = [];
   totalPriceFoodCombo: number = 0;
-  showingrelease: any;
+  showingRelease: any;
 
   constructor(
+    private seatBookingService: SeatBookingService, 
     private foodComboService: FoodComboService,
     private router: Router
   ) { }
@@ -46,10 +48,11 @@ export class FoodComboComponent implements OnInit {
   }
 
   loadShowingRelease(): void {
-    const showingReleaseData = sessionStorage.getItem('showingrelease');
-    if (showingReleaseData) {
-      this.showingrelease = JSON.parse(showingReleaseData);
-      console.log('Showing Release:', this.showingrelease);
+    const showingRelease = sessionStorage.getItem('showingRelease');
+    if (showingRelease) {
+      this.showingRelease = JSON.parse(showingRelease);
+      console.log(this.showingRelease);
+      
     }
   }
 

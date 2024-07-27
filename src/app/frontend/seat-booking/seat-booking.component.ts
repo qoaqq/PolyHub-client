@@ -126,10 +126,13 @@ export class SeatBookingComponent implements OnInit {
       const showing = JSON.parse(showingRelease);
       this.movieId = showing.movie_id;
       const showingId = showing.id;
+      
+      
       // Gọi API với showingId
       this.seatBookingService.getSeats(showingId).subscribe(
         (data) => {
           this.seats = data;
+          console.log(this.seats);
           this.groupSeatsByRow();
         },
         (error) => {
