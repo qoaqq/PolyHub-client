@@ -124,8 +124,8 @@
 													<ul class="row">
 														<li *ngFor="let room of cinema.rooms" class="col-3">	
 															<div *ngFor="let showing of room['showingReleases'] || []" class="row">
-
-															<button  [routerLink]="['/seat-booking', showing.id]"> {{ formatTime(showing.time_release) }}</button>
+															
+															<button (click)="onContinue(showing)"> {{ formatTime(showing.time_release) }}</button>
 															</div>
 														</li>
 														

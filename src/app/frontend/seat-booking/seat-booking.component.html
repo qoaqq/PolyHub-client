@@ -2,11 +2,11 @@
 	<div class="container container_seat">
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a><i
+				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a  [routerLink]="['/movie-booking', movieId]"><i
 							class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
 				</div>
 				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
-					<a [routerLink]="['/booking-type']" [queryParams]="{ selectedSeats: selectedSeats | json ,showingrelease: showingrelease | json }">
+					<a  (click)="goToFoodCombo()">
 					  <i class="fas fa-long-arrow-alt-left"></i> &nbsp; Continue
 					</a>
 				</div>
@@ -58,7 +58,7 @@
 							<ul>
 							<li [ngClass]="seat.seat.seat_type_id == 1 && seat.status == 0 ? 'seat_type_1' : (seat.seat.seat_type_id == 2 ? 'seat_type_2' : (seat.seat.seat_type_id == 3 ? 'seat_type_3' : (seat.status == 1 ? 'seat_disable' : '')))">
 								<input type="checkbox" id="{{seat.id}}" name="cb" class="c" [ngClass]="{'selected': isSelected(seat)}"
-								(click)="toggleSeat(seat)">
+								(click)="toggleSeat(seat)"  [checked]="isSelected(seat)">
 								{{ seat.seat.column }}
 								<!-- {{seat.seat.seat_type.price}} -->
 								<label for="{{seat.id}}"></label> <!-- Hiển thị cột -->

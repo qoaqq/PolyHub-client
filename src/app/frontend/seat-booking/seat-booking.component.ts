@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+
 
 @Component({
   selector: 'app-seat-booking',
@@ -12,52 +13,61 @@ export class SeatBookingComponent implements OnInit {
   seats: any[] = [];
   rows: any[][] = [];
   seatsByRow: { [row: string]: any[] } = {};
-  showingId: string | null = null;
+  movieId: string | null = null;
   seatTypes: any[] = [];
   selectedSeats: any[] = [];
-  showingrelease: any[] = [];
-  constructor(private seatBookingService: SeatBookingService, private router: Router,private route: ActivatedRoute) { }
+  selectedFoodCombos: any[] = [];
+
+  constructor(
+    private seatBookingService: SeatBookingService, 
+    private router: Router,
+  ) {
+    this.loadSelectedSeats();
+  }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.showingId = params.get('id');
-      
-    });
+
+    // Đọc dữ liệu từ session storage và cập nhật selectedSeats
+    const savedSeats = sessionStorage.getItem('selectedSeats');
+    if (savedSeats) {
+      this.selectedSeats = JSON.parse(savedSeats);
+    }
+
     this.loadSeats();
     this.loadSeatTypes();
-    this.seatBookingService.getShowingRelease(this.showingId).subscribe(data => {
-      this.showingrelease =  data.data;
-    });
-    console.log(this.showingrelease);
-    
   }
 
   loadSeatTypes() {
     this.seatBookingService.getSeatTypes().subscribe(data => {
-      this.seatTypes =  data;      
+      this.seatTypes = data;
     });
   }
 
   isSelected(seat: any): boolean {
-    return this.selectedSeats.includes(seat);
+    return this.selectedSeats.some(selectedSeat => selectedSeat.seat_id === seat.seat_id);
   }
 
   toggleSeat(seat: any): void {
-    const index = this.selectedSeats.indexOf(seat);
-    if (index > -1) {
-      this.selectedSeats.splice(index, 1);
+    const seatIndex = this.selectedSeats.findIndex(s => s.id === seat.id);
+    
+    if (seatIndex > -1) {
+      // Nếu ghế đã được chọn, xóa khỏi danh sách
+      this.selectedSeats.splice(seatIndex, 1);
     } else {
+      // Nếu ghế chưa được chọn, thêm vào danh sách
       this.selectedSeats.push(seat);
     }
-    console.log(this.selectedSeats);
-  }
 
-  // bookSeats() {
-  //   this.seatBookingService.bookSeats(this.selectedSeats).subscribe(response => {
-  //     console.log('Seats booked successfully', response);
-  //     // Xử lý sau khi đặt vé thành công, ví dụ: hiển thị thông báo hoặc chuyển hướng
-  //   });
-  // }
+    // Cập nhật session storage
+    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
+  }
+  // Tải ghế đã chọn từ session storage
+  loadSelectedSeats(): void {
+    const selectedSeats = sessionStorage.getItem('selectedSeats');
+    if (selectedSeats) {
+      this.selectedSeats = JSON.parse(selectedSeats);
+    }
+  }
 
   getSeatTypeClass(seatType: any): string {
     switch (seatType.name.toLowerCase()) {
@@ -84,12 +94,14 @@ export class SeatBookingComponent implements OnInit {
         return 'gray';
     }
   }
+
   formatTime(dateString: string): string {
     const date = new Date(dateString);
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
+
   formatTime2(dateString: string): string {
     if (!dateString) {
       throw new Error('Date string is undefined or empty');
@@ -107,20 +119,31 @@ export class SeatBookingComponent implements OnInit {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+
   loadSeats(): void {
-    if (this.showingId !== null) {
-      this.seatBookingService.getSeats(this.showingId).subscribe(
+    const showingRelease = sessionStorage.getItem('showingRelease');
+    if (showingRelease) {
+      const showing = JSON.parse(showingRelease);
+      this.movieId = showing.movie_id;
+      const showingId = showing.id;
+      
+      
+      // Gọi API với showingId
+      this.seatBookingService.getSeats(showingId).subscribe(
         (data) => {
           this.seats = data;
+          console.log(this.seats);
           this.groupSeatsByRow();
         },
         (error) => {
           console.error('Error fetching seats:', error); // Xử lý lỗi
         }
       );
+    } else {
+      console.warn('No showing release found in session storage.');
     }
   }
-  
+
   groupSeatsByRow(): void {
     this.seatsByRow = this.seats.reduce((acc, seat) => {
       const row = seat.seat.row;
@@ -131,14 +154,19 @@ export class SeatBookingComponent implements OnInit {
       return acc;
     }, {});
   }
-  
+
   getRows(): string[] {
     return Object.keys(this.seatsByRow).sort(); // Sắp xếp ký tự theo thứ tự bảng chữ cái
   }
+
+  goToFoodCombo(): void {
+    if (this.selectedSeats.length === 0) {
+      alert('Please select at least one seat before proceeding.');
+      return;
+    }
+
+    // Điều hướng đến trang foodcombo
+    this.router.navigate(['/food-combo']);
+  }
   
-      
-
 }
-
-
-

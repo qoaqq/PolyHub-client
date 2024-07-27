@@ -14,9 +14,8 @@ export class BookingTypeComponent implements OnInit {
   combo: any;
   paymentForm: FormGroup;
   selectedSeats: any[] = [];
-  foodCombos: any[] = [];
-  selectedFoodCombos: { id: number; name: string; quantity: number; price: number }[] = [];
-  showingrelease: any = {};
+  selectedFoodCombos: any[] = [];
+  showingrelease: any;
   totalPriceTicketSeat: number = 0;
   totalPriceFoodCombo: number = 0;
   grandTotal: number = 0;
@@ -39,21 +38,35 @@ export class BookingTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      if (params['selectedSeats']) {
-        this.selectedSeats = JSON.parse(params['selectedSeats']);
-        this.calculateTotalPriceTicket();
-      }
-      if (params['showingrelease']) {
-        try {
-          this.showingrelease = JSON.parse(params['showingrelease']);
-          console.log(this.showingrelease); // Kiểm tra dữ liệu
-        } catch (e) {
-          console.error('Error parsing showingrelease:', e);
-        }
-      }
-    });
+    this.loadShowingRelease();
+    this.loadTicketSeats();
     this.loadFoodCombos();
+    this.calculateTotalPriceTicket();
+    this.calculateTotalPriceFoodCombo(); // Tính tổng tiền của các food combo
+  }
+
+  loadShowingRelease(): void {
+    const showingRelease = sessionStorage.getItem('showingRelease');
+    if (showingRelease) {
+      this.showingrelease = JSON.parse(showingRelease);
+      console.log(this.showingrelease);
+    }
+  }
+
+  loadTicketSeats(): void {
+    const selectedSeats = sessionStorage.getItem('selectedSeats');
+    if (selectedSeats) {
+      this.selectedSeats = JSON.parse(selectedSeats);
+      console.log(this.selectedSeats);
+    }
+  }
+
+  loadFoodCombos(): void {
+    const selectedFoodCombos = sessionStorage.getItem('selectedFoodCombos');
+    if (selectedFoodCombos) {
+      this.selectedFoodCombos = JSON.parse(selectedFoodCombos);
+      console.log(this.selectedFoodCombos);
+    }
   }
 
   formatTime(dateString: string): string {
@@ -73,6 +86,15 @@ export class BookingTypeComponent implements OnInit {
     this.updateGrandTotal(); // Cập nhật tổng khi giá vé đã được tính
   }
 
+  calculateTotalPriceFoodCombo(): void {
+    this.totalPriceFoodCombo = 0;
+    this.selectedFoodCombos.forEach(combo => {
+      const price = parseFloat((combo.price as string).replace(/,/g, ''));
+      this.totalPriceFoodCombo += price * combo.quantity;
+    });
+    this.updateGrandTotal(); // Cập nhật tổng khi giá food combo đã được tính
+  }
+
   formatTime2(dateString: string): string {
     if (!dateString) {
       throw new Error('Date string is undefined or empty');
@@ -90,50 +112,7 @@ export class BookingTypeComponent implements OnInit {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-
-  sendData() {
-    const storedValue = sessionStorage.getItem('totalCost');
-    console.log("them thanh cong:", storedValue);
-    return this.http.post(this.apiUrl, { storedValue });
-  }
-
-  loadFoodCombos(): void {
-    this.foodComboService.getFoodCombos().subscribe(
-      (data: any) => {
-          this.foodCombos = data;
-      },
-      error => {
-        console.error('Error fetching food combos:', error);
-      }
-    );
-  }
-
-  updateQuantity(combo: any, quantity: number): void {
-    const existingCombo = this.selectedFoodCombos.find(c => c.id === combo.id);
-
-    if (existingCombo) {
-      if (quantity > 0) {
-        existingCombo.quantity = quantity;
-      } else {
-        this.selectedFoodCombos = this.selectedFoodCombos.filter(c => c.id !== combo.id);
-      }
-    } else if (quantity > 0) {
-      this.selectedFoodCombos.push({
-        id: combo.id,
-        name: combo.name,
-        quantity: quantity,
-        price: parseFloat(combo.price) // Chuyển đổi giá từ chuỗi thành số
-      });
-    }
-    this.calculateTotalPriceFoodCombo();
-  }
-
-  calculateTotalPriceFoodCombo(): void {
-    this.totalPriceFoodCombo = this.selectedFoodCombos.reduce((total, combo) => {
-      return total + (combo.price * combo.quantity);
-    }, 0);
-    this.updateGrandTotal(); // Cập nhật tổng khi giá food combos đã được tính
-  }
+  
 
   updateGrandTotal(): void {
     this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
