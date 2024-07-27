@@ -1,19 +1,140 @@
-<div class="row">
-    <div *ngFor="let combo of foodCombos" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-      <div>
-        <h3>{{ combo.name }}</h3>
-        <p>{{ combo.description }}</p>
-        <p>Giá: {{ combo.price | currency: 'USD' }}</p>
-        <div>
-          <label for="quantity-{{combo.id}}">Số lượng:</label>
-          <input
-            type="number"
-            id="quantity-{{combo.id}}"
-            [(ngModel)]="combo.quantity"
-            (ngModelChange)="onQuantityChange(combo, $event)"
-            min="0"
-          >
-        </div>
-      </div>
+<!-- <div class="food-combo-section">
+    <h2>Select Food Combos</h2>
+    <div *ngFor="let combo of foodCombos" class="food-combo-item">
+        <input type="checkbox" [id]="combo.id" [value]="combo.id" (change)="onFoodComboSelect(combo.id)"
+            [checked]="isSelected(combo.id)">
+        <label [attr.for]="combo.id">
+            {{ combo.name }} - {{ combo.price | currency }}
+        </label>
     </div>
+</div> -->
+
+
+
+<!-- prs title wrapper End -->
+<!-- st bc Start -->
+
+
+<div class="prs_ec_ue_main_section_wrapper">
+  <div class="container">
+      <div class="row">
+        <a routerLink="/booking-type">Continue</a>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="prs_heading_section_wrapper">
+                  <h2>Select Food Combos</h2>
+              </div>
+          </div>
+          <div *ngFor="let combo of foodCombos">
+              <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <div>
+                      <h3>{{ combo.name }}</h3>
+                      <p>{{ combo.description }}</p>
+                      <p>Giá: {{ combo.price }}</p>
+                      <button>Chọn</button>
+                      <div>
+                          <label for="quantity">Số lượng:</label>
+                          <input type="number" min="1">
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <p>Tổng chi phí Combo Thực phẩm: </p>
+          <button>Xác nhận lựa chọn</button>
+
+
+
+          <div class="st_bcc_ticket_boxes_bottom_wrapper float_left">
+              <p>You can access your ticket from your Profile. We will send you
+                  <br>an e-Mail/SMS Confirmation with in 15 Minutes.
+              </p>
+              <ul>
+
+              </ul>
+              <button>Confirm Selection</button>
+          </div>
+      </div>
   </div>
+</div>
+
+
+
+
+<!-- <div class="st_bcc_main_main_wrapper float_left">
+  <div class="st_bcc_main_wrapper">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="st_bcc_heading_wrapper float_left"> 
+                      <h2>Select Food Combos</h2>
+                  </div>
+              </div>
+              <div class="col-md-12">
+                  <div class="st_bcc_ticket_boxes_wrapper float_left">
+                      
+                      <div class="st_bcc_tecket_bottom_hesder float_left">
+                          <div *ngFor="let combo of foodCombos" class="food-combo-item">
+                              <input type="checkbox" [id]="combo.id" [value]="combo.id" (change)="onFoodComboSelect(combo)"
+                                  [checked]="isSelected(combo.id)">
+                              <label [attr.for]="combo.id">
+                                  {{ combo.name }} - {{ combo.price | currency }}
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                 
+              </div>
+          </div>
+      </div>
+  </div>
+</div> -->
+
+<!-- st bc End -->
+<!-- prs patner slider Start -->
+<div class="prs_patner_main_section_wrapper">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="prs_heading_section_wrapper">
+                  <h2>Our Patner’s</h2>
+              </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="prs_pn_slider_wraper">
+                  <div class="owl-carousel owl-theme">
+                      <div class="item">
+                          <div class="prs_pn_img_wrapper">
+                              <img src="../../../assets/images/content/p1.jpg" alt="patner_img">
+                          </div>
+                      </div>
+                      <div class="item">
+                          <div class="prs_pn_img_wrapper">
+                              <img src="../../../assets/images/content/p2.jpg" alt="patner_img">
+                          </div>
+                      </div>
+                      <div class="item">
+                          <div class="prs_pn_img_wrapper">
+                              <img src="../../../assets/images/content/p3.jpg" alt="patner_img">
+                          </div>
+                      </div>
+                      <div class="item">
+                          <div class="prs_pn_img_wrapper">
+                              <img src="../../../assets/images/content/p4.jpg" alt="patner_img">
+                          </div>
+                      </div>
+                      <div class="item">
+                          <div class="prs_pn_img_wrapper">
+                              <img src="../../../assets/images/content/p5.jpg" alt="patner_img">
+                          </div>
+                      </div>
+                      <div class="item">
+                          <div class="prs_pn_img_wrapper">
+                              <img src="../../../assets/images/content/p6.jpg" alt="patner_img">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<app-newsletter></app-newsletter>
