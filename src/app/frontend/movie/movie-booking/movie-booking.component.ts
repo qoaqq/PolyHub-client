@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
-
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
@@ -12,16 +12,34 @@ export class MovieBookingComponent implements OnInit {
   cinemas: any[] = [];
   rooms: any[] = [];
   showingReleases: any[] = [];
+  selectedSeats: any[] = [];
+  selectedFoodCombos: any[] = [];
   movieId: string | null = null;
+  private sessionTimeout: any;
+  private routerSubscription: Subscription;
+  private sessionEndTime: number = 0;
 
-  constructor(private movieBookingService: MovieBookingService, private router: Router,private route: ActivatedRoute) { }
+  constructor(
+    private movieBookingService: MovieBookingService,
+     private router: Router,
+     private route: ActivatedRoute,
+    ) {  this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const excludedUrls = ['/food-combo', '/booking-type','/seat-booking'];
+        // Nếu URL không nằm trong danh sách loại trừ
+        if (!excludedUrls.includes(event.url) ) {
+          this.clearSession();
+        }
+      }
+    });}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.movieId = params.get('id');
     });
     this.fetchData();
-    // this.showingId = this.showingReleases;
+   
+    
   }
 
   fetchData(): void {
@@ -33,7 +51,6 @@ export class MovieBookingComponent implements OnInit {
 
           this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(showingbyMovie => {
             this.showingReleases = showingbyMovie.data;
-            console.log(this.showingReleases);
             this.mergeData();
           });
         
@@ -61,5 +78,33 @@ export class MovieBookingComponent implements OnInit {
   formatTime2(dateString: string): string {
     const date = new Date(dateString);
     return `${date}`;
+  }
+  onContinue(showing: any): void {
+    // Lưu dữ liệu showing release vào session storage
+    sessionStorage.setItem('showingRelease', JSON.stringify(showing));
+    sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
+    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
+    // Đặt thời gian kết thúc phiên
+    this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
+    sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
+  
+    // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
+    this.sessionTimeout = setTimeout(() => {
+      this.clearSession();
+      this.router.navigate(['/movies']);
+    }, 5 * 60 * 1000); // 5 phút
+  
+    // Điều hướng đến trang tiếp theo
+    this.router.navigate(['/seat-booking']);
+  }
+
+  clearSession(): void {
+    sessionStorage.removeItem('selectedSeats');
+    sessionStorage.removeItem('showingrelease');
+    sessionStorage.removeItem('selectedFoodCombos');
+    sessionStorage.removeItem('sessionEndTime');
+    if (this.sessionTimeout) {
+      clearTimeout(this.sessionTimeout);
+    }
   }
 }

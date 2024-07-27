@@ -1,0 +1,127 @@
+/* Container for the food combo section */
+.prs_ec_ue_main_section_wrapper {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* Navigation buttons */
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.btn-back, .btn-continue {
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.btn-back {
+  background-color: #007bff;
+}
+
+.btn-continue {
+  background-color: #28a745;
+}
+
+.btn-back:hover, .btn-continue:hover {
+  opacity: 0.8;
+}
+
+/* Heading section */
+.prs_heading_section_wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.prs_heading_section_wrapper h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Food combo container */
+.food-combo-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Individual food combo item */
+.food-combo-item {
+  flex: 1 1 calc(50% - 20px); /* 2 cột với khoảng cách giữa các item */
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.food-combo-item h3 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+.food-combo-item p {
+  margin: 5px 0;
+}
+
+/* Quantity controls */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.quantity-controls button {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  outline: none;
+}
+
+.quantity-controls button:hover {
+  background-color: #0056b3;
+}
+
+.quantity-controls input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 16px;
+  margin: 0 5px;
+}
+
+/* Total cost and confirm button */
+.total-cost {
+  font-size: 18px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.confirm-selection-button {
+  display: block;
+  margin: 20px auto;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.confirm-selection-button:hover {
+  background-color: #218838;
+}

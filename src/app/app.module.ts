@@ -29,6 +29,7 @@ import { UserComponent } from './frontend/user/user.component';
 import { SliderComponent } from './frontend/home/components/slider/slider.component';
 import { PaymentComponent } from './frontend/payment/payment.component';
 import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
+import { SessionTimerComponent } from './components/session-timer/session-timer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +57,7 @@ import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
     SliderComponent,
     PaymentComponent,
     FoodComboComponent,
+    SessionTimerComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule, ReactiveFormsModule],
   providers: [AuthService],
