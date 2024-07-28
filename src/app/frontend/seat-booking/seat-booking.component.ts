@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
-
+import { Subscription  } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-seat-booking',
@@ -17,12 +18,37 @@ export class SeatBookingComponent implements OnInit {
   seatTypes: any[] = [];
   selectedSeats: any[] = [];
   selectedFoodCombos: any[] = [];
+  private routerSubscription: Subscription;
+  private sessionTimeout: any;
+  private sessionEndTime: number = 0;
 
   constructor(
     private seatBookingService: SeatBookingService, 
     private router: Router,
+    private location: Location,
   ) {
-    this.loadSelectedSeats();
+    
+    
+    // Lắng nghe sự kiện NavigationStart
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const excludedUrls = ['/food-combo', '/booking-type', '/seat-booking'];
+        // Nếu URL không nằm trong danh sách loại trừ
+        if (!excludedUrls.includes(event.url)) {
+          this.clearSession();
+        }
+      }
+    });
+  
+    // Lắng nghe sự kiện popstate
+    window.addEventListener('popstate', () => {
+      const currentUrl = this.location.path();
+      const excludedUrls = ['/food-combo', '/booking-type', '/seat-booking'];
+      // Nếu URL không nằm trong danh sách loại trừ
+      if (!excludedUrls.includes(currentUrl)) {
+        this.clearSession();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -32,9 +58,9 @@ export class SeatBookingComponent implements OnInit {
     if (savedSeats) {
       this.selectedSeats = JSON.parse(savedSeats);
     }
-
-    this.loadSeats();
     this.loadSeatTypes();
+    this.loadSeats();
+    this.loadSelectedSeats();
   }
 
   loadSeatTypes() {
@@ -164,9 +190,27 @@ export class SeatBookingComponent implements OnInit {
       alert('Please select at least one seat before proceeding.');
       return;
     }
+    // Đặt thời gian kết thúc phiên
+    this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
+    sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
+
+    // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
+    this.sessionTimeout = setTimeout(() => {
+      this.clearSession();
+      this.router.navigate(['/movies']);
+    }, 5 * 60 * 1000); // 5 phút
+
 
     // Điều hướng đến trang foodcombo
     this.router.navigate(['/food-combo']);
   }
-  
+  clearSession(): void {
+    sessionStorage.removeItem('selectedSeats');
+    sessionStorage.removeItem('showingRelease');
+    sessionStorage.removeItem('selectedFoodCombos');
+    sessionStorage.removeItem('sessionEndTime');
+    if (this.sessionTimeout) {
+      clearTimeout(this.sessionTimeout);
+    }
+  }
 }

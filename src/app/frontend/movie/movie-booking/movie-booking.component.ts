@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
-import { Subscription,forkJoin  } from 'rxjs';
-import { Location } from '@angular/common';
+import { forkJoin  } from 'rxjs';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
@@ -18,7 +17,6 @@ export class MovieBookingComponent implements OnInit {
   selectedFoodCombos: any[] = [];
   movieId: string | null = null;
   private sessionTimeout: any;
-  private routerSubscription: Subscription;
   private sessionEndTime: number = 0;
 
   constructor(
@@ -26,28 +24,7 @@ export class MovieBookingComponent implements OnInit {
     private movieBookingService: MovieBookingService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location,
   ) {
-    // Lắng nghe sự kiện NavigationStart
-    this.routerSubscription = this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        const excludedUrls = ['/food-combo', '/booking-type', '/seat-booking'];
-        // Nếu URL không nằm trong danh sách loại trừ
-        if (!excludedUrls.includes(event.url)) {
-          this.clearSession();
-        }
-      }
-    });
-  
-    // Lắng nghe sự kiện popstate
-    window.addEventListener('popstate', () => {
-      const currentUrl = this.location.path();
-      const excludedUrls = ['/food-combo', '/booking-type', '/seat-booking'];
-      // Nếu URL không nằm trong danh sách loại trừ
-      if (!excludedUrls.includes(currentUrl)) {
-        this.clearSession();
-      }
-    });
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -107,16 +84,7 @@ export class MovieBookingComponent implements OnInit {
       sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
       sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
 
-      // Đặt thời gian kết thúc phiên
-      this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
-      sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
-
-      // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
-      this.sessionTimeout = setTimeout(() => {
-        this.clearSession();
-        this.router.navigate(['/movies']);
-      }, 5 * 60 * 1000); // 5 phút
-
+      
       // Điều hướng đến trang tiếp theo
       this.router.navigate(['/seat-booking']);
     },
@@ -126,14 +94,4 @@ export class MovieBookingComponent implements OnInit {
   );
 
 }
-
-  clearSession(): void {
-    sessionStorage.removeItem('selectedSeats');
-    sessionStorage.removeItem('showingRelease');
-    sessionStorage.removeItem('selectedFoodCombos');
-    sessionStorage.removeItem('sessionEndTime');
-    if (this.sessionTimeout) {
-      clearTimeout(this.sessionTimeout);
-    }
-  }
 }
