@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
-import { Subscription } from 'rxjs';
+import { Subscription,forkJoin  } from 'rxjs';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
@@ -81,31 +81,37 @@ export class MovieBookingComponent implements OnInit {
     const date = new Date(dateString);
     return `${date}`;
   }
+
+
   onContinue(showing: any): void {
-    this.seatBookingService.getShowingRelease(showing.id).subscribe(
-      (data) => {
-        sessionStorage.setItem('showingRelease', JSON.stringify(data.data));
-      },
-      (error) => {
-        console.error('Error fetching seats:', error); // Xử lý lỗi
-      }
-    );
-    // Lưu dữ liệu showing release vào session storage
-    sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
-    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
-    // Đặt thời gian kết thúc phiên
-    this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
-    sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
-  
-    // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
-    this.sessionTimeout = setTimeout(() => {
-      this.clearSession();
-      this.router.navigate(['/movies']);
-    }, 5 * 60 * 1000); // 5 phút
-  
-    // Điều hướng đến trang tiếp theo
-    this.router.navigate(['/seat-booking']);
-  }
+  // Gọi API và lưu dữ liệu đồng thời
+  forkJoin([
+    this.seatBookingService.getShowingRelease(showing.id),
+  ]).subscribe(
+    ([showingReleaseData]) => {
+      sessionStorage.setItem('showingRelease', JSON.stringify(showingReleaseData.data));
+      sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
+      sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
+
+      // Đặt thời gian kết thúc phiên
+      this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
+      sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
+
+      // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
+      this.sessionTimeout = setTimeout(() => {
+        this.clearSession();
+        this.router.navigate(['/movies']);
+      }, 5 * 60 * 1000); // 5 phút
+
+      // Điều hướng đến trang tiếp theo
+      this.router.navigate(['/seat-booking']);
+    },
+    (error) => {
+      console.error('Error fetching data:', error); // Xử lý lỗi
+    }
+  );
+
+}
 
   clearSession(): void {
     sessionStorage.removeItem('selectedSeats');
