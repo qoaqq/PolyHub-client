@@ -1,175 +1,6 @@
-// import { Component } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
-// @Component({
-//   selector: 'app-food-combo',
-//   templateUrl: './food-combo.component.html',
-//   styleUrls: ['./food-combo.component.scss']
-// })
-// export class FoodComboComponent {
-//   foodCombos: any[] = [];
-//   selectedFoodCombos: Set<number> = new Set();
-//   totalFoodComboCost: number = 0;
-//   constructor(
-//     private foodComboService: FoodComboService,
-//     private router: Router
-//   ) { }
-
-//   ngOnInit(): void {
-//     this.loadFoodCombos();
-//     this.loadSelectedFoodCombos();
-//   }
-
-//   loadFoodCombos(): void {
-//     this.foodComboService.getFoodCombos().subscribe(
-//       (data) => {
-//         this.foodCombos = data.data.data;
-//         console.log('Food Combos:', this.foodCombos);
-//       },
-//       (error) => {
-//         console.error('Error fetching food combos:', error);
-//       }
-//     );
-//   }
-
-//   loadSelectedFoodCombos(): void {
-//     const storedCombos = sessionStorage.getItem('selectedFoodCombos');
-//     if (storedCombos) {
-//       this.selectedFoodCombos = new Set(JSON.parse(storedCombos));
-//       this.updateTotalFoodComboCost(); 
-//     }
-//   }
-
-//   isSelected(foodComboId: number): boolean {
-//     return this.selectedFoodCombos.has(foodComboId);
-//   }
-
-//   onFoodComboSelect(foodCombo: any): void {
-//     if (this.selectedFoodCombos.has(foodCombo)) {
-//       this.selectedFoodCombos.delete(foodCombo);
-//     } else {
-//       this.selectedFoodCombos.add(foodCombo);
-//     }
-//     sessionStorage.setItem('selectedFoodCombos', JSON.stringify(Array.from(this.selectedFoodCombos)));
-//   }
-//   updateTotalFoodComboCost(): void {
-//     const foodCombos = JSON.parse(sessionStorage.getItem('selectedFoodCombos') || '[]');
-//     this.totalFoodComboCost = foodCombos.reduce((total: number, combo: any) => total + combo.price, 0);
-
-//     // Save food combo cost to session storage
-//     sessionStorage.setItem('totalFoodComboCost', JSON.stringify(this.totalFoodComboCost));
-//   }
-//   // confirmSelection(): void {
-//   //   if (this.selectedFoodCombos.size === 0) {
-//   //     alert('Please select at least one food combo');
-//   //     return;
-//   //   }
-//   //   // Navigate to the next page or handle the selection as needed
-//   //   this.router.navigate(['/booking-type']); // Assuming there's a summary page
-//   // }
-//    confirmSelection(): void {
-//     // Calculate total cost including both seats and food combos
-//     const totalSeatCost = JSON.parse(sessionStorage.getItem('totalSeatCost') || '0');
-//     const totalFoodComboCost = this.totalFoodComboCost;
-//     const totalCost = totalSeatCost + totalFoodComboCost;
-
-//     // Save total cost to session storage
-//     sessionStorage.setItem('totalCost', JSON.stringify(totalCost));
-
-//     this.router.navigate(['/booking-type']); // Navigate to the booking type page
-//   }
-// }
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
-
-// @Component({
-//   selector: 'app-food-combo',
-//   templateUrl: './food-combo.component.html',
-//   styleUrls: ['./food-combo.component.scss']
-// })
-// export class FoodComboComponent implements OnInit {
-//   foodCombos: any[] = [];
-//   selectedFoodCombos: Set<number> = new Set();
-//   totalFoodComboCost: number = 0;
-
-//   constructor(
-//     private foodComboService: FoodComboService,
-//     private router: Router
-//   ) { }
-
-//   ngOnInit(): void {
-//     this.loadFoodCombos();
-//     this.loadSelectedFoodCombos();
-//   }
-
-//   loadFoodCombos(): void {
-//     this.foodComboService.getFoodCombos().subscribe(
-//       (data) => {
-//         this.foodCombos = data.data.data;
-//         console.log('Food Combos:', this.foodCombos);
-//         this.loadSelectedFoodCombos(); // Ensure combos are loaded after fetching data
-//       },
-//       (error) => {
-//         console.error('Error fetching food combos:', error);
-//       }
-//     );
-//   }
-
-//   loadSelectedFoodCombos(): void {
-//     const storedCombos = sessionStorage.getItem('selectedFoodCombos');
-//     if (storedCombos) {
-//       this.selectedFoodCombos = new Set(JSON.parse(storedCombos));
-//       this.updateTotalFoodComboCost();
-//     }
-//   }
-
-//   isSelected(foodComboId: number): boolean {
-//     return this.selectedFoodCombos.has(foodComboId);
-//   }
-
-//   onFoodComboSelect(foodCombo: any): void {
-//     // Kiểm tra xem combo hiện tại có trong tập hợp các combo đã chọn không.
-//     if (Array.from(this.selectedFoodCombos).some(combo => combo.id === foodCombo.id)) {
-//       // Nếu có, xóa combo khỏi tập hợp đã chọn.
-//       this.selectedFoodCombos = new Set(Array.from(this.selectedFoodCombos).filter(combo => combo.id !== foodCombo.id));
-//     } else {
-//       // Nếu không có, thêm combo vào tập hợp đã chọn.
-//       this.selectedFoodCombos.add(foodCombo);
-//     }
-  
-//     // Lưu tập hợp các combo đã chọn vào session storage dưới dạng mảng JSON.
-//     sessionStorage.setItem('selectedFoodCombos', JSON.stringify(Array.from(this.selectedFoodCombos)));
-  
-//     // Cập nhật tổng chi phí mỗi khi lựa chọn thay đổi.
-//     this.updateTotalFoodComboCost();
-//   }
-  
-//   updateTotalFoodComboCost(): void {
-//     const selectedCombos = Array.from(this.selectedFoodCombos);
-//     this.totalFoodComboCost = selectedCombos.reduce((total, combo) => total + parseFloat(combo.price), 0);
-  
-//     // Save food combo cost to session storage
-//     sessionStorage.setItem('totalFoodComboCost', JSON.stringify(this.totalFoodComboCost));
-//   }
-  
-//   confirmSelection(): void {
-//     // Calculate total cost including both seats and food combos
-//     const totalSeatCost = parseFloat(sessionStorage.getItem('totalSeatCost') || '0');
-//     const totalFoodComboCost = this.totalFoodComboCost;
-//     const totalCost = totalSeatCost + totalFoodComboCost;
-
-//     // Save total cost to session storage
-//     sessionStorage.setItem('totalCost', JSON.stringify(totalCost));
-
-//     this.router.navigate(['/booking-type']); // Navigate to the booking type page
-//   }
-// }
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
 
 @Component({
@@ -178,24 +9,36 @@ import { FoodComboService } from 'src/app/services/food-combo/food-combo.service
   styleUrls: ['./food-combo.component.scss']
 })
 export class FoodComboComponent implements OnInit {
-  foodCombos: any[] = [];
-  selectedFoodCombos: Set<any> = new Set(); // Thay đổi kiểu dữ liệu ở đây
-  totalFoodComboCost: number = 0;
+  foodCombos: { id: number; name: string; description: string; price: number; quantity: number }[] = [];
+  selectedFoodCombos: { id: number; name: string; quantity: number; price: number }[] = [];
+  totalPriceFoodCombo: number = 0;
+  showingRelease: any;
 
   constructor(
+    private seatBookingService: SeatBookingService, 
     private foodComboService: FoodComboService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    const savedCombos = sessionStorage.getItem('selectedFoodCombos');
+    if (savedCombos) {
+      this.selectedFoodCombos = JSON.parse(savedCombos);
+    }
     this.loadFoodCombos();
-    this.loadSelectedFoodCombos();
+    this.loadShowingRelease();
   }
 
   loadFoodCombos(): void {
     this.foodComboService.getFoodCombos().subscribe(
       (data) => {
-        this.foodCombos = data.data.data;
+        this.foodCombos = data.map((combo:any) => {
+          const storedCombo = this.selectedFoodCombos.find(c => c.id === combo.id);
+          return {
+            ...combo,
+            quantity: storedCombo ? storedCombo.quantity : 0
+          };
+        });
         console.log('Food Combos:', this.foodCombos);
       },
       (error) => {
@@ -204,51 +47,63 @@ export class FoodComboComponent implements OnInit {
     );
   }
 
-  loadSelectedFoodCombos(): void {
-    const storedCombos = sessionStorage.getItem('selectedFoodCombos');
-    if (storedCombos) {
-      this.selectedFoodCombos = new Set(JSON.parse(storedCombos));
-      this.updateTotalFoodComboCost();
+  loadShowingRelease(): void {
+    const showingRelease = sessionStorage.getItem('showingRelease');
+    if (showingRelease) {
+      this.showingRelease = JSON.parse(showingRelease);
+      console.log(this.showingRelease);
+      
     }
   }
 
-  isSelected(foodComboId: number): boolean {
-    return Array.from(this.selectedFoodCombos).some(combo => combo.id === foodComboId);
+  increaseQuantity(comboId: number): void {
+    this.updateQuantity(comboId, 1);
   }
 
-  onFoodComboSelect(foodCombo: any): void {
-    if (Array.from(this.selectedFoodCombos).some(combo => combo.id === foodCombo.id)) {
-      // Nếu có, xóa combo khỏi tập hợp đã chọn.
-      this.selectedFoodCombos = new Set(Array.from(this.selectedFoodCombos).filter(combo => combo.id !== foodCombo.id));
+  decreaseQuantity(comboId: number): void {
+    this.updateQuantity(comboId, -1);
+  }
+
+  onQuantityChange(comboId: number, event: any): void {
+    const newQuantity = +event.target.value;
+    this.updateQuantity(comboId, newQuantity - this.getQuantity(comboId));
+  }
+
+  private updateQuantity(comboId: number, change: number): void {
+    const combo = this.foodCombos.find(c => c.id === comboId);
+    if (!combo) return;
+
+    const selectedCombo = this.selectedFoodCombos.find(c => c.id === comboId);
+    if (selectedCombo) {
+      selectedCombo.quantity = Math.max(selectedCombo.quantity + change, 0);
     } else {
-      // Nếu không có, thêm combo vào tập hợp đã chọn.
-      this.selectedFoodCombos.add(foodCombo);
+      if (change > 0) {
+        this.selectedFoodCombos.push({
+          id: comboId,
+          name: combo.name,
+          quantity: change,
+          price: combo.price
+        });
+      }
     }
 
-    // Lưu tập hợp các combo đã chọn vào session storage dưới dạng mảng JSON.
-    sessionStorage.setItem('selectedFoodCombos', JSON.stringify(Array.from(this.selectedFoodCombos)));
+    // Remove combo if quantity is 0
+    this.selectedFoodCombos = this.selectedFoodCombos.filter(c => c.quantity > 0);
 
-    // Cập nhật tổng chi phí mỗi khi lựa chọn thay đổi.
-    this.updateTotalFoodComboCost();
+    // Update foodCombos with the current quantity
+    this.foodCombos = this.foodCombos.map(c => 
+      c.id === comboId ? { ...c, quantity: this.getQuantity(comboId) } : c
+    );
+
+    // Update sessionStorage
+    sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
+
+    // Update total price
+    this.totalPriceFoodCombo = this.selectedFoodCombos.reduce((total, combo) => total + (combo.quantity * combo.price), 0);
   }
 
-  updateTotalFoodComboCost(): void {
-    const selectedCombos = Array.from(this.selectedFoodCombos);
-    this.totalFoodComboCost = selectedCombos.reduce((total, combo) => total + parseFloat(combo.price), 0);
-
-    // Save food combo cost to session storage
-    sessionStorage.setItem('totalFoodComboCost', JSON.stringify(this.totalFoodComboCost));
-  }
-
-  confirmSelection(): void {
-    // Calculate total cost including both seats and food combos
-    const totalSeatCost = parseFloat(sessionStorage.getItem('totalSeatCost') || '0');
-    const totalFoodComboCost = this.totalFoodComboCost;
-    const totalCost = totalSeatCost + totalFoodComboCost;
-
-    // Save total cost to session storage
-    sessionStorage.setItem('totalCost', JSON.stringify(totalCost));
-
-    this.router.navigate(['/booking-type']); // Navigate to the booking type page
+  private getQuantity(comboId: number): number {
+    const combo = this.selectedFoodCombos.find(c => c.id === comboId);
+    return combo ? combo.quantity : 0;
   }
 }
