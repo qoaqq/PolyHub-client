@@ -3,6 +3,7 @@ import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { Subscription,forkJoin  } from 'rxjs';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
@@ -23,18 +24,31 @@ export class MovieBookingComponent implements OnInit {
   constructor(
     private seatBookingService: SeatBookingService, 
     private movieBookingService: MovieBookingService,
-     private router: Router,
-     private route: ActivatedRoute,
-    ) {  this.routerSubscription = this.router.events.subscribe(event => {
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
+  ) {
+    // Lắng nghe sự kiện NavigationStart
+    this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        const excludedUrls = ['/food-combo', '/booking-type','/seat-booking'];
+        const excludedUrls = ['/food-combo', '/booking-type', '/seat-booking'];
         // Nếu URL không nằm trong danh sách loại trừ
-        if (!excludedUrls.includes(event.url) ) {
+        if (!excludedUrls.includes(event.url)) {
           this.clearSession();
         }
       }
-    });}
-
+    });
+  
+    // Lắng nghe sự kiện popstate
+    window.addEventListener('popstate', () => {
+      const currentUrl = this.location.path();
+      const excludedUrls = ['/food-combo', '/booking-type', '/seat-booking'];
+      // Nếu URL không nằm trong danh sách loại trừ
+      if (!excludedUrls.includes(currentUrl)) {
+        this.clearSession();
+      }
+    });
+  }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.movieId = params.get('id');
