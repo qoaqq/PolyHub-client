@@ -19,21 +19,19 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
   selectedFoodCombos: any[] = [];
   totalCost: number = 0;
   movie: any;
-  seatCost : any;
+  seatCost: any;
   private sessionTimeout: any;
   private readonly SESSION_DURATION = 3 * 60 * 1000; // 3 minutes
-  public apiUrl = 'http://127.0.0.1:8000/api/payment';
 
   constructor(
     private router: Router,
     private seatBookingService: SeatBookingService,
     private http: HttpClient,
-    private fb: FormBuilder,
-    
+    private fb: FormBuilder
   ) {
     this.paymentForm = this.fb.group({
-      subtotal: [0],
       paymentMethod: [''],
+      totalCost:[]
     });
   }
 
@@ -44,12 +42,14 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     const seats = sessionStorage.getItem('selectedSeats');
     const foodCombos = sessionStorage.getItem('selectedFoodCombos');
     const cost = sessionStorage.getItem('totalCost');
+    console.log('GIA: ' + cost);
+
     const movieData = sessionStorage.getItem('movie');
-   const totalSeatCost = sessionStorage.getItem('totalSeatCost')
-   if (totalSeatCost) {
-    this.seatCost = JSON.parse(totalSeatCost);
-    console.log(this.seatCost);
-  }
+    const totalSeatCost = sessionStorage.getItem('totalSeatCost');
+    if (totalSeatCost) {
+      this.seatCost = JSON.parse(totalSeatCost);
+      console.log(this.seatCost);
+    }
     if (movieData) {
       this.movie = JSON.parse(movieData);
       console.log(this.movie);
@@ -77,14 +77,13 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
       console.log(this.selectedFoodCombos);
     }
     if (cost) {
-      this.totalCost = JSON.parse(cost); // Add this line
-      console.log("total: ",this.totalCost);
+      this.totalCost = Number(JSON.parse(cost)); // Add this line
+      console.log('total: ', this.totalCost);
     }
     // Set a timeout to clear the session after the defined duration
     this.sessionTimeout = setTimeout(() => {
       this.clearSessionAndRedirect();
     }, this.SESSION_DURATION);
-    this.sendData();
   }
 
   ngOnDestroy(): void {
@@ -115,14 +114,16 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-  sendData() {
-    const storedValue = sessionStorage.getItem('totalCost');
-    console.log("them thanh cong:", storedValue);
-    return this.http.post(this.apiUrl, { storedValue });
-  }
+  // sendData() {
+  //   const storedValue = sessionStorage.getItem('totalCost');
+  //   console.log("them thanh cong:", storedValue);
+  //   return this.http.post(this.apiUrl, { storedValue });
+  // }
   onSubmit() {
     const formValue = this.paymentForm.value;
-    this.http.post('http://localhost:8000/api/bill', formValue).subscribe(
+    formValue.total = this.totalCost; // Thêm totalCost vào formValue
+    console.log(formValue);
+    this.http.post('http://localhost:8000/api/payment/', formValue).subscribe(
       (response: any) => {
         console.log('API Response:', response);
         if (response.redirect_url) {
@@ -137,16 +138,14 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
 
   confirmBooking(): void {
     clearTimeout(this.sessionTimeout); // Clear the timeout when booking is confirmed
     // Add logic to confirm the booking here
     // For example, you can call a service to save the booking information
-     // Temporary placeholder for booking confirmation logic
+    // Temporary placeholder for booking confirmation logic
     //this.router.navigate(['/payment-method']); // Navigate to a confirmation page or similar
   }
-
 
   // clearSessionAndRedirect(): void {
   //   sessionStorage.removeItem('selectedSeats');
@@ -154,9 +153,6 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
   //   alert('Session has expired. You will be redirected to the seat selection page.');
   //   this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
   // }
-
-
-
 
   // clearSessionAndRedirect(): void {
   //   // Ensure selectedSeats is not empty
@@ -194,19 +190,23 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-
-
   clearSessionAndRedirect(): void {
     // Ensure selectedSeats is not empty
     if (this.selectedSeats.length > 0) {
       // Update the status of each selected seat
-      const seatUpdateRequests = this.selectedSeats.map((seat: { id: number; }) => {
-        // Set newStatus to false
-        const newStatus = false;
-        return this.seatBookingService
-          .updateSeatStatus(this.selectedShowingRelease.id, seat.id, newStatus)
-          .toPromise();
-      });
+      const seatUpdateRequests = this.selectedSeats.map(
+        (seat: { id: number }) => {
+          // Set newStatus to false
+          const newStatus = false;
+          return this.seatBookingService
+            .updateSeatStatus(
+              this.selectedShowingRelease.id,
+              seat.id,
+              newStatus
+            )
+            .toPromise();
+        }
+      );
 
       Promise.all(seatUpdateRequests)
         .then(() => {
@@ -241,5 +241,4 @@ export class BookingTypeComponent implements OnInit, OnDestroy {
       this.router.navigate(['/seat-booking']); // Navigate back to seat selection page
     }
   }
-  
 }
