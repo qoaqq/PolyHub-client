@@ -13,6 +13,7 @@ import { SigninComponent } from './frontend/auth/signin/signin.component';
 import { SignupComponent } from './frontend/auth/signup/signup.component';
 import { UserComponent } from './frontend/user/user.component';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { SessionGuard } from './guards/session/session.guard';
 import { AuthUserGuard } from './guards/user/auth-user.guard';
 import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
 import { PaymentComponent } from './frontend/payment/payment.component';
@@ -20,17 +21,17 @@ import { PaymentComponent } from './frontend/payment/payment.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'bill', component: BookingTypeComponent ,canActivate: [AuthUserGuard]},
-  { path: 'seat-booking', component: SeatBookingComponent ,canActivate: [AuthUserGuard]},
-  { path: 'movie-booking/:id', component: MovieBookingComponent ,canActivate: [AuthUserGuard]},
-  { path: 'booking-type', component: BookingTypeComponent },
-  { path: 'confirmation', component: ConfirmationComponent },
+  { path: 'bill', component: BookingTypeComponent ,canActivate: [AuthUserGuard,SessionGuard]},
+  { path: 'seat-booking', component: SeatBookingComponent ,canActivate: [AuthUserGuard,SessionGuard]},
+  { path: 'movie-booking/:id', component: MovieBookingComponent},
+  { path: 'booking-type', component: BookingTypeComponent,canActivate: [AuthUserGuard,SessionGuard] },
+  { path: 'confirmation', component: ConfirmationComponent,canActivate: [AuthUserGuard,SessionGuard] },
   { path: 'movies', component: CateMovieComponent },
   { path: 'movie/:id', component: SingleMovieComponent },
   { path: 'blogs', component: CateBlogComponent },
   { path: 'blog/:id', component: SingleBlogComponent },
-  { path: 'food-combo', component: FoodComboComponent ,canActivate: [AuthUserGuard]},
-  { path: 'payment-method', component: PaymentComponent ,canActivate: [AuthUserGuard]},
+  { path: 'food-combo', component: FoodComboComponent ,canActivate: [AuthUserGuard,SessionGuard]},
+  { path: 'payment-method', component: PaymentComponent ,canActivate: [AuthUserGuard,SessionGuard]},
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
   { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },
