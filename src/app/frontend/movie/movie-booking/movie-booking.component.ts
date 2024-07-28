@@ -115,7 +115,7 @@ export class MovieBookingComponent implements OnInit {
 
   clearSession(): void {
     sessionStorage.removeItem('selectedSeats');
-    sessionStorage.removeItem('showingrelease');
+    sessionStorage.removeItem('showingRelease');
     sessionStorage.removeItem('selectedFoodCombos');
     sessionStorage.removeItem('sessionEndTime');
     if (this.sessionTimeout) {
