@@ -190,20 +190,27 @@ export class SeatBookingComponent implements OnInit {
       alert('Please select at least one seat before proceeding.');
       return;
     }
-    // Đặt thời gian kết thúc phiên
-    this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
-    sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
-
+  
+    const existingSessionEndTime = sessionStorage.getItem('sessionEndTime');
+    if (existingSessionEndTime && Date.now() < +existingSessionEndTime) {
+      this.sessionEndTime = +existingSessionEndTime;
+    } else {
+      // Đặt thời gian kết thúc phiên mới nếu không tồn tại hoặc đã hết hạn
+      this.sessionEndTime = Date.now() + 5 *60 * 1000; // 5 phút từ bây giờ
+      sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
+    }
+  
     // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
     this.sessionTimeout = setTimeout(() => {
       this.clearSession();
       this.router.navigate(['/movies']);
-    }, 5 * 60 * 1000); // 5 phút
-
-
-    // Điều hướng đến trang foodcombo
+    }, this.sessionEndTime - Date.now()); // thời gian còn lại
+  
+    // Điều hướng đến trang food-combo
     this.router.navigate(['/food-combo']);
   }
+  
+
   clearSession(): void {
     sessionStorage.removeItem('selectedSeats');
     sessionStorage.removeItem('showingRelease');
