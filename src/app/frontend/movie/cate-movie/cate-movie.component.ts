@@ -136,4 +136,18 @@ export class CateMovieComponent implements OnInit {
     }
   }
 
+  prev(): void {
+    const sliderContainer = document.getElementById('slider-container');
+    if (sliderContainer) {
+      sliderContainer.scrollLeft -= 270;
+    }
+  }
+
+  next(): void {
+    const sliderContainer = document.getElementById('slider-container');
+    if (sliderContainer) {
+      sliderContainer.scrollLeft += 270;
+    }
+  }
+
 }
