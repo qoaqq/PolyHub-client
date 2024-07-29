@@ -130,7 +130,7 @@
 													</div>
 													<div class="prs_upcom_movie_content_box_inner_icon">
 														<ul>
-															<li><a href="movie_booking.html"><i
+															<li><a [routerLink]="['/movie-booking', movie?.id]"><i
 																		class="flaticon-cart-of-ecommerce"></i></a>
 															</li>
 														</ul>
@@ -182,7 +182,7 @@
 														<h4>Movie Director - {{ movie?.director?.name }}</h4>
 													</div>
 													<div class="prs_mcc_list_right_cont_wrapper">
-														<a href="#"><i class="flaticon-cart-of-ecommerce"></i></a>
+														<a [routerLink]="['/movie-booking', movie?.id]"><i class="flaticon-cart-of-ecommerce"></i></a>
 													</div>
 													<div class="prs_mcc_list_bottom_cont_wrapper">
 														<p>{{ movie.description }}</p>
@@ -250,6 +250,13 @@
 			<div>
 				<h4><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h4>
 			</div>
+		</div>
+
+		<div (click)="prev()" class="control-prev-btn">
+			<i class="fas flaticon-play-button"></i>
+		</div>
+		<div (click)="next()" class=" control-next-btn">
+			<i class="fas flaticon-play-button"></i>
 		</div>
 	</div>
 </section>

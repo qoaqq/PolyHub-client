@@ -7,7 +7,7 @@
 						<div class="st_video_slide_sec float_left">
 							<div *ngFor="let attribute of movie?.attributes">
 								<div *ngIf="attribute?.name === 'Trailer'">
-									<a rel='external' href='{{ attribute?.attribute_values[0]?.value }}' title='title' class="test-popup-link">
+									<a rel='external' href='https://www.youtube.com/embed/US6L0VKR1OE' title='title' class="test-popup-link">
 										<img src="../../../../assets/images/index_III/icon.png" alt="img">
 									</a>
 								</div>
@@ -126,15 +126,16 @@
 						<label class="full" title="1 star"></label>
 						<input type="radio" name="rating" value="half" />
 						<label class="half" title="0.5 stars"></label>
-												</fieldset>
+					</fieldset>
 					<h4>RATE IT</h4>
 				</div>
 			</div>
 			<div class="st_slider_rating_right">
 				<div class="st_slider_rating_btn prs_animate_btn1">
 					<ul>
-						<li data-animation="animated fadeInUp"><a [routerLink]="['/movie-booking', movieId]" class="button button--tamaya prs_upcom_main_btn" data-text="book now"><span>book now</span></a>
-										</li>
+						<li data-animation="animated fadeInUp">
+							<a [routerLink]="['/movie-booking', movieId]" class="button button--tamaya prs_upcom_main_btn" data-text="book now"><span>book now</span></a>
+						</li>
 					</ul>
 				</div>
 				<div class="st_slider_rating_btn_heart">

@@ -1,6 +1,6 @@
 import {
   Component,
-  AfterViewInit,
+  OnInit,
   
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { MovieService } from 'src/app/services/movie/movie.service';
   templateUrl: './single-movie.component.html',
   styleUrls: ['./single-movie.component.scss']
 })
-export class SingleMovieComponent implements AfterViewInit {
+export class SingleMovieComponent implements OnInit {
   movie: any;
   movieId: string | null = null;
   topMovies: any[] = [];
@@ -19,15 +19,26 @@ export class SingleMovieComponent implements AfterViewInit {
   constructor(private route: ActivatedRoute, private movieService: MovieService, private router: Router) {
   }
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
     this.movieId = this.route.snapshot.paramMap.get('id');
     this.movieService.getMovieById(this.movieId).subscribe(movie => {
       this.movie = movie.data;
-      console.log(this.movie);
     })
 
     this.movieService.getTopMoviesInMonth().subscribe(movies => {
       this.topMovies = movies.data;
     })
+  }
+
+  bookingNow(): void {
+    this.router.navigate(['/movie-booking']).then(() => {
+      sessionStorage.setItem('movie', JSON.stringify(this.movie));
+      window.location.reload();
+    });
+  }
+
+  onClickDefault(event: Event): void {
+    event.preventDefault();
+    console.log('Default action prevented');
   }
 }
