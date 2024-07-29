@@ -210,7 +210,7 @@
 													<div class="row owl-theme">
 														<div *ngFor="let actor of movie?.actors" class="item col-lg-3">
 															<div class="st_summ_slider_cont float_left">
-																<img src="../../../../assets/images/content/c1.jpg" alt="img">
+																<img width="120px" height="120px" src="{{ 'http://127.0.0.1:8000/' + actor?.avatar }}" alt="img">
 																<h4><a href="#">{{ actor?.name }}</a></h4>
 																<h5>Actor</h5>
 															</div>
@@ -229,7 +229,7 @@
 													<div *ngFor="let image of attribute.attribute_values" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 														<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
 															<img width="264px" height="150px" src="{{ image?.value }}" alt="scene_img">
-															<div class="prs_ms_scene_img_overlay">	<a href="../../../../assets/images/content/movie_single/sc1.jpg" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
+															<div class="prs_ms_scene_img_overlay">	<a href="{{ image?.value }}" class="venobox info" data-title="PORTFOLIO TITTLE" data-gall="gall12"><i class="flaticon-tool"></i></a>
 															</div>
 														</div>
 													</div>
@@ -285,58 +285,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- st slider sidebar wrapper End -->
-	<!-- prs theater Slider Start -->
-	<div class="prs_theater_main_slider_wrapper">
-		<div class="prs_theater_img_overlay"></div>
-		<div class="prs_theater_sec_heading_wrapper">
-			<h2>TOP MOVIES IN the month</h2>
-		</div>
-		<div class="wrap-album-slider">
-			<!-- list top movie start -->
-			<ul class="album-slider">
-				<li *ngFor="let movie of topMovies" class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="../../../../assets/images/content/up1.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p>	<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
-			</ul>
-			<!-- End slider -->
-		</div>
-	</div>
-	<!-- prs theater Slider End -->
 	<!-- prs patner slider Start -->
 	<div class="prs_patner_main_section_wrapper prs_patner_main_section_wrapper_ind3">
 		<div class="container">

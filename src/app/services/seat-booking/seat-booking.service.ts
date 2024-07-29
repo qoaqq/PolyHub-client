@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,14 @@ export class SeatBookingService {
       'Content-Type': 'application/json'
     });
     const body = { status };
-    console.log(`Sending request to URL: ${url} with body:`, body); // Debug request details
     return this.http.post<any>(url, body, { headers });
+  }
+
+  checkSeatStatus(seatId: number): Observable<boolean> {
+    const url = `${this.baseUrl}/showingrelease/${seatId}/status`;
+    return this.http.get<{ status: number }>(url).pipe(
+      map(response => response.status === 1) // Chuyển đổi giá trị từ server thành true/false
+    );
   }
  
 }

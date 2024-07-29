@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
-
+import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
+import { forkJoin  } from 'rxjs';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
@@ -12,16 +13,26 @@ export class MovieBookingComponent implements OnInit {
   cinemas: any[] = [];
   rooms: any[] = [];
   showingReleases: any[] = [];
+  selectedSeats: any[] = [];
+  selectedFoodCombos: any[] = [];
   movieId: string | null = null;
+  private sessionTimeout: any;
+  private sessionEndTime: number = 0;
 
-  constructor(private movieBookingService: MovieBookingService, private router: Router,private route: ActivatedRoute) { }
-
+  constructor(
+    private seatBookingService: SeatBookingService, 
+    private movieBookingService: MovieBookingService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+  }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.movieId = params.get('id');
     });
     this.fetchData();
-    // this.showingId = this.showingReleases;
+   
+    
   }
 
   fetchData(): void {
@@ -33,7 +44,6 @@ export class MovieBookingComponent implements OnInit {
 
           this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(showingbyMovie => {
             this.showingReleases = showingbyMovie.data;
-            console.log(this.showingReleases);
             this.mergeData();
           });
         
@@ -62,4 +72,26 @@ export class MovieBookingComponent implements OnInit {
     const date = new Date(dateString);
     return `${date}`;
   }
+
+
+  onContinue(showing: any): void {
+  // Gọi API và lưu dữ liệu đồng thời
+  forkJoin([
+    this.seatBookingService.getShowingRelease(showing.id),
+  ]).subscribe(
+    ([showingReleaseData]) => {
+      sessionStorage.setItem('showingRelease', JSON.stringify(showingReleaseData.data));
+      sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
+      sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
+
+      
+      // Điều hướng đến trang tiếp theo
+      this.router.navigate(['/seat-booking']);
+    },
+    (error) => {
+      console.error('Error fetching data:', error); // Xử lý lỗi
+    }
+  );
+
+}
 }

@@ -1,11 +1,11 @@
 import {
   Component,
-  AfterViewInit,
-  EventEmitter,
+  OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from 'src/app/services/movie/movie.service';
+import * as $ from 'jquery';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { MovieService } from 'src/app/services/movie/movie.service';
   templateUrl: './cate-movie.component.html',
   styleUrls: ['./cate-movie.component.scss']
 })
-export class CateMovieComponent implements AfterViewInit {
+export class CateMovieComponent implements OnInit {
   movies: any[] = [];
   countAllMovies: number = 0;
   searchForm: FormGroup;
@@ -31,7 +31,7 @@ export class CateMovieComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.loadMovies();
     this.movieService.getCategories().subscribe(categories => {
       this.categories = categories.data;
