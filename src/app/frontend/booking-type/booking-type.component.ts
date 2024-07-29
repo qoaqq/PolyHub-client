@@ -33,7 +33,7 @@ export class BookingTypeComponent implements OnInit {
   ) {
     this.paymentForm = this.fb.group({
       paymentMethod: [''],
-      totalCost:[]
+      totalCost: [],
     });
   }
 
@@ -45,6 +45,8 @@ export class BookingTypeComponent implements OnInit {
     this.calculateTotalPriceFoodCombo(); // Tính tổng tiền của các food combo
   }
 
+  loadShowingRelease(): void {
+    const showingRelease = sessionStorage.getItem('showingRelease');
     if (showingRelease) {
       this.showingrelease = JSON.parse(showingRelease);
       console.log(this.showingrelease);
@@ -59,8 +61,12 @@ export class BookingTypeComponent implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    clearTimeout(this.sessionTimeout);
+  loadFoodCombos(): void {
+    const selectedFoodCombos = sessionStorage.getItem('selectedFoodCombos');
+    if (selectedFoodCombos) {
+      this.selectedFoodCombos = JSON.parse(selectedFoodCombos);
+      console.log(this.selectedFoodCombos);
+    }
   }
 
   formatTime(dateString: string): string {
@@ -72,9 +78,11 @@ export class BookingTypeComponent implements OnInit {
 
   calculateTotalPriceTicket() {
     this.totalPriceTicketSeat = 0;
-    this.selectedSeats.forEach(seat => {
+    this.selectedSeats.forEach((seat) => {
       // Chuyển chuỗi thành số và loại bỏ các dấu phân cách hàng ngàn
-      const price = parseFloat((seat.seat.seat_type.price as string).replace(/,/g, ''));
+      const price = parseFloat(
+        (seat.seat.seat_type.price as string).replace(/,/g, '')
+      );
       this.totalPriceTicketSeat += price;
     });
     this.updateGrandTotal(); // Cập nhật tổng khi giá vé đã được tính
@@ -82,7 +90,7 @@ export class BookingTypeComponent implements OnInit {
 
   calculateTotalPriceFoodCombo(): void {
     this.totalPriceFoodCombo = 0;
-    this.selectedFoodCombos.forEach(combo => {
+    this.selectedFoodCombos.forEach((combo) => {
       const price = parseFloat((combo.price as string).replace(/,/g, ''));
       this.totalPriceFoodCombo += price * combo.quantity;
     });
@@ -106,7 +114,6 @@ export class BookingTypeComponent implements OnInit {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-  
 
   updateGrandTotal(): void {
     this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
