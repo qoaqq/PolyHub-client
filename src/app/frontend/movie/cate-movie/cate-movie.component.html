@@ -130,7 +130,7 @@
 													</div>
 													<div class="prs_upcom_movie_content_box_inner_icon">
 														<ul>
-															<li><a href="movie_booking.html"><i
+															<li><a [routerLink]="['/movie-booking', movie?.id]"><i
 																		class="flaticon-cart-of-ecommerce"></i></a>
 															</li>
 														</ul>
@@ -182,7 +182,7 @@
 														<h4>Movie Director - {{ movie?.director?.name }}</h4>
 													</div>
 													<div class="prs_mcc_list_right_cont_wrapper">
-														<a href="#"><i class="flaticon-cart-of-ecommerce"></i></a>
+														<a [routerLink]="['/movie-booking', movie?.id]"><i class="flaticon-cart-of-ecommerce"></i></a>
 													</div>
 													<div class="prs_mcc_list_bottom_cont_wrapper">
 														<p>{{ movie.description }}</p>
@@ -239,58 +239,33 @@
 	</div>
 </div>
 <!-- prs mc category slidebar End -->
-<!-- prs theater Slider Start -->
-<div class="prs_theater_main_slider_wrapper">
-	<div class="prs_theater_img_overlay"></div>
-	<div class="prs_theater_sec_heading_wrapper">
-		<h2>TOP MOVIES IN MONTH</h2>
+
+
+<!-- top movies start-->
+<section class="top-movies">
+	<h3 class="slider-title">Top movie in month</h3>
+	<div id="slider-container" class="slider">
+		<div *ngFor="let movie of topMovies" class="slide">
+			<img (click)="viewDetails(movie?.id)" height="600px" [src]="'http://127.0.0.1:8000/' + movie?.photo" alt="">
+			<div>
+				<h4><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h4>
+			</div>
+		</div>
+
+		<div (click)="prev()" class="control-prev-btn">
+			<i class="fas flaticon-play-button"></i>
+		</div>
+		<div (click)="next()" class=" control-next-btn">
+			<i class="fas flaticon-play-button"></i>
+		</div>
 	</div>
-	<div class="wrap-album-slider">
-		<ul class="album-slider">
-			<!-- list top movies start -->
-			<li *ngFor="let movie of topMovies" class="album-slider__item">
-				<figure class="album">
-					<div class="prs_upcom_movie_box_wrapper">
-						<div class="prs_upcom_movie_img_box">
-							<img width="262px" height="350px" [src]="'http://127.0.0.1:8000/' + movie?.photo" alt="movie_img" />
-							<div class="prs_upcom_movie_img_overlay"></div>
-							<div class="prs_upcom_movie_img_btn_wrapper">
-								<ul>
-									<li><a href="#">View Trailer</a>
-									</li>
-									<li><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">View Details</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="prs_upcom_movie_content_box">
-							<div style="height: 100%;" class="prs_upcom_movie_content_box_inner">
-								<h2 class="truncate-text"><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h2>
-								<p>{{ movie.cate_name }}</p> <i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o"></i>
-								<i class="fa fa-star-o"></i>
-							</div>
-							<div class="prs_upcom_movie_content_box_inner_icon">
-								<ul>
-									<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<!-- End album body -->
-				</figure>
-				<!-- End album -->
-			</li>
-			<!-- list top movies end -->
-			<!-- End album slider item -->
-		</ul>
-		<!-- End slider -->
-	</div>
-</div>
-<!-- prs theater Slider End -->
+</section>
+
+
+<div class="overlay"></div>
+<!-- top movies end-->
+
+
 <!-- prs patner slider Start -->
 <div class="prs_patner_main_section_wrapper">
 	<div class="container">
