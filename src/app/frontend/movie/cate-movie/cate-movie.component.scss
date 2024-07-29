@@ -18,13 +18,17 @@
     background-color: black !important;
     color: white;
   }
+  
+// css top movie
+.top-movies{
+	position: relative;
+}
 
 #slider-container{
-  position: relative;
   height: 430px;
   background: #f6f6f6;
 }
-  // css top movie
+
 .slider-title {
     text-align: center;
     font-size: 32px;
@@ -84,8 +88,8 @@
 	border-radius: 0 0 15px 15px;
 	cursor: pointer;
 	transition: 0.25s ease-in-out;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
-  bottom: 2px;
+	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
+	bottom: 2px;
 }
 
 .slide div h4{
@@ -108,31 +112,36 @@
 
 .control-prev-btn {
 	position: absolute;
-	top: 50%;
 	left: 0;
-	background-color: rgba(255, 255, 255, 0.55);
-	height: 100px;
-	line-height: 100px;
-	width: 45px;
+	height: 50px;
+	line-height: 50px;
+	width: 50px;
 	text-align: center;
 	box-shadow: 0 1px 3px #888;
 	user-select: none;
 	color: #444;
 	cursor: pointer;
+	margin-top: 120px;
+	transform: rotate(180deg);
+	border-radius: 50px;
+    background: #ff4444;
+	color: #ffffff;
 }
 .control-next-btn {
 	position: absolute;
-	top: 50%;
 	right: 0;
-	background-color: rgba(255, 255, 255, 0.55);
-	height: 100px;
-	line-height: 100px;
-	width: 45px;
+	height: 50px;
+	line-height: 50px;
+	width: 50px;
 	text-align: center;
 	box-shadow: 0 1px 3px #888;
 	user-select: none;
 	color: #444;
 	cursor: pointer;
+	margin-top: 120px;
+	border-radius: 50px;
+	background: #ff4444;
+	color: #ffffff;
 }
 .slide img.zoomed {
 	width: 500px;
