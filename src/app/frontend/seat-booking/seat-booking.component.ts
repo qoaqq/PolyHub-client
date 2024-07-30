@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
-import { Subscription  } from 'rxjs';
+import { Subscription,forkJoin  } from 'rxjs';
 import { Location } from '@angular/common';
 
 @Component({
@@ -15,6 +15,7 @@ export class SeatBookingComponent implements OnInit {
   rows: any[][] = [];
   seatsByRow: { [row: string]: any[] } = {};
   movieId: string | null = null;
+  showingId: string | null = null;
   seatTypes: any[] = [];
   selectedSeats: any[] = [];
   selectedFoodCombos: any[] = [];
@@ -71,6 +72,11 @@ export class SeatBookingComponent implements OnInit {
 
   isSelected(seat: any): boolean {
     return this.selectedSeats.some(selectedSeat => selectedSeat.seat_id === seat.seat_id);
+  }
+
+  canBeToggled(seat: any): boolean {
+    // Logic để xác định ghế có thể được chọn hoặc bỏ chọn
+    return seat.status == 0 || this.isSelected(seat);
   }
 
   toggleSeat(seat: any): void {
@@ -151,14 +157,13 @@ export class SeatBookingComponent implements OnInit {
     if (showingRelease) {
       const showing = JSON.parse(showingRelease);
       this.movieId = showing.movie_id;
-      const showingId = showing.id;
+      this.showingId = showing.id;
       
       
       // Gọi API với showingId
-      this.seatBookingService.getSeats(showingId).subscribe(
+      this.seatBookingService.getSeats(this.showingId).subscribe(
         (data) => {
           this.seats = data;
-          console.log(this.seats);
           this.groupSeatsByRow();
         },
         (error) => {
@@ -206,18 +211,48 @@ export class SeatBookingComponent implements OnInit {
       this.router.navigate(['/movies']);
     }, this.sessionEndTime - Date.now()); // thời gian còn lại
   
-    // Điều hướng đến trang food-combo
-    this.router.navigate(['/food-combo']);
+    // Tạo mảng các Observable để cập nhật trạng thái ghế
+    const updateRequests = this.selectedSeats.map(seat => 
+      this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, true)
+    );
+
+    // Sử dụng forkJoin để đợi tất cả các yêu cầu hoàn thành
+    forkJoin(updateRequests).subscribe(() => {
+      // Điều hướng đến trang food-combo sau khi tất cả các ghế đã được cập nhật
+      this.router.navigate(['/food-combo']);
+    }, error => {
+      console.error('Error updating seats:', error);
+      alert('Failed to update seat status. Please try again.');
+    });
   }
   
 
   clearSession(): void {
-    sessionStorage.removeItem('selectedSeats');
-    sessionStorage.removeItem('showingRelease');
-    sessionStorage.removeItem('selectedFoodCombos');
-    sessionStorage.removeItem('sessionEndTime');
-    if (this.sessionTimeout) {
-      clearTimeout(this.sessionTimeout);
+    if (this.selectedSeats.length > 0) {
+      const resetRequests = this.selectedSeats.map(seat =>
+        this.seatBookingService.updateSeatStatus(this.showingId, seat.id, false)
+      );
+
+      forkJoin(resetRequests).subscribe(() => {
+        sessionStorage.removeItem('selectedSeats');
+        sessionStorage.removeItem('showingRelease');
+        sessionStorage.removeItem('selectedFoodCombos');
+        sessionStorage.removeItem('sessionEndTime');
+        if (this.sessionTimeout) {
+          clearTimeout(this.sessionTimeout);
+        }
+      }, error => {
+        console.error('Error resetting seats:', error);
+        alert('Failed to reset seat status. Please try again.');
+      });
+    } else {
+      sessionStorage.removeItem('selectedSeats');
+      sessionStorage.removeItem('showingRelease');
+      sessionStorage.removeItem('selectedFoodCombos');
+      sessionStorage.removeItem('sessionEndTime');
+      if (this.sessionTimeout) {
+        clearTimeout(this.sessionTimeout);
+      }
     }
   }
 }
