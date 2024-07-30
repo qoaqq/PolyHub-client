@@ -10,7 +10,7 @@ import { concatMap, catchError } from 'rxjs/operators';
   templateUrl: './seat-booking.component.html',
   styleUrls: ['./seat-booking.component.scss']
 })
-export class SeatBookingComponent implements OnInit, OnDestroy {
+export class SeatBookingComponent implements OnInit {
 
   seats: any[] = [];
   rows: any[][] = [];
@@ -64,15 +64,6 @@ export class SeatBookingComponent implements OnInit, OnDestroy {
     this.resetSelectedSeatsStatus().subscribe(() => {
       this.loadSeats();
     });
-  }
-
-  ngOnDestroy() {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-    if (this.sessionTimeout) {
-      clearTimeout(this.sessionTimeout);
-    }
   }
 
   loadShowing() {
@@ -220,35 +211,55 @@ export class SeatBookingComponent implements OnInit, OnDestroy {
       alert('Please select at least one seat before proceeding.');
       return;
     }
-
-    const existingSessionEndTime = sessionStorage.getItem('sessionEndTime');
-    if (existingSessionEndTime && Date.now() < +existingSessionEndTime) {
-      this.sessionEndTime = +existingSessionEndTime;
-    } else {
-      // Đặt thời gian kết thúc phiên mới nếu không tồn tại hoặc đã hết hạn
-      this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
-      sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
-    }
-
-    // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
-    this.sessionTimeout = setTimeout(() => {
-      this.clearSession();
-      this.router.navigate(['/movies']);
-    }, this.sessionEndTime - Date.now()); // thời gian còn lại
-
-    // Tạo mảng các Observable để cập nhật trạng thái ghế
-    const updateRequests = this.selectedSeats.map(seat => 
-      this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, true)
-    );
-
-    // Sử dụng forkJoin để đợi tất cả các yêu cầu hoàn thành
-    forkJoin(updateRequests).subscribe(() => {
-      // Điều hướng đến trang food-combo sau khi tất cả các ghế đã được cập nhật
-      this.router.navigate(['/food-combo']);
+  
+    // Kiểm tra trạng thái của các ghế đã chọn
+    this.checkSeatsStatus(this.selectedSeats).subscribe(statuses => {
+      const anySeatBooked = statuses.some(status => status === true);
+      
+      if (anySeatBooked) {
+        alert('Some selected seats are already booked. Please select other seats.');
+        return;
+      }
+  
+      const existingSessionEndTime = sessionStorage.getItem('sessionEndTime');
+      if (existingSessionEndTime && Date.now() < +existingSessionEndTime) {
+        this.sessionEndTime = +existingSessionEndTime;
+      } else {
+        // Đặt thời gian kết thúc phiên mới nếu không tồn tại hoặc đã hết hạn
+        this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
+        sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
+      }
+  
+      // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
+      this.sessionTimeout = setTimeout(() => {
+        this.clearSession();
+        this.router.navigate(['/movies']);
+      }, this.sessionEndTime - Date.now()); // thời gian còn lại
+  
+      // Tạo mảng các Observable để cập nhật trạng thái ghế
+      const updateRequests = this.selectedSeats.map(seat => 
+        this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, true)
+      );
+  
+      // Sử dụng forkJoin để đợi tất cả các yêu cầu hoàn thành
+      forkJoin(updateRequests).subscribe(() => {
+        // Điều hướng đến trang food-combo sau khi tất cả các ghế đã được cập nhật
+        this.router.navigate(['/food-combo']);
+      }, error => {
+        console.error('Error updating seats:', error);
+        alert('Failed to update seat status. Please try again.');
+      });
     }, error => {
-      console.error('Error updating seats:', error);
-      alert('Failed to update seat status. Please try again.');
+      console.error('Error checking seat statuses:', error);
+      alert('Failed to check seat statuses. Please try again.');
     });
+  }
+
+  checkSeatsStatus(seats: any[]): Observable<boolean[]> {
+    const statusRequests = seats.map(seat => 
+      this.seatBookingService.checkSeatStatus(seat.id)
+    );
+    return forkJoin(statusRequests);
   }
 
   clearSession(): void {

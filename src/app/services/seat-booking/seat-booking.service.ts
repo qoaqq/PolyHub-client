@@ -31,8 +31,10 @@ export class SeatBookingService {
     return this.http.post<any>(url, body, { headers });
   }
 
-  checkSeatStatus(seatId: number): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/showingrelease/${seatId}/status`);
+  checkSeatStatus(seatId: number): Observable<boolean> {
+    return this.http.get<{ status: boolean }>(`${this.baseUrl}/showingrelease/${seatId}/status`).pipe(
+      map(response => response.status)  // Trích xuất giá trị của thuộc tính `status`
+    );
   }
  
 }
