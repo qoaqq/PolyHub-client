@@ -230,7 +230,7 @@ export class SeatBookingComponent implements OnInit {
   clearSession(): void {
     if (this.selectedSeats.length > 0) {
       const resetRequests = this.selectedSeats.map(seat =>
-        this.seatBookingService.updateSeatStatus(this.showingId, seat.id, false)
+        this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, false)
       );
 
       forkJoin(resetRequests).subscribe(() => {
