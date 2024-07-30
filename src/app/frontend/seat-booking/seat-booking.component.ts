@@ -10,7 +10,7 @@ import { concatMap, catchError } from 'rxjs/operators';
   templateUrl: './seat-booking.component.html',
   styleUrls: ['./seat-booking.component.scss']
 })
-export class SeatBookingComponent implements OnInit, OnDestroy {
+export class SeatBookingComponent implements OnInit {
 
   seats: any[] = [];
   rows: any[][] = [];
@@ -64,15 +64,6 @@ export class SeatBookingComponent implements OnInit, OnDestroy {
     this.resetSelectedSeatsStatus().subscribe(() => {
       this.loadSeats();
     });
-  }
-
-  ngOnDestroy() {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-    if (this.sessionTimeout) {
-      clearTimeout(this.sessionTimeout);
-    }
   }
 
   loadShowing() {
