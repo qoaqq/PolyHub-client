@@ -19,7 +19,8 @@
 		<div class="container">
 			
 			<div class="row">
-				<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+				<form [formGroup]="paymentForm">
+<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
 					<div class="st_dtts_left_main_wrapper float_left">
 						<div class="row">
 							<div class="col-md-12">
@@ -44,7 +45,7 @@
 									<div class="st_cherity_img float_left">
 										<div class="col-12 bg-dark">
 											<div class="p-3" style="display: flex; justify-content: center;">
-											  <form [formGroup]="paymentForm">
+											  <!-- <form [formGroup]="paymentForm"> -->
 												<div style="width: 545px;" class="text-white">
 												  <h2 class="fw-bold my-5" style="color: white; padding-left: 85px;">Payment Method</h2>
 												  <div style="padding-left: 105px;" class="form-check my-3">
@@ -59,7 +60,7 @@
 													
 												  </div>
 												</div>
-											  </form>
+											  <!-- </form> -->
 											</div>
 										  </div>
 									</div>
@@ -82,9 +83,7 @@
 										<li><a href="#"><i class="flaticon-tickets"></i> &nbsp;Box office Pickup </a>
 										</li>
 										<li>
-											<!-- <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-											<button type="submit">Proceed to Pay </button>
-										</form> -->
+											<button type="submit" (click)="submit()">Proceed to Pay </button>
 										</li>
 										
 									</ul>
@@ -98,7 +97,7 @@
 						<div class="col-md-12">
 							<div class="st_dtts_bs_wrapper float_left">
 								<div class="st_dtts_bs_heading float_left">
-									<p>Booking summary</p>
+									<p>{{ bookingSummary }}</p>
 								</div>
 								<div class="st_dtts_sb_ul float_left">
 									
@@ -148,17 +147,14 @@
 									</p> -->
 								</div>
 								<div class="st_dtts_sb_h2 float_left">
-									
-									<!-- <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-										
-										<input  formControlName="paymentMethod" value="{{ totalCost }}">
-									</form> -->
+										<!-- <button>{{ grandTotal }}</button> -->
 									<h4>Total:  {{ grandTotal | currency: 'USD' }}  </h4>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>

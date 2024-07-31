@@ -4,6 +4,8 @@ import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.s
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-booking-type',
@@ -19,9 +21,10 @@ export class BookingTypeComponent implements OnInit {
   totalPriceTicketSeat: number = 0;
   totalPriceFoodCombo: number = 0;
   grandTotal: number = 0;
+  bookingSummary: string = 'Booking summary';
 
   private sessionTimeout: any;
-  public apiUrl = 'http://127.0.0.1:8000/api/payment';
+  public apiUrl = 'http://127.0.0.1:8000/api/bill';
 
   constructor(
     private router: Router,
@@ -32,7 +35,6 @@ export class BookingTypeComponent implements OnInit {
     private foodComboService: FoodComboService
   ) {
     this.paymentForm = this.fb.group({
-      subtotal: [0],
       paymentMethod: [''],
     });
   }
@@ -78,17 +80,20 @@ export class BookingTypeComponent implements OnInit {
 
   calculateTotalPriceTicket() {
     this.totalPriceTicketSeat = 0;
-    this.selectedSeats.forEach(seat => {
+    this.selectedSeats.forEach((seat) => {
       // Chuyển chuỗi thành số và loại bỏ các dấu phân cách hàng ngàn
-      const price = parseFloat((seat.seat.seat_type.price as string).replace(/,/g, ''));
+      const price = parseFloat(
+        (seat.seat.seat_type.price as string).replace(/,/g, '')
+      );
       this.totalPriceTicketSeat += price;
     });
+    
     this.updateGrandTotal(); // Cập nhật tổng khi giá vé đã được tính
   }
 
   calculateTotalPriceFoodCombo(): void {
     this.totalPriceFoodCombo = 0;
-    this.selectedFoodCombos.forEach(combo => {
+    this.selectedFoodCombos.forEach((combo) => {
       const price = parseFloat((combo.price as string).replace(/,/g, ''));
       this.totalPriceFoodCombo += price * combo.quantity;
     });
@@ -112,9 +117,35 @@ export class BookingTypeComponent implements OnInit {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-  
 
   updateGrandTotal(): void {
     this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
+  }
+  submit(){
+    const paymentForm = this.paymentForm?.value;
+
+    const bill = {
+      grandTotal: this.grandTotal,
+      paymentMethod: paymentForm?.paymentMethod,
+    };
+
+    const ticket_seat = {
+      selectedSeats: this.selectedSeats,
+      showingrelease: this.showingrelease,
+      selectedFoodCombos: this.selectedFoodCombos,
+      price: this.totalPriceTicketSeat,
+    };
+
+    const payload = {
+      bill: bill,
+      ticket_seat: ticket_seat,
+    };
+
+    this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
+      console.log(data);
+      if (data.redirect_url) {
+        window.location.href = data.redirect_url;
+      }
+    });
   }
 }
