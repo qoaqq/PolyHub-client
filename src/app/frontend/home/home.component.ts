@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { HomeService } from './../../services/home/home.service';
 import {
   Component
@@ -9,8 +10,11 @@ import {
 })
 export class HomeComponent  {
   
-  constructor( private HomeService: HomeService) {
+  constructor( private HomeService: HomeService , private router: Router) {
     
+  }
+  goToMovies() {
+    this.router.navigate(['/movies']);
   }
 
 }

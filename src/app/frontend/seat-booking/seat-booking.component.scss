@@ -1,0 +1,84 @@
+ .seat_type_1 input[type="checkbox"]+label:before {
+    border: 1px solid green;
+}
+
+.st_seat_lay_row .seat_type_2 input[type="checkbox"]+label:before {
+    border: 1px solid red;
+}
+
+
+.st_seat_lay_row .seat_type_3 input[type="checkbox"]+label:before {
+    border: 1px solid pink;
+}
+/* CSS cho hàng */
+.row {
+    display: flex;
+    flex-direction: column; /* Các hàng sắp xếp theo chiều dọc */
+    margin-bottom: 10px; /* Khoảng cách giữa các hàng */
+  }
+  
+  /* CSS cho các ghế trong hàng */
+  .seats {
+    display: flex;
+    flex-wrap: nowrap; /* Không bọc xuống dòng */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+  }
+  
+  /* CSS cho từng ghế */
+  .seat-col {
+    display: flex;
+    flex-direction: column; /* Các ghế sắp xếp theo chiều dọc */
+    margin-right: 5px; /* Khoảng cách giữa các ghế */
+    align-items: center; /* Canh giữa ghế */
+  }
+  
+  .row-label {
+    margin-bottom: 5px; /* Khoảng cách giữa nhãn hàng và ghế */
+  }
+  .st_seat_lay_economy_wrapper {
+    /* Thêm các thuộc tính CSS cần thiết cho khung chứa */
+  }
+  
+  .screen {
+    /* Thêm các thuộc tính CSS cần thiết cho phần màn hình */
+  }
+  
+  .seat-legend {
+    margin-top: 20px; /* Khoảng cách từ màn hình đến chú thích */
+  }
+  
+  .seat-legend ul {
+    list-style-type: none; /* Loại bỏ gạch đầu dòng của danh sách */
+    padding: 0;
+  }
+  
+  .seat-legend li {
+    font-size: 16px; /* Kích thước chữ */
+    margin-bottom: 10px; /* Khoảng cách giữa các mục */
+  }
+  
+  .seat-type-standard {
+    color: green; /* Màu xanh lá cho vé thường */
+  }
+  
+  .seat-type-vip {
+    color: red; /* Màu đỏ cho vé VIP */
+  }
+  
+  .seat-type-couple {
+    color: pink; /* Màu hồng cho vé cặp đôi */
+  }
+  
+  .seat-type-booked {
+    color: gray; /* Màu xám cho ghế đã được đặt */
+  }
+  
+  .color-indicator {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; /* Tạo hình tròn cho chỉ báo màu */
+    margin-right: 8px; /* Khoảng cách giữa chỉ báo màu và văn bản */
+  }
+  

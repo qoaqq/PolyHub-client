@@ -2,33 +2,19 @@
 	<div class="container container_seat">
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a href="movie_booking.html"><i
+				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a  [routerLink]="['/movie-booking', movieId]"><i
 							class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
 				</div>
-				<div class="cc_ps_quantily_info cc_ps_quantily_info_tecket">
-					<p>Select Ticket</p>
-					<div class="select_number">
-						<button onclick="changeQty(1); return false;" class="increase"><i class="fa fa-plus"></i>
-						</button>
-						<input type="text" name="quantity" value="{{ selectedSeatCount }}" size="2" id="input-quantity"
-							class="form-control" />
-						<button onclick="changeQty(0); return false;" class="decrease"><i class="fa fa-minus"></i>
-						</button>
-					</div>
-					<input type="hidden" name="product_id" />
+				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
+					<a  (click)="goToFoodCombo()">
+					  <i class="fas fa-long-arrow-alt-left"></i> &nbsp; Continue
+					</a>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 				<div class="st_bt_top_center_heading st_bt_top_center_heading_seat_book_page float_left">
-					<h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3>
-					<h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<div class="st_bt_top_close_btn st_bt_top_close_btn2 float_left"> <a href="#"><i
-							class="fa fa-times"></i></a>
-				</div>
-				<div class="st_seatlay_btn float_left"> <button (click)=" confirmSelection() ">Continue</button>
+					<!-- <h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3> -->
+					<!-- <h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4> -->
 				</div>
 			</div>
 		</div>
@@ -44,50 +30,44 @@
 		<div class="st_seat_full_container">
 			<div class="st_seat_lay_economy_wrapper float_left">
 				<div class="screen">
-					<img src="../../../assets/images/content/screen.png">
+				  <img src="../../../assets/images/content/screen.png" alt="Screen">
 				</div>
-
-			</div>
+				<div class="seat-legend">
+					<ul>
+					  <li *ngFor="let seatType of seatTypes" [ngClass]="getSeatTypeClass(seatType)">
+						{{ seatType.name }} - {{ seatType.price | currency:'': 'symbol' : '1.0-0'}} 
+						<span class="color-indicator" [ngStyle]="{'background-color': getColor(seatType)}"></span> 
+					  </li>
+					  <li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span></li>
+					</ul>
+				</div>
+			  </div>
+			  
 			<div class="st_seat_lay_economy_wrapper st_seat_lay_economy_wrapperexicutive float_left">
 				<div class="st_seat_lay_economy_heading float_left">
 					<h3>Executive + 3d glasss - rs 190.00</h3>
 				</div>
-				<div class="st_seat_lay_row float_left">
-					<!-- <div *ngFor="let seat of seats">
-						<ul class="">
-							<li class="col-lg-3" [ngClass]="{
-							'seat_disable': seat.status === 1,
-							'seat_available': seat.status === 0
-						  }">
-								<input type="checkbox" id="c1" [id]="seat.id" [checked]="isSelected(seat.id)"
-									[disabled]="seat.status === 1" (change)="onSeatChange(seat.seat_id)">
-								<label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)">
-									{{ seat.name }}
-
-								</label>
+				<div class="st_seat_lay_row float_left"  >
+					
+					<!-- Đối với từng hàng -->
+					<div *ngFor="let row of getRows()" class="row">
+						<!-- Hiển thị ghế trong hàng đó -->
+						<div class="seats">
+							<h4 style="text-transform: uppercase;">{{ row }}</h4>
+						<div *ngFor="let seat of seatsByRow[row]" class="seat-col">
+							<ul>
+							<li [ngClass]="seat.seat.seat_type_id == 1 ? 'seat_type_1' : (seat.seat.seat_type_id == 2  ? 'seat_type_2' : (seat.seat.seat_type_id == 3 ? 'seat_type_3' : (seat.status == 1 && !isSelected(seat) && !canBeToggled(seat)? 'seat_disable' : '')))">
+								<input type="checkbox" id="{{seat.id}}" name="cb" class="c" [ngClass]="{'selected': isSelected(seat)}"
+								(click)="toggleSeat(seat)"  [checked]="isSelected(seat)">
+								{{ seat.seat.column }}
+								<!-- {{seat.seat.seat_type.price}} -->
+								<label for="{{seat.id}}"></label> <!-- Hiển thị cột -->
 							</li>
-							<h1>{{ seat.seat.type }}</h1>
-						</ul>
-					</div> -->
-					<div *ngFor="let row of rows; let rowIndex = index" class="row">
-						<div *ngFor="let seat of row" class="col-lg-1">
-						  <ul>
-							<li [ngClass]="{
-								'seat_disable': seat.status === 1,
-								'seat_available': seat.status === 0,
-								'seat_type_1': seat.seat.type === 1,
-								'seat_type_2': seat.seat.type === 2,
-								'seat_type_3': seat.seat.type === 3
-							  }">
-							  <input type="checkbox" [id]="seat.id" [checked]="isSelected(seat.id)"
-									 [disabled]="seat.status === 1" (change)="onSeatChange(seat)">
-							  <label [attr.for]="seat.id" [class.selected]="isSelected(seat.id)" >
-								{{ seat.seat.row }}{{ seat.seat.column }} 
-							  </label>
-							</li>
-						  </ul>
+							</ul>
 						</div>
-					  </div>
+						</div>
+					</div>
+					  
 					  
 					  
 					  
@@ -98,29 +78,3 @@
 	</div>
 </div>
 
-<style>
-	input[type="checkbox"] {
-		display: hidden;
-	}
-
-	label {
-		display: inline-block;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	/* External CSS file */
-	.seat_disable {
-		color: #f2dede;
-		/* Light red for unavailable seats */
-		cursor: not-allowed;
-		/* Change cursor to indicate seat is disabled */
-	}
-
-	.seat_available {
-		color: #dff0d8;
-		/* Light green for available seats */
-	}
-</style>
