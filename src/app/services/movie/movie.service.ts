@@ -39,4 +39,8 @@ export class MovieService {
     return this.http.get<any>(`http://127.0.0.1:8000/api/movie/${id}`);
   }
 
+  getTopStories(){
+    return this.http.get<any>(`http://127.0.0.1:8000/api/top-bogs`);
+  }
+
 }

@@ -15,6 +15,7 @@ export class SingleMovieComponent implements OnInit {
   movie: any;
   movieId: string | null = null;
   topMovies: any[] = [];
+  topStories: any[] = [];
 
   constructor(private route: ActivatedRoute, private movieService: MovieService, private router: Router) {
   }
@@ -27,6 +28,10 @@ export class SingleMovieComponent implements OnInit {
 
     this.movieService.getTopMoviesInMonth().subscribe(movies => {
       this.topMovies = movies.data;
+    })
+    this.movieService.getTopStories().subscribe(stories => {
+      this.topStories = stories.data.data;
+      console.log(this.topStories);
     })
   }
 
