@@ -1,0 +1,5 @@
+.prs_upcom_movie_content_box_inner h2 {
+    white-space: nowrap; /* Ngăn chặn từng dòng xuống dòng */
+    overflow: hidden; /* Ẩn nội dung bị tràn */
+    text-overflow: ellipsis ; /* Thêm dấu ba chấm (...) cho nội dung bị tràn */
+  }

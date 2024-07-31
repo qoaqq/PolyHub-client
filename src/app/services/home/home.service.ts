@@ -10,6 +10,7 @@ export class HomeService {
   private imageUrl = 'http://localhost:8000/api/image';
   private upcomingMovieUrl = 'http://localhost:8000/api/upcoming-movie';
   private blogHomeUrl = 'http://localhost:8000/api/blog-home';
+  private bestMovieUrl = 'http://localhost:8000/api/top-movie';
   constructor(private http: HttpClient) { }
 
   getTopMovies(): Observable<any> { 
@@ -28,7 +29,9 @@ export class HomeService {
   getBlogHome(): Observable<any> {
     return this.http.get(this.blogHomeUrl);
   }
-
+  getBestMovies(): Observable<any> { 
+    return this.http.get(this.bestMovieUrl);
+  }
 }
 
 

@@ -30,6 +30,7 @@ import { SliderComponent } from './frontend/home/components/slider/slider.compon
 import { PaymentComponent } from './frontend/payment/payment.component';
 import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
 import { SessionTimerComponent } from './components/session-timer/session-timer.component';
+import { BestMovieComponent } from './frontend/home/components/best-movie/best-movie.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,6 +59,7 @@ import { SessionTimerComponent } from './components/session-timer/session-timer.
     PaymentComponent,
     FoodComboComponent,
     SessionTimerComponent,
+    BestMovieComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule, ReactiveFormsModule],
   providers: [AuthService],
