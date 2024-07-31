@@ -3,6 +3,7 @@ import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { forkJoin  } from 'rxjs';
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
@@ -37,31 +38,49 @@ export class MovieBookingComponent implements OnInit {
   }
 
   fetchData(): void {
+    const today = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(today.getDate() + 10);
+
+    // Tạo một mảng các ngày trong vòng 10 ngày tới
+    this.showingDates = [];
+    for (let d = new Date(today); d <= tenDaysLater; d.setDate(d.getDate() + 1)) {
+      this.showingDates.push(formatDate(d, 'yyyy-MM-dd', 'en-US'));
+    }
+
+    // Lấy dữ liệu từ API
     this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(response => {
       const showings = response.data;
       console.log(showings);
-  
-      // Group showings by date_release
-      this.groupedShowings = showings.reduce((acc: any, showing: any) => {
-        const date = showing.date_release;
-  
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        // Chuyển đổi time_release nếu cần thiết
-      // Nếu time_release không phải là mảng, bạn cần phải xử lý trường hợp này
-      if (typeof showing.time_release === 'string') {
-        showing.time_release = [showing.time_release]; // Đổi thành mảng nếu cần thiết
-      }
+      
 
-      // Đảm bảo time_release là mảng
-      showing.time_release = showing.time_release.map((time: string) => new Date(time));
-        acc[date].push(showing);
+      // Nhóm dữ liệu theo date_release
+      this.groupedShowings = showings.reduce((acc: any, showing: any) => {
+        const formattedDate = formatDate(new Date(showing.date_release), 'yyyy-MM-dd', 'en-US');
+        
+        if (!acc[formattedDate]) {
+          acc[formattedDate] = [];
+        }
+
+        // Kiểm tra và chuyển đổi time_release
+        if (typeof showing.time_release === 'string') {
+          showing.time_release = [showing.time_release]; // Chuyển thành mảng nếu cần thiết
+        }
+
+        // Đảm bảo time_release là mảng và chuyển đổi thành đối tượng Date
+        showing.time_release = showing.time_release.map((time: string) => new Date(time));
+
+        // Đưa dữ liệu vào nhóm theo date_release
+        acc[formattedDate].push(showing);
         return acc;
       }, {} as { [key: string]: any[] });
-  
-      // Optionally, you can convert the grouped data into an array for easier iteration in the view
-      this.showingDates = Object.keys(this.groupedShowings);
+
+      // Đảm bảo tất cả các ngày trong khoảng thời gian đều có dữ liệu
+      this.showingDates.forEach(date => {
+        if (!this.groupedShowings[date]) {
+          this.groupedShowings[date] = [];
+        }
+      });
     });
   }
 
