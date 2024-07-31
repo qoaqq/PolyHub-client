@@ -3,21 +3,23 @@ import { Router, ActivatedRoute ,NavigationStart} from '@angular/router';
 import { MovieBookingService } from 'src/app/services/movie-booking/movie-booking.service';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { forkJoin  } from 'rxjs';
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-movie-booking',
   templateUrl: './movie-booking.component.html',
   styleUrls: ['./movie-booking.component.scss']
 })
 export class MovieBookingComponent implements OnInit {
-
-  cinemas: any[] = [];
-  rooms: any[] = [];
-  showingReleases: any[] = [];
+  showingRelease: any[] = [];
   selectedSeats: any[] = [];
   selectedFoodCombos: any[] = [];
   movieId: string | null = null;
   private sessionTimeout: any;
   private sessionEndTime: number = 0;
+
+  groupedShowings: { [key: string]: any[] } = {};
+  showingDates: string[] = [];
+
 
   constructor(
     private seatBookingService: SeatBookingService, 
@@ -36,41 +38,53 @@ export class MovieBookingComponent implements OnInit {
   }
 
   fetchData(): void {
-    this.movieBookingService.getCinemas().subscribe(cinemaResponse => {
-      this.cinemas = cinemaResponse.data.data;
+    const today = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(today.getDate() + 10);
 
-      this.movieBookingService.getRooms().subscribe(roomResponse => {
-        this.rooms = roomResponse.data.data;
+    // Tạo một mảng các ngày trong vòng 10 ngày tới
+    this.showingDates = [];
+    for (let d = new Date(today); d <= tenDaysLater; d.setDate(d.getDate() + 1)) {
+      this.showingDates.push(formatDate(d, 'yyyy-MM-dd', 'en-US'));
+    }
 
-          this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(showingbyMovie => {
-            this.showingReleases = showingbyMovie.data;
-            this.mergeData();
-          });
+    // Lấy dữ liệu từ API
+    this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(response => {
+      const showings = response.data;
+      console.log(showings);
+      
+
+      // Nhóm dữ liệu theo date_release
+      this.groupedShowings = showings.reduce((acc: any, showing: any) => {
+        const formattedDate = formatDate(new Date(showing.date_release), 'yyyy-MM-dd', 'en-US');
         
+        if (!acc[formattedDate]) {
+          acc[formattedDate] = [];
+        }
+
+        // Kiểm tra và chuyển đổi time_release
+        if (typeof showing.time_release === 'string') {
+          showing.time_release = [showing.time_release]; // Chuyển thành mảng nếu cần thiết
+        }
+
+        // Đảm bảo time_release là mảng và chuyển đổi thành đối tượng Date
+        showing.time_release = showing.time_release.map((time: string) => new Date(time));
+
+        // Đưa dữ liệu vào nhóm theo date_release
+        acc[formattedDate].push(showing);
+        return acc;
+      }, {} as { [key: string]: any[] });
+
+      // Đảm bảo tất cả các ngày trong khoảng thời gian đều có dữ liệu
+      this.showingDates.forEach(date => {
+        if (!this.groupedShowings[date]) {
+          this.groupedShowings[date] = [];
+        }
       });
-    })
+    });
   }
+
   mergeData(): void {
-    
-    this.rooms.forEach(room => {
-      room['showingReleases'] = this.showingReleases
-        .filter(showing => showing.room_id == room.id && showing.movie_id == this.movieId);
-    });
-
-    this.cinemas.forEach(cinema => {
-      cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id && room['showingReleases'].length > 0);
-    });
-  }
-
-  formatTime(dateString: string): string {
-    const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  }
-  formatTime2(dateString: string): string {
-    const date = new Date(dateString);
-    return `${date}`;
   }
 
 
