@@ -7,20 +7,23 @@
 						<div class="st_video_slide_sec float_left">
 							<div *ngFor="let attribute of movie?.attributes">
 								<div *ngIf="attribute?.name === 'Trailer'">
-									<a rel='external' href='https://www.youtube.com/embed/US6L0VKR1OE' title='title' class="test-popup-link">
+									<a rel='external' href='{{ attribute?.attribute_values[0].value }}' title='title' class="test-popup-link">
 										<img src="../../../../assets/images/index_III/icon.png" alt="img">
 									</a>
 								</div>
 							</div>
 							<h3>{{ movie?.name }}</h3>
-							<p>VietNamese</p>
+							<div *ngFor="let attribute of movie?.attributes">
+								<p *ngIf="attribute?.name === 'Languge'">
+									<span *ngFor="let attValue of attribute?.attribute_values">{{ attValue?.value + ' . '}}</span>
+								</p>
+							</div>
 							<h4><span *ngFor="let category of movie?.categories">{{ category?.name }} . </span></h4>
 							<h5><span>2d</span> <span>3d</span> <span>D 4DX</span> <span>Imax 3D</span></h5>
 						</div>
 						<div class="st_video_slide_social float_left">
 						<div class="st_slider_rating_btn_heart st_slider_rating_btn_heart_5th">
 								<h5><i class="fa fa-heart"></i> 85%</h5>
-								<h4>52,291 votes</h4>
 							</div>
 							<div class="st_video_slide_social_left float_left">
 								<ul>
@@ -162,25 +165,11 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
+									<div *ngFor="let story of topStories" class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
 										<div class="st_md_ts_main_sec float_left">
-											<img src="../../../../assets/images/content/md1.png" alt="img">
-											<p><a href="#">Aquaman: Film Review - Makes A Refreshing Spl...</a>
-											</p>	<span>14 December</span>
-										</div>
-									</div>
-									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
-										<div class="st_md_ts_main_sec float_left">
-											<img src="../../../../assets/images/content/md2.png" alt="img">
-											<p><a href="#">Here's Proof That the Hype Is Real for James ...</a>
-											</p>	<span>25 December</span>
-										</div>
-									</div>
-									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
-										<div class="st_md_ts_main_sec float_left">
-											<img src="../../../../assets/images/content/md3.png" alt="img">
-											<p><a href="#">The Epic Cast of Aquaman Will Definitely Make...</a>
-											</p>	<span>28 December</span>
+											<img src="{{ story?.image }}" alt="img">
+											<p><a [routerLink]="['/blog', story?.id]">{{ story?.title }}</a></p>
+											<span>{{ story?.updated_at | date:'MMMM d' }}</span>
 										</div>
 									</div>
 								</div>
@@ -190,7 +179,7 @@
 									<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#home" aria-controls="best" role="tab" data-toggle="tab">Summary</a>
 							</li>
-							<li role="presentation"><a href="#menu2" aria-controls="trand" role="tab" data-toggle="tab">Movie of images</a>
+							<li role="presentation"><a href="#menu2" aria-controls="trand" role="tab" data-toggle="tab">Images of movie</a>
 							</li>
 						</ul>
 								</div>
@@ -255,7 +244,7 @@
 							<div class="col-md-12">
 								<div class="st_ind_sidebar_md_textbox_btn float_left">
 									<ul>
-										<li>	<a routerLink="/movie_booking">Corporate booking &nbsp; <i class="fas fa-long-arrow-alt-right"></i></a>
+										<li><a [routerLink]="['/movie-booking', movieId]">Corporate booking &nbsp; <i class="fas fa-long-arrow-alt-right"></i></a>
 										</li>
 									</ul>
 								</div>

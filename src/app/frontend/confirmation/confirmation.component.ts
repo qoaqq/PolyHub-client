@@ -5,20 +5,28 @@ import {
   RendererFactory2,
 } from '@angular/core';
 
+import { BillService } from '../../services/bill/bill.service';
+
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
-  styleUrls: ['./confirmation.component.scss']
+  styleUrls: ['./confirmation.component.scss'],
 })
 export class ConfirmationComponent implements AfterViewInit {
+  barcode: string | undefined;
+  billData: any;
   private renderer: Renderer2;
 
-  constructor(private rendererFactory: RendererFactory2) {
+  constructor(
+    private rendererFactory: RendererFactory2,
+    private billService: BillService
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   ngAfterViewInit() {
     this.loadResources();
+    this.createBill();
   }
 
   private loadResources() {
@@ -108,5 +116,32 @@ export class ConfirmationComponent implements AfterViewInit {
       script.onerror = (error: ErrorEvent) => reject(error);
       this.renderer.appendChild(document.head, script);
     });
+  }
+
+  createBill() {
+    const billData = {
+      bill: {
+        paymentMethod: 'vnpay',
+        grandTotal: 1000,
+      },
+      ticket_seat: {
+        selectedSeats: [],
+        selectedFoodCombos: [],
+        showingrelease: {},
+      },
+    };
+
+    this.billService.createBill(billData).subscribe((response) => {
+      if (response.data) {
+        this.barcode = response.data.barcode;
+        console.log('Barcode Data:', this.barcode);
+        this.billData = response.data.bill;
+        console.log('Bill created successfully:', response.data.bill);
+        console.log('Check-in created successfully:', response.data.checkin);
+      } else {
+        console.error('Error creating bill:', response.message);
+      }
+    });
+
   }
 }
