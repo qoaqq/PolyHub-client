@@ -9,15 +9,16 @@ import { forkJoin  } from 'rxjs';
   styleUrls: ['./movie-booking.component.scss']
 })
 export class MovieBookingComponent implements OnInit {
-
-  cinemas: any[] = [];
-  rooms: any[] = [];
-  showingReleases: any[] = [];
+  showingRelease: any[] = [];
   selectedSeats: any[] = [];
   selectedFoodCombos: any[] = [];
   movieId: string | null = null;
   private sessionTimeout: any;
   private sessionEndTime: number = 0;
+
+  groupedShowings: { [key: string]: any[] } = {};
+  showingDates: string[] = [];
+
 
   constructor(
     private seatBookingService: SeatBookingService, 
@@ -36,41 +37,35 @@ export class MovieBookingComponent implements OnInit {
   }
 
   fetchData(): void {
-    this.movieBookingService.getCinemas().subscribe(cinemaResponse => {
-      this.cinemas = cinemaResponse.data.data;
+    this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(response => {
+      const showings = response.data;
+      console.log(showings);
+  
+      // Group showings by date_release
+      this.groupedShowings = showings.reduce((acc: any, showing: any) => {
+        const date = showing.date_release;
+  
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        // Chuyển đổi time_release nếu cần thiết
+      // Nếu time_release không phải là mảng, bạn cần phải xử lý trường hợp này
+      if (typeof showing.time_release === 'string') {
+        showing.time_release = [showing.time_release]; // Đổi thành mảng nếu cần thiết
+      }
 
-      this.movieBookingService.getRooms().subscribe(roomResponse => {
-        this.rooms = roomResponse.data.data;
-
-          this.movieBookingService.getShowingReleasebyMovieId(this.movieId).subscribe(showingbyMovie => {
-            this.showingReleases = showingbyMovie.data;
-            this.mergeData();
-          });
-        
-      });
-    })
+      // Đảm bảo time_release là mảng
+      showing.time_release = showing.time_release.map((time: string) => new Date(time));
+        acc[date].push(showing);
+        return acc;
+      }, {} as { [key: string]: any[] });
+  
+      // Optionally, you can convert the grouped data into an array for easier iteration in the view
+      this.showingDates = Object.keys(this.groupedShowings);
+    });
   }
+
   mergeData(): void {
-    
-    this.rooms.forEach(room => {
-      room['showingReleases'] = this.showingReleases
-        .filter(showing => showing.room_id == room.id && showing.movie_id == this.movieId);
-    });
-
-    this.cinemas.forEach(cinema => {
-      cinema['rooms'] = this.rooms.filter(room => room.cinema_id === cinema.id && room['showingReleases'].length > 0);
-    });
-  }
-
-  formatTime(dateString: string): string {
-    const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  }
-  formatTime2(dateString: string): string {
-    const date = new Date(dateString);
-    return `${date}`;
   }
 
 

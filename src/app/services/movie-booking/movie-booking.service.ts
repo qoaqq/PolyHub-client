@@ -33,17 +33,6 @@ export class MovieBookingService {
   private showingUrl = 'http://127.0.0.1:8000/api/admin/showingrelease';
 
   constructor(private http: HttpClient) { }
-
-  getCinemas(): Observable<any> {
-    return this.http.get<any>(this.cinemaUrl);
-  }
-
-  getRooms(): Observable<any> {
-    return this.http.get<any>(this.roomUrl);
-  }
-  getShowingRelease(): Observable<any> {
-    return this.http.get<any>(this.showingUrl);
-  }
   getShowingReleasebyMovieId(id: any): Observable<any> {
     return this.http.get<any>(`http://127.0.0.1:8000/api/admin/showingrelease/${id}/movie`);
   }
