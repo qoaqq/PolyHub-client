@@ -56,7 +56,7 @@
 							<h4 style="text-transform: uppercase;">{{ row }}</h4>
 						<div *ngFor="let seat of seatsByRow[row]" class="seat-col">
 							<ul>
-							<li [ngClass]="seat.seat.seat_type_id == 1 && seat.status == 0 ? 'seat_type_1' : (seat.seat.seat_type_id == 2 ? 'seat_type_2' : (seat.seat.seat_type_id == 3 ? 'seat_type_3' : (seat.status == 1 ? 'seat_disable' : '')))">
+								<li [ngClass]="seat.status == 1 && !isSelected(seat) ? 'seat_disable' : (seat.seat.seat_type_id == 1 ? 'seat_type_1' : (seat.seat.seat_type_id == 2 ? 'seat_type_2' : (seat.seat.seat_type_id == 3 ? 'seat_type_3' : '')))">
 								<input type="checkbox" id="{{seat.id}}" name="cb" class="c" [ngClass]="{'selected': isSelected(seat)}"
 								(click)="toggleSeat(seat)"  [checked]="isSelected(seat)">
 								{{ seat.seat.column }}

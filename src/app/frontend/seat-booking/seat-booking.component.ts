@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
-import { Subscription  } from 'rxjs';
+import { Subscription, forkJoin, of, Observable } from 'rxjs';
 import { Location } from '@angular/common';
+import { concatMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-seat-booking',
@@ -15,6 +16,7 @@ export class SeatBookingComponent implements OnInit {
   rows: any[][] = [];
   seatsByRow: { [row: string]: any[] } = {};
   movieId: string | null = null;
+  showingId: string | null = null;
   seatTypes: any[] = [];
   selectedSeats: any[] = [];
   selectedFoodCombos: any[] = [];
@@ -27,8 +29,6 @@ export class SeatBookingComponent implements OnInit {
     private router: Router,
     private location: Location,
   ) {
-    
-    
     // Lắng nghe sự kiện NavigationStart
     this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -39,7 +39,7 @@ export class SeatBookingComponent implements OnInit {
         }
       }
     });
-  
+
     // Lắng nghe sự kiện popstate
     window.addEventListener('popstate', () => {
       const currentUrl = this.location.path();
@@ -51,16 +51,48 @@ export class SeatBookingComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-
+  ngOnInit() {
     // Đọc dữ liệu từ session storage và cập nhật selectedSeats
     const savedSeats = sessionStorage.getItem('selectedSeats');
     if (savedSeats) {
       this.selectedSeats = JSON.parse(savedSeats);
     }
-    this.loadSeatTypes();
-    this.loadSeats();
+    this.loadShowing();
     this.loadSelectedSeats();
+    this.loadSeatTypes();
+
+    this.resetSelectedSeatsStatus().subscribe(() => {
+      this.loadSeats();
+    });
+  }
+
+  loadShowing() {
+    const showingRelease = sessionStorage.getItem('showingRelease');
+    if (showingRelease) {
+      const showing = JSON.parse(showingRelease);
+      this.movieId = showing.movie_id;
+      this.showingId = showing.id;
+    }
+  }
+
+  resetSelectedSeatsStatus(): Observable<void> {
+    if (this.selectedSeats.length === 0) {
+      return of(void 0); // Nếu không có ghế nào được chọn, trả về Observable hoàn thành ngay lập tức
+    }
+
+    const resetRequests = this.selectedSeats.map((seat: any) =>
+      this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, false)
+    );
+
+    return forkJoin(resetRequests).pipe(
+      concatMap(() => {
+        return of(void 0);
+      }),
+      catchError(error => {
+        console.error('Error resetting selected seats:', error);
+        return of(void 0);
+      })
+    );
   }
 
   loadSeatTypes() {
@@ -75,7 +107,7 @@ export class SeatBookingComponent implements OnInit {
 
   toggleSeat(seat: any): void {
     const seatIndex = this.selectedSeats.findIndex(s => s.id === seat.id);
-    
+
     if (seatIndex > -1) {
       // Nếu ghế đã được chọn, xóa khỏi danh sách
       this.selectedSeats.splice(seatIndex, 1);
@@ -87,7 +119,7 @@ export class SeatBookingComponent implements OnInit {
     // Cập nhật session storage
     sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
   }
-  // Tải ghế đã chọn từ session storage
+
   loadSelectedSeats(): void {
     const selectedSeats = sessionStorage.getItem('selectedSeats');
     if (selectedSeats) {
@@ -147,27 +179,16 @@ export class SeatBookingComponent implements OnInit {
   }
 
   loadSeats(): void {
-    const showingRelease = sessionStorage.getItem('showingRelease');
-    if (showingRelease) {
-      const showing = JSON.parse(showingRelease);
-      this.movieId = showing.movie_id;
-      const showingId = showing.id;
-      
-      
-      // Gọi API với showingId
-      this.seatBookingService.getSeats(showingId).subscribe(
-        (data) => {
-          this.seats = data;
-          console.log(this.seats);
-          this.groupSeatsByRow();
-        },
-        (error) => {
-          console.error('Error fetching seats:', error); // Xử lý lỗi
-        }
-      );
-    } else {
-      console.warn('No showing release found in session storage.');
-    }
+    // Gọi API với showingId
+    this.seatBookingService.getSeats(this.showingId).subscribe(
+      (data) => {
+        this.seats = data;
+        this.groupSeatsByRow();
+      },
+      (error) => {
+        console.error('Error fetching seats:', error); // Xử lý lỗi
+      }
+    );
   }
 
   groupSeatsByRow(): void {
@@ -191,33 +212,82 @@ export class SeatBookingComponent implements OnInit {
       return;
     }
   
-    const existingSessionEndTime = sessionStorage.getItem('sessionEndTime');
-    if (existingSessionEndTime && Date.now() < +existingSessionEndTime) {
-      this.sessionEndTime = +existingSessionEndTime;
-    } else {
-      // Đặt thời gian kết thúc phiên mới nếu không tồn tại hoặc đã hết hạn
-      this.sessionEndTime = Date.now() + 5 *60 * 1000; // 5 phút từ bây giờ
-      sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
-    }
+    // Kiểm tra trạng thái của các ghế đã chọn
+    this.checkSeatsStatus(this.selectedSeats).subscribe(statuses => {
+      const anySeatBooked = statuses.some(status => status === true);
+      
+      if (anySeatBooked) {
+        alert('Some selected seats are already booked. Please select other seats.');
+        return;
+      }
   
-    // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
-    this.sessionTimeout = setTimeout(() => {
-      this.clearSession();
-      this.router.navigate(['/movies']);
-    }, this.sessionEndTime - Date.now()); // thời gian còn lại
+      const existingSessionEndTime = sessionStorage.getItem('sessionEndTime');
+      if (existingSessionEndTime && Date.now() < +existingSessionEndTime) {
+        this.sessionEndTime = +existingSessionEndTime;
+      } else {
+        // Đặt thời gian kết thúc phiên mới nếu không tồn tại hoặc đã hết hạn
+        this.sessionEndTime = Date.now() + 5 * 60 * 1000; // 5 phút từ bây giờ
+        sessionStorage.setItem('sessionEndTime', this.sessionEndTime.toString());
+      }
   
-    // Điều hướng đến trang food-combo
-    this.router.navigate(['/food-combo']);
+      // Đặt thời gian chờ 5 phút để xóa session và điều hướng về trang trước đó
+      this.sessionTimeout = setTimeout(() => {
+        this.clearSession();
+        this.router.navigate(['/movies']);
+      }, this.sessionEndTime - Date.now()); // thời gian còn lại
+  
+      // Tạo mảng các Observable để cập nhật trạng thái ghế
+      const updateRequests = this.selectedSeats.map(seat => 
+        this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, true)
+      );
+  
+      // Sử dụng forkJoin để đợi tất cả các yêu cầu hoàn thành
+      forkJoin(updateRequests).subscribe(() => {
+        // Điều hướng đến trang food-combo sau khi tất cả các ghế đã được cập nhật
+        this.router.navigate(['/food-combo']);
+      }, error => {
+        console.error('Error updating seats:', error);
+        alert('Failed to update seat status. Please try again.');
+      });
+    }, error => {
+      console.error('Error checking seat statuses:', error);
+      alert('Failed to check seat statuses. Please try again.');
+    });
   }
-  
+
+  checkSeatsStatus(seats: any[]): Observable<boolean[]> {
+    const statusRequests = seats.map(seat => 
+      this.seatBookingService.checkSeatStatus(seat.id)
+    );
+    return forkJoin(statusRequests);
+  }
 
   clearSession(): void {
-    sessionStorage.removeItem('selectedSeats');
-    sessionStorage.removeItem('showingRelease');
-    sessionStorage.removeItem('selectedFoodCombos');
-    sessionStorage.removeItem('sessionEndTime');
-    if (this.sessionTimeout) {
-      clearTimeout(this.sessionTimeout);
+    if (this.selectedSeats.length > 0) {
+      const resetRequests = this.selectedSeats.map(seat =>
+        this.seatBookingService.updateSeatStatus(this.showingId, seat.seat_id, false)
+      );
+
+      forkJoin(resetRequests).subscribe(() => {
+        sessionStorage.removeItem('selectedSeats');
+        sessionStorage.removeItem('showingRelease');
+        sessionStorage.removeItem('selectedFoodCombos');
+        sessionStorage.removeItem('sessionEndTime');
+        if (this.sessionTimeout) {
+          clearTimeout(this.sessionTimeout);
+        }
+      }, error => {
+        console.error('Error resetting seats:', error);
+        alert('Failed to reset seat status. Please try again.');
+      });
+    } else {
+      sessionStorage.removeItem('selectedSeats');
+      sessionStorage.removeItem('showingRelease');
+      sessionStorage.removeItem('selectedFoodCombos');
+      sessionStorage.removeItem('sessionEndTime');
+      if (this.sessionTimeout) {
+        clearTimeout(this.sessionTimeout);
+      }
     }
   }
 }
