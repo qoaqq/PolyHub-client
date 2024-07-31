@@ -67,30 +67,33 @@
 							</div>
 							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div class="pager_wrapper prs_blog_pagi_wrapper">
-									<ul class="pagination">
-										<li><a href="#"><i class="flaticon-left-arrow"></i></a>
-										</li>
-										<li class="btc_shop_pagi"><a href="#">01</a>
-										</li>
-										<li class="btc_shop_pagi"><a href="#">02</a>
-										</li>
-										<li class="btc_third_pegi btc_shop_pagi"><a href="#">03</a>
-										</li>
-										<li class="hidden-xs btc_shop_pagi"><a href="#">04</a>
-										</li>
-										<li><a href="#"><i class="flaticon-right-arrow"></i></a>
-										</li>
-									</ul>
+								  <ul class="pagination">
+									<!-- Previous Button -->
+									<li *ngIf="currentPage > 1">
+									  <a (click)="goToPage(currentPage - 1)"><i class="flaticon-left-arrow"></i></a>
+									</li>
+							  
+									<!-- Pagination Numbers -->
+									<li *ngFor="let page of getPagesArray()" [ngClass]="{'active': page === currentPage}">
+									  <a (click)="goToPage(page)">{{ page }}</a>
+									</li>
+							  
+									<!-- Next Button -->
+									<li *ngIf="currentPage < totalPages">
+									  <a (click)="goToPage(currentPage + 1)"><i class="flaticon-right-arrow"></i></a>
+									</li>
+								  </ul>
 								</div>
-							</div>
+							  </div>
+							  
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 					<div class="hs_blog_right_sidebar_main_wrapper">
 						<div class="prs_mcc_left_searchbar_wrapper">
-							<input type="text" placeholder="Search Movie">
-							<button><i class="flaticon-tool"></i>
+							<input type="text" [(ngModel)]="searchTerm" placeholder="Search Movie">
+							<button (click)="searchBlogs(searchTerm)"><i class="flaticon-tool"></i>
 							</button>
 						</div>
 						<div class="prs_bc_right_about_wrapper">
@@ -100,47 +103,45 @@
 							<h5><a href="#">Read More <i class="fa fa-long-arrow-right"></i></a></h5>
 						</div>
 						<div class="prs_mcc_bro_title_wrapper">
-						<h2>Category</h2>
-						<ul>
-						  <li *ngFor="let category of categories">
-							<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
-							<a href="javascript:void(0)" (click)="onCategorySelected(category.id)">
-							  {{ category.name }}
-							</a>
-						  </li>
-						</ul>
+							<h2>Category</h2>
+							<ul>
+							  <li>
+								<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
+								<a href="javascript:void(0)" (click)="onCategorySelected(null)">
+								  All 
+								</a>
+							  </li>
+							  <li *ngFor="let category of categories">
+								<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
+								<a href="javascript:void(0)" (click)="onCategorySelected(category.id)">
+								  {{ category.name }} <span>({{ category.blogs_count }})</span>
+								</a>
+							  </li>
+							</ul>
 					  </div>
 					
 						<div class="prs_mcc_bro_title_wrapper">
 							<h2>Recent News</h2>
-							<div class="hs_blog_right_recnt_cont_wrapper" *ngFor="let blog of blogs">
+							<div class="hs_blog_right_recnt_cont_wrapper" *ngFor="let blog of latestBlogs">
 								<div class="hs_footer_ln_img_wrapper">
-									<img src="{{ blog.image }}" width="80px" height="80px" alt="ln_img" />
+								  <img [src]="blog.image" width="80" height="80" alt="ln_img" />
 								</div>
 								<div class="hs_footer_ln_cont_wrapper">
-									<h4>{{ blog.title }}</h4>
-									<p>{{ blog.created_at | date: 'longDate' }}</p>
+								  <h4><a [routerLink]="['/blog', blog.id]">{{ blog.title }}</a></h4>
+								  <p>{{ blog.created_at | date: 'longDate' }}</p>
 								</div>
 							</div>
 						</div>
 						<div class="prs_mcc_bro_title_wrapper">
 							<h2>Archives</h2>
 							<ul>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2012 <span>23,124</span></a> 
+								<li *ngFor="let year of years">
+								  <i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
+								  <a href="javascript:void(0)" (click)="onYearSelected(year.year)">
+									{{ year.year }} <span>({{ year.count }})</span>
+								  </a>
 								</li>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2013 <span>512</span></a> 
-								</li>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2014 <span>548</span></a> 
-								</li>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2015 <span>557</span></a> 
-								</li>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2016 <span>554</span></a> 
-								</li>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2017 <span>567</span></a> 
-								</li>
-								<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">2022 <span>689</span></a> 
-								</li>
-							</ul>
+							  </ul>
 						</div>
 						<div class="prs_blog_right_sub_btn_wrapper">
 							<h2>Subscribe</h2>
