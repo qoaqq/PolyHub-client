@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Renderer2,
   RendererFactory2,
+  ChangeDetectorRef,
 } from '@angular/core';
 
 import { BillService } from '../../services/bill/bill.service';
@@ -19,7 +20,8 @@ export class ConfirmationComponent implements AfterViewInit {
 
   constructor(
     private rendererFactory: RendererFactory2,
-    private billService: BillService
+    private billService: BillService,
+    private cdr: ChangeDetectorRef
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -119,29 +121,10 @@ export class ConfirmationComponent implements AfterViewInit {
   }
 
   createBill() {
-    const billData = {
-      bill: {
-        paymentMethod: 'vnpay',
-        grandTotal: 1000,
-      },
-      ticket_seat: {
-        selectedSeats: [],
-        selectedFoodCombos: [],
-        showingrelease: {},
-      },
-    };
-
-    this.billService.createBill(billData).subscribe((response) => {
-      if (response.data) {
-        this.barcode = response.data.barcode;
-        console.log('Barcode Data:', this.barcode);
-        this.billData = response.data.bill;
-        console.log('Bill created successfully:', response.data.bill);
-        console.log('Check-in created successfully:', response.data.checkin);
-      } else {
-        console.error('Error creating bill:', response.message);
-      }
-    });
-
+    const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
+    console.log(billData);
+    
+    this.barcode = billData?.data.barcode;
+    this.cdr.detectChanges();
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
+import { UserComponent } from '../user/user.component';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -13,6 +14,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./booking-type.component.scss'],
 })
 export class BookingTypeComponent implements OnInit {
+  user : any = {};
   combo: any;
   paymentForm: FormGroup;
   selectedSeats: any[] = [];
@@ -44,7 +46,15 @@ export class BookingTypeComponent implements OnInit {
     this.loadTicketSeats();
     this.loadFoodCombos();
     this.calculateTotalPriceTicket();
-    this.calculateTotalPriceFoodCombo(); // Tính tổng tiền của các food combo
+    this.calculateTotalPriceFoodCombo();
+    this.getUser();
+  }
+
+  getUser(): void {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      this.user = JSON.parse(user);
+    }
   }
 
   loadShowingRelease(): void {
@@ -125,6 +135,7 @@ export class BookingTypeComponent implements OnInit {
     const paymentForm = this.paymentForm?.value;
 
     const bill = {
+      user_id: this.user.id,
       grandTotal: this.grandTotal,
       paymentMethod: paymentForm?.paymentMethod,
     };
@@ -143,6 +154,7 @@ export class BookingTypeComponent implements OnInit {
 
     this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
       console.log(data);
+      sessionStorage.setItem('billData', JSON.stringify(data));
       if (data.redirect_url) {
         window.location.href = data.redirect_url;
       }
