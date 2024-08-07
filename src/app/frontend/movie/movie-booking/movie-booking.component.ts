@@ -98,7 +98,7 @@ export class MovieBookingComponent implements OnInit {
       sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
       sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
 
-      
+
       // Điều hướng đến trang tiếp theo
       this.router.navigate(['/seat-booking']);
     },
