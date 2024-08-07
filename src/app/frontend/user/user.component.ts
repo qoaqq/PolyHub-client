@@ -59,14 +59,13 @@ export class UserComponent implements OnInit {
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-            this.user.avatar = e.target.result; // Lưu base64 vào avatar
-        };
-        reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.user.avatar = e.target.result; // Lưu base64 vào avatar
+      };
+      reader.readAsDataURL(file);
     }
-}
-
+  }
 
   updateUser(): void {
     this.authService.updateUser(this.user).subscribe({
@@ -81,4 +80,5 @@ export class UserComponent implements OnInit {
       },
     });
   }
+
 }
