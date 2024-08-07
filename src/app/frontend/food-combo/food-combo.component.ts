@@ -9,7 +9,7 @@ import { FoodComboService } from 'src/app/services/food-combo/food-combo.service
   styleUrls: ['./food-combo.component.scss']
 })
 export class FoodComboComponent implements OnInit {
-  foodCombos: { id: number; name: string; description: string; price: number; quantity: number }[] = [];
+  foodCombos: { id: number; name: string; description: string; price: number; quantity: number; avatar?: string; }[] = [];
   selectedFoodCombos: { id: number; name: string; quantity: number; price: number }[] = [];
   totalPriceFoodCombo: number = 0;
   showingRelease: any;

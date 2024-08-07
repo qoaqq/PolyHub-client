@@ -2,16 +2,6 @@
 	<div class="container container_seat">
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> <a  [routerLink]="['/movie-booking', movieId]"><i
-							class="fas fa-long-arrow-alt-left"></i> &nbsp;Back</a>
-				</div>
-				<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
-					<a  (click)="goToFoodCombo()">
-					  <i class="fas fa-long-arrow-alt-left"></i> &nbsp; Continue
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 				<div class="st_bt_top_center_heading st_bt_top_center_heading_seat_book_page float_left">
 					<!-- <h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3> -->
 					<!-- <h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4> -->
@@ -73,6 +63,19 @@
 					  
 				</div>
 
+			</div>
+		</div>
+		<!-- continute buttom -->
+		<div class="d-flex justify-content-between col-lg-4 col-md-4 col-sm-12 col-xs-12 st_seat_full_container">
+			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> 
+				<a [routerLink]="['/movie-booking', movieId]">
+					<i class="fas fa-long-arrow-alt-left"></i> &nbsp;Back
+				</a>
+			</div>
+			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
+				<a (click)="goToFoodCombo()" href="javascript:void(0);">
+				<i class="fas fa-long-arrow-alt-left"></i> &nbsp; Continue
+				</a>
 			</div>
 		</div>
 	</div>
