@@ -15,7 +15,7 @@ export class RelesedMovieComponent {
     // phim đang chiếu
     this.HomeService.getMovies().subscribe(data => {
       this.movies = data.data.data;
-      console.log(data);
+      // console.log(data);
       // console.log(this.movies);
     });
   }

@@ -9,12 +9,19 @@ import {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent  {
-  
+  blogHot: any[] = [];
   constructor( private HomeService: HomeService , private router: Router) {
     
   }
   goToMovies() {
     this.router.navigate(['/movies']);
+  }
+  ngAfterViewInit() {
+    this.HomeService.getBlogHot().subscribe(data => {
+      this.blogHot = data.data;
+      // console.log(data);
+      console.log(this.blogHot);
+    });
   }
 
 }

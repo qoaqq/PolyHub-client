@@ -11,6 +11,8 @@ export class HomeService {
   private upcomingMovieUrl = 'http://localhost:8000/api/upcoming-movie';
   private blogHomeUrl = 'http://localhost:8000/api/blog-home';
   private bestMovieUrl = 'http://localhost:8000/api/top-movie';
+  private bannerUrl = 'http://localhost:8000/api/banners';
+  private bloghotUrl = 'http://localhost:8000/api/blog-hot';
   constructor(private http: HttpClient) { }
 
   getTopMovies(): Observable<any> { 
@@ -31,6 +33,13 @@ export class HomeService {
   }
   getBestMovies(): Observable<any> { 
     return this.http.get(this.bestMovieUrl);
+  }
+  getBanner(): Observable<any> { 
+    return this.http.get(this.bannerUrl);
+  }
+
+  getBlogHot(): Observable<any> { 
+    return this.http.get(this.bloghotUrl);
   }
 }
 

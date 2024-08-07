@@ -23,7 +23,7 @@ export class SilderVideoComponent implements AfterViewInit {
       } else {
         console.error('Dữ liệu trả về không phải là mảng hoặc không có thuộc tính data:', response);
       }
-      console.log(this.image);
+      // console.log(this.image);
     } catch (error) {
       console.error('Lỗi khi lấy thông tin hình ảnh:', error);
     }

@@ -15,7 +15,7 @@ export class UpcomingMovieComponent {
   ngAfterViewInit() {
     this.HomeService.getUpComingMovie().subscribe(data => { 
       this.upcomingMovie = data.data.data;
-      console.log(this.upcomingMovie);
+      // console.log(this.upcomingMovie);
     });
   }
   viewDetails(movieId: number): void {

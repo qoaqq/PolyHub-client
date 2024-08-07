@@ -15,7 +15,7 @@ export class BestMovieComponent {
     // phim đang chiếu
     this.HomeService.getBestMovies().subscribe(data => {
       this.best = data.data;
-      console.log(data);
+      // console.log(data);
       // console.log(this.movies);
     });
   }
