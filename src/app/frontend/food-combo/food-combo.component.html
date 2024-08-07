@@ -2,7 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-12 header">
-        <a routerLink="/seat-booking" class="nav-button"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
+        <div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> 
+        </div>
         <app-session-timer></app-session-timer>
       </div>
       <div class="col-12 details-section">
@@ -15,21 +16,49 @@
       <div class="prs_heading_section_wrapper">
         <h2>Select Food Combos</h2>
       </div>
-      <div class="col-12 food-combo-container">
-        <div *ngFor="let combo of foodCombos" class="food-combo-item">
-          <h3>{{ combo.name }}</h3>
-          <p>{{ combo.description }}</p>
-          <p>Price: <span>{{ combo.price | currency }}</span></p>
-          <div class="quantity-controls">
-            <button (click)="decreaseQuantity(combo.id)" class="quantity-btn">-</button>
-            <input type="number" [(ngModel)]="combo.quantity" min="0" (input)="onQuantityChange(combo.id, $event)" class="quantity-input">
-            <button (click)="increaseQuantity(combo.id)" class="quantity-btn">+</button>
+      <!-- food combos -->
+      <section class="section-meals">
+        <div class="container-food grid grid--3-cols margin-right-md">
+          <div *ngFor="let combo of foodCombos" class="meal">
+            <img
+                [src]="combo?.avatar ? 'http://127.0.0.1:8000/' + combo.avatar : ''"
+                class="meal-img"
+                [alt]="combo?.name ? combo.name : 'Default Alt Text'"
+            />
+            <div class="meal-content">
+              <div class="meal-tags">
+                <span class="tag tag--vegetarian">{{ combo?.name }}</span>
+              </div>
+              <p class="meal-title">{{ 'Price: ' + (combo?.price | currency)}}</p>
+              <ul class="meal-attributes">
+                <li class="meal-attribute">
+                  <span>{{ combo?.description }}</span>
+                </li>
+                <li class="meal-attribute">
+                  <div class="quantity-controls">
+                    <button (click)="decreaseQuantity(combo.id)" class="quantity-btn">-</button>
+                    <input type="number" [(ngModel)]="combo.quantity" min="0" (input)="onQuantityChange(combo.id, $event)" class="quantity-input">
+                    <button (click)="increaseQuantity(combo.id)" class="quantity-btn">+</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="text-center mt-4">
-      <a routerLink="/booking-type" class="confirm-button">Confirm</a>
+      </section>
+      <!-- continute buttom -->
+		<div class="d-flex justify-content-between col-lg-4 col-md-4 col-sm-12 col-xs-12 st_seat_full_container">
+			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left"> 
+				<a routerLink="/seat-booking">
+					<i class="fas fa-long-arrow-alt-left"></i> &nbsp;Back
+				</a>
+			</div>
+			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
+				<a routerLink="/booking-type" href="javascript:void(0);">
+				<i class="fas fa-long-arrow-alt-left"></i> &nbsp;Continue
+				</a>
+			</div>
+		</div>
     </div>
   </div>
 </div>
