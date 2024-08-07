@@ -32,7 +32,7 @@ export class AuthService {
           if (response && response.token) {
             localStorage.setItem('token', response.token);
             this.loggedIn.next(true);
-            this.loadUser(); // Tải thông tin người dùng
+            this.loadUser();
           }
         }),
         catchError((error: HttpErrorResponse) => {

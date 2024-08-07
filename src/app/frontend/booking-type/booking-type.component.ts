@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
-import { UserComponent } from '../user/user.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // Import HttpHeaders ở đây
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -14,7 +13,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./booking-type.component.scss'],
 })
 export class BookingTypeComponent implements OnInit {
-  user : any = {};
+  user: any = {};
   combo: any;
   paymentForm: FormGroup;
   selectedSeats: any[] = [];
@@ -97,7 +96,7 @@ export class BookingTypeComponent implements OnInit {
       );
       this.totalPriceTicketSeat += price;
     });
-    
+
     this.updateGrandTotal(); // Cập nhật tổng khi giá vé đã được tính
   }
 
@@ -131,7 +130,8 @@ export class BookingTypeComponent implements OnInit {
   updateGrandTotal(): void {
     this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
   }
-  submit(){
+
+  submit() {
     const paymentForm = this.paymentForm?.value;
 
     const bill = {
@@ -152,7 +152,16 @@ export class BookingTypeComponent implements OnInit {
       ticket_seat: ticket_seat,
     };
 
-    this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    console.log('Token:', token);
+
+
+    this.http.post<any>(this.apiUrl, payload, { headers }).subscribe((data) => {
       console.log(data);
       sessionStorage.setItem('billData', JSON.stringify(data));
       if (data.redirect_url) {
