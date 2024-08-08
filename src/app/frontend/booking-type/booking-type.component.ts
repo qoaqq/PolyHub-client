@@ -134,6 +134,10 @@ export class BookingTypeComponent implements OnInit {
   submit() {
     const paymentForm = this.paymentForm?.value;
 
+    const user = {
+      user: this.user
+    }
+
     const bill = {
       user_id: this.user.id,
       grandTotal: this.grandTotal,
@@ -150,18 +154,13 @@ export class BookingTypeComponent implements OnInit {
     const payload = {
       bill: bill,
       ticket_seat: ticket_seat,
+      user: user,
     };
 
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
-    console.log('Token:', token);
+    console.log('Token:', payload);
 
 
-    this.http.post<any>(this.apiUrl, payload, { headers }).subscribe((data) => {
+    this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
       console.log(data);
       sessionStorage.setItem('billData', JSON.stringify(data));
       if (data.redirect_url) {
