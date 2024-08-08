@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
+
 import { UserComponent } from '../user/user.component';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
@@ -149,8 +151,10 @@ export class BookingTypeComponent implements OnInit {
       }
     }
   }
-  
-  submit(){
+
+
+  submit() {
+
     const paymentForm = this.paymentForm?.value;
 
     const user = {
