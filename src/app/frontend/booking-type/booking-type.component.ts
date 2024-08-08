@@ -3,10 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
 import { UserComponent } from '../user/user.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-
+import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
 
 @Component({
   selector: 'app-booking-type',
@@ -24,9 +24,13 @@ export class BookingTypeComponent implements OnInit {
   totalPriceFoodCombo: number = 0;
   grandTotal: number = 0;
   bookingSummary: string = 'Booking summary';
-
+  code: string = '';
+  voucherResponse: any = null;
+  errorMessage: string = '';
   private sessionTimeout: any;
   public apiUrl = 'http://127.0.0.1:8000/api/bill';
+  formattedVoucherAmount: string = '';
+  
 
   constructor(
     private router: Router,
@@ -34,11 +38,13 @@ export class BookingTypeComponent implements OnInit {
     private seatBookingService: SeatBookingService,
     private http: HttpClient,
     private fb: FormBuilder,
-    private foodComboService: FoodComboService
+    private foodComboService: FoodComboService,
+    private bookingTypeService: BookingTypeService
   ) {
     this.paymentForm = this.fb.group({
       paymentMethod: [''],
     });
+
   }
 
   ngOnInit(): void {
@@ -128,9 +134,22 @@ export class BookingTypeComponent implements OnInit {
     return `${day}/${month}/${year}`;
   }
 
+  // updateGrandTotal(): void {
+  //   this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
+  // }
   updateGrandTotal(): void {
     this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
+  
+    if (this.voucherResponse) {
+      const amount = Number(this.voucherResponse.amount);
+      if (this.voucherResponse.type === 'Fixed') {
+        this.grandTotal -= amount;
+      } else if (this.voucherResponse.type === 'Percent') {
+        this.grandTotal -= this.grandTotal * (amount / 100);
+      }
+    }
   }
+  
   submit(){
     const paymentForm = this.paymentForm?.value;
 
@@ -160,4 +179,45 @@ export class BookingTypeComponent implements OnInit {
       }
     });
   }
+  applyVoucher(): void {
+    console.log('Applying voucher with code:', this.code);
+    this.bookingTypeService.applyVoucher(this.code).subscribe(
+      response => {
+        if (response.status) {
+          this.voucherResponse = response.data;
+          this.errorMessage = '';
+          this.updateFormattedVoucherAmount();
+          this.updateGrandTotal();
+          console.log('Voucher applied successfully', response.data);
+        } else {
+          this.errorMessage = response.message;
+          this.voucherResponse = null;
+          this.updateGrandTotal(); // Recalculate total without voucher
+        }
+      },
+      error => {
+        this.errorMessage = 'Error applying voucher';
+        if (error.error && error.error.message) {
+          this.errorMessage += `: ${error.error.message}`;
+        }
+        console.error('Error applying voucher', error);
+        this.voucherResponse = null;
+        this.updateGrandTotal(); // Recalculate total without voucher
+      }
+    );
+}
+ 
+  updateFormattedVoucherAmount(): void {
+    if (this.voucherResponse) {
+      const amount = Number(this.voucherResponse.amount);
+      this.formattedVoucherAmount = this.voucherResponse.type === 'Fixed'
+        ? amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+        : `${amount}%`;
+    } else {
+      this.formattedVoucherAmount = '';
+    }
+  }
+  
+  
+
 }
