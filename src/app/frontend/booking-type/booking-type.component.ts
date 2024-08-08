@@ -14,7 +14,7 @@ import { BookingTypeService } from 'src/app/services/booking-type/booking-type.s
   styleUrls: ['./booking-type.component.scss'],
 })
 export class BookingTypeComponent implements OnInit {
-  user : any = {};
+  user: any = {};
   combo: any;
   paymentForm: FormGroup;
   selectedSeats: any[] = [];
@@ -103,7 +103,7 @@ export class BookingTypeComponent implements OnInit {
       );
       this.totalPriceTicketSeat += price;
     });
-    
+
     this.updateGrandTotal(); // Cập nhật tổng khi giá vé đã được tính
   }
 
@@ -153,6 +153,10 @@ export class BookingTypeComponent implements OnInit {
   submit(){
     const paymentForm = this.paymentForm?.value;
 
+    const user = {
+      user: this.user
+    }
+
     const bill = {
       user_id: this.user.id,
       grandTotal: this.grandTotal,
@@ -169,7 +173,11 @@ export class BookingTypeComponent implements OnInit {
     const payload = {
       bill: bill,
       ticket_seat: ticket_seat,
+      user: user,
     };
+
+    console.log('Token:', payload);
+
 
     this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
       console.log(data);
