@@ -13,6 +13,7 @@ export class HomeService {
   private bestMovieUrl = 'http://localhost:8000/api/top-movie';
   private bannerUrl = 'http://localhost:8000/api/banners';
   private bloghotUrl = 'http://localhost:8000/api/blog-hot';
+  private sliderUrl = 'http://localhost:8000/api/silder-movie';
   constructor(private http: HttpClient) { }
 
   getTopMovies(): Observable<any> { 
@@ -40,6 +41,9 @@ export class HomeService {
 
   getBlogHot(): Observable<any> { 
     return this.http.get(this.bloghotUrl);
+  }
+  getSilder(id: any): Observable<any> {
+    return this.http.get(this.sliderUrl);
   }
 }
 
