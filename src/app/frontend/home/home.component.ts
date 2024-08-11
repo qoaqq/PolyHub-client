@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit  {
   blogHot: any[] = [];
   movieId: string | null = null;
   movie: any;
+  sliderIMG: any;
   constructor( private HomeService: HomeService , private router: Router, private route: ActivatedRoute) {
     
   }
@@ -27,7 +28,6 @@ export class HomeComponent implements OnInit  {
       this.movieId = this.route.snapshot.paramMap.get('id');
       this.HomeService.getSilder(this.movieId).subscribe(movie => {
         this.movie = movie.data;
-        console.log(this.movie.attributes);
         this.getImage();
       });
     
@@ -41,9 +41,14 @@ export class HomeComponent implements OnInit  {
     this.router.navigate(['/movies']);
   }
   getImage(){
-   this.movie.attributes.foreach((item:any) => {
-     console.log(item); 
-     
-    }); 
+    if (Array.isArray(this.movie.attributes)) {
+      this.movie.attributes.forEach((item: any) => { 
+        if(item.name === "Image"){
+          this.sliderIMG = item.attribute_values[0].value;
+        }
+      }); 
+    } else {
+        console.error('this.movie.attributes is not an array:', this.movie.attributes);
+    }
   }
 }
