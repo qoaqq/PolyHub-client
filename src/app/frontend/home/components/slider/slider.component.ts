@@ -17,4 +17,12 @@ export class SliderComponent implements AfterViewInit {
       console.log(this.banner);
     });
   }
+  getDataActions(movie: any): string {
+    const dataActions = [
+      { event: 'click', action: 'stoplayer', layer: 'slide-' + movie.i + '-layer-3', delay: '' },
+      { event: 'click', action: 'stoplayer', layer: 'slide-' + movie.i + '-layer-5', delay: '' },
+      { event: 'click', action: 'startlayer', layer: 'slide-' + movie.i + '-layer-1', delay: '' }
+    ];
+    return JSON.stringify(dataActions);
+  }
 }
