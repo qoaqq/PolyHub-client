@@ -31,8 +31,8 @@ export class BlogService {
     return this.http.get<any>(`${this.baseUrl}getBlogByCategory/${categoryId}`, { params });
   }
 
-  getBlogById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}blog/${id}`);
+  getBlogById(blogId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}blog/${blogId}`);
   }
 
   getYearsAndCounts(): Observable<any> {

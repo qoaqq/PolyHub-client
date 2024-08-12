@@ -127,7 +127,7 @@
 								  <img [src]="blog.image" width="80" height="80" alt="ln_img" />
 								</div>
 								<div class="hs_footer_ln_cont_wrapper">
-								  <h4><a [routerLink]="['/blog', blog.id]">{{ blog.title }}</a></h4>
+								  <h4><a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a></h4>
 								  <p>{{ blog.created_at | date: 'longDate' }}</p>
 								</div>
 							</div>

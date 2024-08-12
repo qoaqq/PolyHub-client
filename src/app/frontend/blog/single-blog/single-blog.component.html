@@ -23,19 +23,19 @@
 				<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 					<div class="hs_blog_left_sidebar_main_wrapper">
 						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="post">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="blog">
 								<div class="hs_blog_box1_main_wrapper">
 									<div class="hs_blog_box1_img_wrapper">
-										<img [src]="post.image" alt="blog_img" width="690px" height="500">
+										<img [src]="blog.image" alt="blog_img" width="690px" height="500">
 									</div>
 									<div class="hs_blog_box1_cont_main_wrapper">
 										<div class="hs_blog_cont_heading_wrapper">
 											<ul>
-												<li>{{  post.created_at | date: 'mediumDate' }}</li>
+												<li>{{  blog.created_at | date: 'mediumDate' }}</li>
 												<li>by Admin</li>
 											</ul>
-											<h2 class="title">{{ post.title }}</h2>
-											<h4 class="content">{{ post.short_desc }}</h4>
+											<h2 class="title">{{ blog.title }}</h2>
+											<h4 class="content">{{ blog.short_desc }}</h4>
 											<div id="editor" [innerHTML]="content"></div>
 										</div>
 									</div>
@@ -173,10 +173,12 @@
 								  <img [src]="blog.image" width="80" height="80" alt="ln_img" />
 								</div>
 								<div class="hs_footer_ln_cont_wrapper">
-									<h4><a [routerLink]="['/blog', blog.id]">{{ blog.title }}</a></h4>
+								  <h4>
+									<a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a>
+								  </h4>
 								  <p>{{ blog.created_at | date: 'longDate' }}</p>
 								</div>
-							</div>
+							  </div>
 						</div>
 						<div class="prs_blog_right_sub_btn_wrapper">
 							<h2>Subscribe</h2>
