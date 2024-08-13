@@ -215,7 +215,6 @@
 											<!-- images list start -->
 											<div *ngFor="let attribute of movie?.attributes">
 												<div *ngIf="attribute?.name === 'Image'">
-													<h1>huy nguyen</h1>
 													<div *ngFor="let image of attribute.attribute_values" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 														<div class="prs_ms_scene_slider_img prs_ms_scene_slider_img22">
 															<img width="264px" height="150px" src="{{ image?.value }}" alt="scene_img">

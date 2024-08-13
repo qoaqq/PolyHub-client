@@ -1,5 +1,5 @@
 import { HomeService } from 'src/app/services/home/home.service';
-import { Component } from '@angular/core';
+import {  AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,15 +7,15 @@ import { Router } from '@angular/router';
   templateUrl: './upcoming-movie.component.html',
   styleUrls: ['./upcoming-movie.component.scss']
 })
-export class UpcomingMovieComponent {
+export class UpcomingMovieComponent implements AfterViewInit{
   upcomingMovie: any[]=[];
   constructor( private HomeService: HomeService, private Router: Router) {
 
   }
-  ngAfterViewInit() {
+  ngAfterViewInit(){
     this.HomeService.getUpComingMovie().subscribe(data => { 
       this.upcomingMovie = data.data.data;
-      console.log(this.upcomingMovie);
+      // console.log(this.upcomingMovie);
     });
   }
   viewDetails(movieId: number): void {

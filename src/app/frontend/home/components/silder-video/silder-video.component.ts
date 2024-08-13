@@ -8,24 +8,16 @@ import { AfterViewInit, Component } from '@angular/core';
   styleUrls: ['./silder-video.component.scss']
 })
 export class SilderVideoComponent implements AfterViewInit {
-  image: any[] = [];
+  food: any[] = [];
 
   constructor(private HomeService: HomeService) {
   
   }
 
-  async ngAfterViewInit() {
-    try {
-      const response = await this.HomeService.getImage().toPromise();
-      
-      if (response && response.data?.data && Array.isArray(response.data?.data)) {
-        this.image = response.data?.data;
-      } else {
-        console.error('Dữ liệu trả về không phải là mảng hoặc không có thuộc tính data:', response);
-      }
-      console.log(this.image);
-    } catch (error) {
-      console.error('Lỗi khi lấy thông tin hình ảnh:', error);
-    }
+   ngAfterViewInit() {
+    this.HomeService.getFood().subscribe(data => { 
+      this.food = data.data;
+      // console.log(this.food);
+    });
   }
 }
