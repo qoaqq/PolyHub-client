@@ -23,13 +23,7 @@
 				  <img src="../../../assets/images/content/screen.png" alt="Screen">
 				</div>
 				<div class="seat-legend">
-					<ul>
-					  <li *ngFor="let seatType of seatTypes" [ngClass]="getSeatTypeClass(seatType)">
-						{{ seatType.name }} - {{ seatType.price | currency:'': 'symbol' : '1.0-0'}} 
-						<span class="color-indicator" [ngStyle]="{'background-color': getColor(seatType)}"></span> 
-					  </li>
-					  <li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span></li>
-					</ul>
+					
 				</div>
 			  </div>
 			  
@@ -71,6 +65,15 @@
 				<a [routerLink]="['/movie-booking', movieId]">
 					<i class="fas fa-long-arrow-alt-left"></i> &nbsp;Back
 				</a>
+			</div>
+			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left border border-white">
+				<ul class="mx-2">
+					<li *ngFor="let seatType of seatTypes" [ngClass]="getSeatTypeClass(seatType)">
+					  {{ seatType.name }} - {{ seatType.price | currency:'': 'symbol' : '1.0-0'}} 
+					  <span class="color-indicator" [ngStyle]="{'background-color': getColor(seatType)}"></span> 
+					</li>
+					<li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span></li>
+				  </ul>
 			</div>
 			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
 				<a (click)="goToFoodCombo()" href="javascript:void(0);">
