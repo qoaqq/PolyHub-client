@@ -56,6 +56,74 @@ a:hover, a:focus {
 	text-decoration: none;
 	outline: none;
 }
+
+/* Đặt kiểu cho các thẻ h */
+.tinymce-content h1, 
+.tinymce-content h2, 
+.tinymce-content h3, 
+.tinymce-content h4, 
+.tinymce-content h5, 
+.tinymce-content h6 {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #333;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Đặt kiểu cho các thẻ p */
+.tinymce-content p {
+    margin: 0 0 1em 0;
+    line-height: 1.6;
+}
+
+/* Đặt kiểu cho các thẻ li trong danh sách */
+.tinymce-content ul, 
+.tinymce-content ol {
+	list-style:disc;
+    margin: 0 0 1em 1.5em;
+}
+
+.tinymce-content li {
+    line-height: 1.6;
+}
+
+/* Đặt kiểu cho các thẻ img */
+.tinymce-content img {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá kích thước của khối chứa */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Canh giữa hình ảnh */
+}
+
+/* Đặt kiểu cho bảng */
+.tinymce-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+}
+
+.tinymce-content table, 
+.tinymce-content th, 
+.tinymce-content td {
+    border: 1px solid #ddd;
+}
+
+.tinymce-content th, 
+.tinymce-content td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* Đặt kiểu cho các khối */
+.tinymce-content blockquote {
+    border-left: 4px solid #ddd;
+    padding-left: 16px;
+    margin: 1em 0;
+    color: #666;
+    font-style: italic;
+}
+
+
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: 'Poppins', sans-serif;
 	line-height: 1.1;
