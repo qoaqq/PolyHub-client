@@ -154,26 +154,33 @@
 											</div>
 										</div>
 										<hr>
-										<div class="mt-4">
+										<div class="mt-5">
 											<h3>Apply Voucher</h3>
-											<div>
-												<input type="text" class="form-control" [(ngModel)]="code"
+											<div class="mt-2">
+												<input 
+													type="text" 
+													class="form-control" 
+													[(ngModel)]="code"
 													[ngModelOptions]="{standalone: true}"
-													placeholder="Enter voucher code">
-												<button type="button" (click)="applyVoucher()">Apply</button>
+													placeholder="Enter voucher code"
+													(input)="onVoucherInputChange($event)"> <!-- Lắng nghe sự kiện thay đổi -->
+												
 											</div>
 											<div *ngIf="errorMessage" class="alert alert-danger mt-2">
 												{{ errorMessage }}
 											</div>
-											<div *ngIf="voucherResponse">
-												<h5>Voucher Applied:
-													<span *ngIf="voucherResponse.type === 'Fixed'">
-														{{ voucherResponse.amount | currency: 'USD' }}
+											<div *ngIf="voucherResponse" class="mt-2">
+												<li>
+													<h5>Voucher: {{voucherResponse.code}}</h5>
+													<span *ngIf="voucherResponse.type === 'Fixed'" class="fw-bold">
+														 {{ voucherResponse.amount | currency: 'USD' }}
+														
 													</span>
-													<span *ngIf="voucherResponse.type === 'Percent'">
-														{{ voucherResponse.amount }}%
+													<span *ngIf="voucherResponse.type === 'Percent'" class="fw-bold">
+														 {{ voucherResponse.amount }}%
+														
 													</span>
-												</h5>
+												</li>
 											</div>
 										</div>
 									</ul>

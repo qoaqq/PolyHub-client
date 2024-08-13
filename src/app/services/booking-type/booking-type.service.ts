@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 })
 export class BookingTypeService {
   private voucherUrl = 'http://127.0.0.1:8000/api/voucher/applyvoucher';
+  private voucherInfoUrl = 'http://127.0.0.1:8000/api/voucher/name';
   
   constructor(private http: HttpClient) {}
 
@@ -14,5 +15,8 @@ export class BookingTypeService {
         code: code
       };
       return this.http.post(this.voucherUrl, body);
+  }
+  getVoucherInfo(code: any): Observable<any> {
+    return this.http.post(this.voucherInfoUrl, { code });
   }
 }
