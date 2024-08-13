@@ -1420,7 +1420,7 @@ body.active #mobile-nav {
 	float:left;
 }
 .rev_slider_wrapper{
-	background:url('../images/header/main_slider_bg_img.jpg')50% 0 repeat-y;
+	background:url('../images/header/imgbk.jpg')50% 0 repeat-y;
 	background-position:center 0;
 	background-size:cover;
 	width:100%;

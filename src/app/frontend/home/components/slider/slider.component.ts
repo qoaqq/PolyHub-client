@@ -14,7 +14,7 @@ export class SliderComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.homeService.getBanner().subscribe(data => {
       this.banner = data.data.data;
-      console.log(this.banner);
+      // console.log(this.banner);
     });
   }
   getDataActions(movie: any): string {
