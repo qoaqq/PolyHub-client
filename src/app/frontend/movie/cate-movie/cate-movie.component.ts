@@ -23,6 +23,7 @@ export class CateMovieComponent implements OnInit {
   totalPages: number = 0;
   searchTerm: string = '';
   selectedCategory: number | null = null;
+  bannerImages: any;
 
   
   constructor(private route: ActivatedRoute,private movieService: MovieService, private fb: FormBuilder, private router: Router) {
@@ -39,6 +40,10 @@ export class CateMovieComponent implements OnInit {
     })
     this.movieService.getTopMoviesInMonth().subscribe(movies => {
       this.topMovies = movies.data;
+    })
+    this.movieService.getHotBanner().subscribe(banners => {
+      this.bannerImages = banners.data;
+      console.log(this.bannerImages);
     })
   }
 
