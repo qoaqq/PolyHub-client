@@ -1,17 +1,17 @@
 import { HomeService } from 'src/app/services/home/home.service';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component} from '@angular/core';
 
 @Component({
   selector: 'app-blog-movie',
   templateUrl: './blog-movie.component.html',
   styleUrls: ['./blog-movie.component.scss']
 })
-export class BlogMovieComponent {
+export class BlogMovieComponent implements AfterViewInit{
   blogHome: any[] = [];
   constructor(private HomeService: HomeService) {
    
   }
-  ngAfterViewInit() {
+  ngAfterViewInit(){
     this.HomeService.getBlogHome().subscribe(data => {
       this.blogHome = data.data;
       // console.log(data);

@@ -1,3 +1,45 @@
 .showing-booking{
     cursor: pointer;
 }
+.st_calender_row_cont {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Khoảng cách giữa các hàng */
+    margin-bottom: 20px; /* Khoảng cách dưới mỗi row */
+}
+
+.st_calender_asc {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px; /* Khoảng cách giữa các phần tử trong .st_calender_asc */
+}
+
+.st_calen_asc_heart_cont {
+    flex: 1;
+}
+
+.st_calen_asc_tecket_time_select {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các giờ chiếu */
+    flex-wrap: wrap; /* Nếu quá nhiều phần tử thì sẽ xuống dòng */
+}
+
+.showing-details {
+    display: flex;
+    align-items: flex-start;
+}
+
+.showing-booking {
+    margin-top: 5px;
+}
+
+.cinema-container {
+    display: flex;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.st_calender_contant_main_wrapper {
+    margin-bottom: 30px; /* Khoảng cách dưới mỗi phần ngày */
+}
