@@ -78,91 +78,83 @@
 	  
 	  <div class="st_slider_index_sidebar_main_wrapper st_slider_index_sidebar_main_wrapper_booking float_left">
 		<div class="container">
-		  <div class="row">
-			<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-			  <div class="st_indx_slider_main_container float_left">
-				<div class="row">
-				  <div class="col-md-12">
-					<div class="tab-content">
-					  <div *ngFor="let date of showingDates" [id]="date" class="tab-pane" [ngClass]="{'active': date === showingDates[0]}">
-						<div class="st_calender_contant_main_wrapper float_left">
-						  <!-- Kiểm tra nếu có dữ liệu cho ngày đó -->
-						  <div>
-							<div class="st_calender_row_cont float_left" *ngFor="let showing of groupedShowings[date]">
-							  <div class="st_calender_asc">
-								<div class="st_calen_asc_heart">
-								  <a href="#">
-									<i class="fa fa-heart"></i>
-								  </a>
+			<div class="row">
+				<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+					<div class="st_indx_slider_main_container float_left">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="tab-content">
+									<div *ngFor="let date of showingDates" [id]="date" class="tab-pane" [ngClass]="{'active': date === showingDates[0]}">
+										<div class="st_calender_contant_main_wrapper float_left">
+											<!-- Loop through each grouped showings by date -->
+											<div *ngFor="let key of getObjectKeys(groupedShowings)">
+												<div *ngIf="key.startsWith(date)">
+													<div class="st_calender_row_cont float_left">
+														<div class="st_calender_asc">
+															<div class="st_calen_asc_heart">
+																<a href="#">
+																	<i class="fa fa-heart"></i>
+																</a>
+															</div>
+															<div class="st_calen_asc_heart_cont">
+																<h3>{{ groupedShowings[key].city }}</h3>
+																<div *ngFor="let cinemaKey of getObjectKeys(groupedShowings[key].cinemas)" class="cinema-container">
+																	<div class="st_calen_asc_heart_cont">
+																		<h4>{{ groupedShowings[key].cinemas[cinemaKey].name }}</h4>
+																		<div class="st_calen_asc_heart_images_times">
+																			<ul class="cinema-features">
+																				<li>
+																					<img src="../../../../assets/images/content/fast-food.png" alt="Fast Food">
+																				</li>
+																				<li>
+																					<img src="../../../../assets/images/content/bill.png" alt="Bill">
+																				</li>
+																			</ul>
+																			<div class="st_calen_asc_tecket_time_select">
+																				<ul class="showing-times">
+																					<li *ngFor="let showing of groupedShowings[key].cinemas[cinemaKey].showings">
+																						<div class="showing-details">
+																							<span>
+																								<h4>Rs.{{ showing.price }}</h4>
+																								<p class="asc_pera1">{{ showing.room.type }}</p>
+																								<p class="asc_pera2">{{ showing.availability }}</p>
+																							</span>
+																							<div class="showing-bookings">
+																								<a (click)="onContinue(showing)" *ngFor="let time of showing.time_release">
+																									{{ time | date: 'hh:mm a' }}
+																								</a>
+																							</div>
+																						</div>
+																					</li>
+																				</ul>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Nếu không có dữ liệu -->
+											<ng-template #noShowings>
+												<p>No showings available for this date.</p>
+											</ng-template>
+										</div>
+									</div>
 								</div>
-								<div class="st_calen_asc_heart_cont">
-								  <h3>{{ showing.room.cinema.name }}</h3>
-								  <ul>
-									<li>
-									  <img src="../../../../assets/images/content/fast-food.png" alt="Fast Food">
-									</li>
-									<li>
-									  <img src="../../../../assets/images/content/bill.png" alt="Bill">
-									</li>
-								  </ul>
-								</div>
-							  </div>
-							  <div class="st_calen_asc_tecket_time_select">
-								<ul>
-								  <li *ngFor="let time of showing.time_release">
-									<span>
-									  <h4>Rs.{{ showing.price }}</h4>
-									  <p class="asc_pera1">{{ showing.room.type }}</p>
-									  <p class="asc_pera2">{{ showing.availability }}</p>
-									</span>
-									<a (click)="onContinue(showing)" class="showing-booking">{{ time | date: 'hh:mm a' }}</a>
-								  </li>
-								</ul>
-							  </div>
 							</div>
-						  </div>
-						  <!-- Nếu không có dữ liệu -->
-						  <ng-template #noShowings>
-							<p>No showings available for this date.</p>
-						  </ng-template>
 						</div>
-					  </div>
 					</div>
-				  </div>
 				</div>
-			  </div>
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					<!-- Sidebar content -->
+				</div>
 			</div>
-			<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-			  <div class="prs_mcc_left_side_wrapper">
-				<div class="prs_mcc_left_searchbar_wrapper">
-				  <input type="text" placeholder="Search Movie">
-				  <button><i class="flaticon-tool"></i></button>
-				</div>
-				<div class="prs_mcc_bro_title_wrapper">
-				  <h2>browse title</h2>
-				  <ul>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">All <span>23,124</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Action <span>512</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Romantic <span>548</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Love <span>557</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Musical <span>554</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Drama <span>567</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Thriller <span>689</span></a></li>
-					<li><i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;<a href="#">Horror <span>478</span></a></li>
-				  </ul>
-				</div>
-				<div class="prs_mcc_event_title_wrapper">
-				  <h2>Top Events</h2>
-				  <img src="../../../../assets/images/content/movie_category/event_img.jpg" alt="event_img">
-				  <h3><a href="#">Music Event in india</a></h3>
-				  <p>Pune <span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></p>
-				  <h4>June 07 <span>08:00-12:00 pm</span></h4>
-				</div>
-			  </div>
-			</div>
-		  </div>
 		</div>
-	  </div>
+	</div>
+	
 	</div>
 	<!-- st slider sidebar wrapper End -->
 	<!-- prs patner slider Start -->
