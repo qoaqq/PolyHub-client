@@ -13,7 +13,7 @@ export class SingleBlogComponent implements OnInit {
   blog: any;
   content: SafeHtml = '';
   latestBlogs: any[] = [];
-  baseUrl = 'http://127.0.0.1:8000/'; // Đảm bảo URL đúng
+  baseUrl = 'http://127.0.0.1:8000/'; 
 
   constructor(
     private route: ActivatedRoute,
@@ -31,8 +31,6 @@ export class SingleBlogComponent implements OnInit {
   loadBlog(): void {
     this.blogService.getBlogById(this.blogId).subscribe({
       next: (response: any) => {
-        console.log('API Response:', response); // Debugging
-  
         if (response && response.status) {
           const blog = response.data.blog;
           this.blog = {
@@ -41,24 +39,21 @@ export class SingleBlogComponent implements OnInit {
           };
           this.content = this.sanitizer.bypassSecurityTrustHtml(this.blog.content);
   
-          // Kiểm tra xem relatedBlogs có tồn tại và là mảng không
           if (Array.isArray(response.data.relatedBlogs)) {
             this.latestBlogs = response.data.relatedBlogs.map((blog: any) => ({
               ...blog,
               image: this.baseUrl + blog.image
             }));
           } else {
-            console.warn('relatedBlogs is not an array or is undefined');
-            this.latestBlogs = []; // Xử lý khi relatedBlogs không phải là mảng
+            this.latestBlogs = []; 
           }
         } else {
-          console.error('Error:', response.message);
+          // Handle error or show user-friendly message
         }
       },
       error: (error: any) => {
-        console.error('Error loading blog:', error);
+        // Handle error or show user-friendly message
       }
     });
   }
-  
 }

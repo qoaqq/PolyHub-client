@@ -9,3 +9,18 @@
     text-overflow: ellipsis;
     white-space: normal; /* Cho phép xuống dòng */
   }
+
+  a.disabled {
+    pointer-events: none;
+    background-color: gray !important;
+    border: none !important;
+    cursor: default;
+  }
+  
+  a.active1 {
+    font-weight: bold;
+    background-color: black !important;
+    color: white;
+  }
+
+  
