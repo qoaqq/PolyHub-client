@@ -30,8 +30,7 @@ export class SingleMovieComponent implements OnInit {
       this.topMovies = movies.data;
     })
     this.movieService.getTopStories().subscribe(stories => {
-      this.topStories = stories.data.data;
-      console.log(this.topStories);
+      this.topStories = stories.data;
     })
   }
 
@@ -44,6 +43,5 @@ export class SingleMovieComponent implements OnInit {
 
   onClickDefault(event: Event): void {
     event.preventDefault();
-    console.log('Default action prevented');
   }
 }

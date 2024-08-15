@@ -43,7 +43,6 @@ export class CateMovieComponent implements OnInit {
     })
     this.movieService.getHotBanner().subscribe(banners => {
       this.bannerImages = banners.data;
-      console.log(this.bannerImages);
     })
   }
 
@@ -126,8 +125,6 @@ export class CateMovieComponent implements OnInit {
   }
 
   previousPage() {
-    console.log(1);
-    
     if (this.currentPage > 1) {
       this.currentPage -= 1;
       this.onPageChange(this.currentPage);
