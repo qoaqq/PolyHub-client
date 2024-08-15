@@ -9,54 +9,38 @@ export class BlogService {
 
   private baseUrl = 'http://127.0.0.1:8000/api/';
 
-  constructor(private http: HttpClient) { }
-
-  getAllCategories(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}getAllCategory`);
+  constructor(private http: HttpClient) { 
   }
 
-  getAllBlogs(page: number = 1, perPage: number = 5): Observable<any> {
+  getList(page: number = 1): Observable<any>{
     let params = new HttpParams()
-      .set('page', page.toString())
-      .set('per_page', perPage.toString());
-  
-    return this.http.get<any>(`${this.baseUrl}blog`, { params });
+    .set('page', page.toString())
+    return this.http.get<any>(`${this.baseUrl}blog`,{ params });
   }
 
-  getBlogsByCategory(categoryId: number, page: number = 1, perPage: number = 10): Observable<any> {
+  getCategories(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}blog-categories`);
+  }
+
+  getBlogsByCategory(id : number, page: number): Observable<any> {
     let params = new HttpParams()
-      .set('page', page.toString())
-      .set('per_page', perPage.toString());
+    .set('page', page.toString())
   
-    return this.http.get<any>(`${this.baseUrl}getBlogByCategory/${categoryId}`, { params });
+    return this.http.get<any>(`${this.baseUrl}blog-by-category/${id}`, { params });
   }
 
-  getBlogById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}blog/${id}`);
-  }
 
-  getYearsAndCounts(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}getYearsAndCounts`);
+  getBlogById(blogId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}blog/${blogId}`);
   }
 
   getLatestBlogs(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}blog-home`);
+    return this.http.get<any>(`${this.baseUrl}blog-lastest`);
   }
 
-  getBlogsByYear(year: number, page: number = 1, perPage: number = 5): Observable<any> {
+  searchBlogs(title: string, page: number): Observable<any> {
     let params = new HttpParams()
-      .set('page', page.toString())
-      .set('per_page', perPage.toString());
-  
-    return this.http.get<any>(`${this.baseUrl}getBlogsByYear/${year}`, { params });
-  }
-
-  searchBlogs(search: string, page: number = 1, perPage: number = 5): Observable<any> {
-    let params = new HttpParams()
-      .set('search', search)
-      .set('page', page.toString())
-      .set('per_page', perPage.toString());
-  
-    return this.http.get<any>(`${this.baseUrl}searchBlogs`, { params });
+    .set('page', page.toString())
+    return this.http.get<any>(`${this.baseUrl}blog-search?title=${title}`, { params });
   }
 }

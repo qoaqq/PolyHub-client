@@ -9,10 +9,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./single-blog.component.scss']
 })
 export class SingleBlogComponent implements OnInit {
-  postId!: number;
-  post: any;
+  blogId!: number;
+  blog: any;
   content: SafeHtml = '';
   latestBlogs: any[] = [];
+  baseUrl = 'http://127.0.0.1:8000/'; 
 
   constructor(
     private route: ActivatedRoute,
@@ -22,44 +23,36 @@ export class SingleBlogComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.postId = +params['id'];
-      this.loadPost();
-      this.loadLatestBlogs();
+      this.blogId = +params['id'];
+      this.loadBlog();
     });
   }
 
-  loadPost(): void {
-    const baseUrl = 'http://127.0.0.1:8000/';
-    this.blogService.getBlogById(this.postId).subscribe({
-      next: (post: any) => {
-        this.post = {
-          ...post.data,
-          image: baseUrl + post.data.image
-        };
-        this.content = this.sanitizer.bypassSecurityTrustHtml(this.post.content);
-      },
-      error: (error: any) => {
-        console.error('Error loading post:', error);
-      }
-    });
-  }
-
-  loadLatestBlogs(): void {
-    const baseUrl = 'http://127.0.0.1:8000/';
-    this.blogService.getLatestBlogs().subscribe({
+  loadBlog(): void {
+    this.blogService.getBlogById(this.blogId).subscribe({
       next: (response: any) => {
-        console.log('Received latest blogs:', response);
-        if (response && response.data && Array.isArray(response.data)) {
-          this.latestBlogs = response.data.map((blog: any) => ({
+        if (response && response.status) {
+          const blog = response.data.blog;
+          this.blog = {
             ...blog,
-            image: baseUrl + blog.image // Xử lý ảnh của bài viết
-          }));
+            image: this.baseUrl + blog.image
+          };
+          this.content = this.sanitizer.bypassSecurityTrustHtml(this.blog.content);
+  
+          if (Array.isArray(response.data.relatedBlogs)) {
+            this.latestBlogs = response.data.relatedBlogs.map((blog: any) => ({
+              ...blog,
+              image: this.baseUrl + blog.image
+            }));
+          } else {
+            this.latestBlogs = []; 
+          }
         } else {
-          console.error('Invalid latest blogs format:', response);
+          // Handle error or show user-friendly message
         }
       },
       error: (error: any) => {
-        console.error('Error loading latest blogs:', error);
+        // Handle error or show user-friendly message
       }
     });
   }
