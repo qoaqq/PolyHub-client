@@ -1,159 +1,140 @@
 <div class="prs_title_main_sec_wrapper">
-		<div class="prs_title_img_overlay"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="prs_title_heading_wrapper">
-						<h2>Blog categories</h2>
+	<div class="prs_title_img_overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="prs_title_heading_wrapper">
+					<h2>Blog categories</h2>
+					<ul>
+						<li><a href="#">Home</a>
+						</li>
+						<li>&nbsp;&nbsp; >&nbsp;&nbsp; Blog</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- prs title wrapper End -->
+<!-- hs sidebar Start -->
+<div class="hs_blog_categories_main_wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+				<div class="hs_blog_left_sidebar_main_wrapper">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " *ngFor="let blog of blogs">
+							<div class="hs_blog_box1_main_wrapper">
+								<div class="hs_blog_box1_img_wrapper">
+									<img [src]="'http://127.0.0.1:8000/' + blog?.image" width="690px" height="459px" alt="blog_img">
+								</div>
+								<div class="hs_blog_box1_cont_main_wrapper">
+									<div class="hs_blog_cont_heading_wrapper">
+										<ul>
+											<li>{{ blog.created_at | date: 'mediumDate' }}</li> 
+											<li>by Admin</li>
+										</ul>
+										<h2>{{ blog.title }}</h2>
+										<p><a [routerLink]="['/blog', blog.id]">{{ blog.short_desc }}</a></p>
+										<h5><a [routerLink]="['/blog', blog.id]">Read More <i class="fa fa-long-arrow-right"></i></a></h5>
+									</div>
+								</div>
+								<div class="hs_blog_box1_bottom_cont_main_wrapper">
+									<div class="hs_blog_box1_bottom_cont_left">
+										<ul>
+											<li><i class="fa fa-thumbs-up"></i> &nbsp;&nbsp;<a href="#">1244 Likes</a>
+											</li>
+											<li><i class="fa fa-comments"></i> &nbsp;&nbsp;<a href="#">256 Comments</a>
+											</li>
+											<li><i class="fa fa-tags"></i> &nbsp;&nbsp;<a href="#">Presenter Movie</a>
+											</li>
+										</ul>
+									</div>
+									<div class="hs_blog_box1_bottom_cont_right">
+										<ul>
+											<li><a href="#"><i class="fa fa-facebook"></i></a>
+											</li>
+											<li><a href="#"><i class="fa fa-youtube-play"></i></a>
+											</li>
+											<li><a href="#"><i class="fa fa-linkedin"></i></a>
+											</li>
+											<li><a href="#"><i class="fa fa-twitter"></i></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+					
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="pager_wrapper gc_blog_pagination">
+							<ul class="pagination">
+								<li>
+									<a (click)="previousPage()" href="javascript:void(0);" [class.disabled]="currentPage === 1"><i class="flaticon-left-arrow"></i></a>
+								</li>
+								<li *ngFor="let page of getPages()">
+									<a [class.active1]="currentPage === page" (click)="onPageChange(page)" href="javascript:void(0);">{{ page }}</a>
+								</li>
+								<li>
+									<a (click)="nextPage()"  href="javascript:void(0);" [class.disabled]="currentPage === totalPages"><i class="flaticon-right-arrow"></i></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				<div class="hs_blog_right_sidebar_main_wrapper">
+					<form action="" method="get">
+						<div class="prs_mcc_left_searchbar_wrapper">
+							<input (input)="onSearch($event)" type="text" placeholder="Search Blog">
+							<button><i class="flaticon-tool"></i>
+							</button>
+						</div>
+					</form>
+					<div class="prs_bc_right_about_wrapper">
+						<img src="../../../../assets/images/content/blog_category/side_img1.jpg" alt="side_img">
+						<h2>About Presenter</h2>
+						<p>Lorem ipsum dolor sit amet ue adipisicing elit, sed do eiuodor incididunt ut part.</p>
+						<h5><a href="#">Read More <i class="fa fa-long-arrow-right"></i></a></h5>
+					</div>
+					<div class="prs_mcc_bro_title_wrapper">
+						<h2>Category</h2>
 						<ul>
-							<li><a href="#">Home</a>
+							<li>
+								<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
+								<a (click)="getAllBlogs($event)" href="#">All <span>{{ countAllBlogs }}</span></a>
 							</li>
-							<li>&nbsp;&nbsp; >&nbsp;&nbsp; Blog</li>
+							<li *ngFor="let category of categories"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;&nbsp;
+								<a (click)="getBlogsByCategoryID(category.id, $event)" href="#">{{ category?.name }} <span>{{ category?.blogs_count }}</span></a>
+							</li>
+						</ul>
+				  </div>
+				
+					<div class="prs_mcc_bro_title_wrapper">
+						<h2>Recent Blogs</h2>
+						<div class="hs_blog_right_recnt_cont_wrapper" *ngFor="let blog of blogLastest">
+							<div class="hs_footer_ln_img_wrapper">
+							  <img [src]="'http://127.0.0.1:8000/' + blog?.image" width="80" height="80" alt="ln_img" />
+							</div>
+							<div class="hs_footer_ln_cont_wrapper">
+							  <h4><a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a></h4>
+							  <p>{{ blog.created_at | date: 'shortDate' }}</p>
+							</div>
+						</div>
+					</div>
+					<div class="prs_blog_right_sub_btn_wrapper">
+						<h2>Subscribe</h2>
+						<input type="text" placeholder="Your email id">
+						<ul>
+							<li><a href="#">Subscribe</a>
+							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- prs title wrapper End -->
-	<!-- hs sidebar Start -->
-	<div class="hs_blog_categories_main_wrapper">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-					<div class="hs_blog_left_sidebar_main_wrapper">
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " *ngFor="let blog of blogs">
-								<div class="hs_blog_box1_main_wrapper">
-									<div class="hs_blog_box1_img_wrapper">
-										<img src="{{ blog.image }}" width="690px" height="389px" alt="blog_img">
-									</div>
-									<div class="hs_blog_box1_cont_main_wrapper">
-										<div class="hs_blog_cont_heading_wrapper">
-											<ul>
-												<li>{{ blog.created_at | date: 'mediumDate' }}</li> 
-												<li>by Admin</li>
-											</ul>
-											<h2>{{ blog.title }}</h2>
-											<p><a [routerLink]="['/blog', blog.id]">{{ blog.short_desc }}</a></p>
-											<h5><a [routerLink]="['/blog', blog.id]">Read More <i class="fa fa-long-arrow-right"></i></a></h5>
-										</div>
-									</div>
-									<div class="hs_blog_box1_bottom_cont_main_wrapper">
-										<div class="hs_blog_box1_bottom_cont_left">
-											<ul>
-												<li><i class="fa fa-thumbs-up"></i> &nbsp;&nbsp;<a href="#">1244 Likes</a>
-												</li>
-												<li><i class="fa fa-comments"></i> &nbsp;&nbsp;<a href="#">256 Comments</a>
-												</li>
-												<li><i class="fa fa-tags"></i> &nbsp;&nbsp;<a href="#">Presenter Movie</a>
-												</li>
-											</ul>
-										</div>
-										<div class="hs_blog_box1_bottom_cont_right">
-											<ul>
-												<li><a href="#"><i class="fa fa-facebook"></i></a>
-												</li>
-												<li><a href="#"><i class="fa fa-youtube-play"></i></a>
-												</li>
-												<li><a href="#"><i class="fa fa-linkedin"></i></a>
-												</li>
-												<li><a href="#"><i class="fa fa-twitter"></i></a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="pager_wrapper prs_blog_pagi_wrapper">
-								  <ul class="pagination">
-									<!-- Previous Button -->
-									<li *ngIf="currentPage > 1">
-									  <a (click)="goToPage(currentPage - 1)"><i class="flaticon-left-arrow"></i></a>
-									</li>
-							  
-									<!-- Pagination Numbers -->
-									<li *ngFor="let page of getPagesArray()" [ngClass]="{'active': page === currentPage}">
-									  <a (click)="goToPage(page)">{{ page }}</a>
-									</li>
-							  
-									<!-- Next Button -->
-									<li *ngIf="currentPage < totalPages">
-									  <a (click)="goToPage(currentPage + 1)"><i class="flaticon-right-arrow"></i></a>
-									</li>
-								  </ul>
-								</div>
-							  </div>
-							  
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-					<div class="hs_blog_right_sidebar_main_wrapper">
-						<div class="prs_mcc_left_searchbar_wrapper">
-							<input type="text" [(ngModel)]="searchTerm" placeholder="Search Movie">
-							<button (click)="searchBlogs(searchTerm)"><i class="flaticon-tool"></i>
-							</button>
-						</div>
-						<div class="prs_bc_right_about_wrapper">
-							<img src="../../../../assets/images/content/blog_category/side_img1.jpg" alt="side_img">
-							<h2>About Presenter</h2>
-							<p>Lorem ipsum dolor sit amet ue adipisicing elit, sed do eiuodor incididunt ut part.</p>
-							<h5><a href="#">Read More <i class="fa fa-long-arrow-right"></i></a></h5>
-						</div>
-						<div class="prs_mcc_bro_title_wrapper">
-							<h2>Category</h2>
-							<ul>
-							  <li>
-								<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
-								<a href="javascript:void(0)" (click)="onCategorySelected(null)">
-								  All 
-								</a>
-							  </li>
-							  <li *ngFor="let category of categories">
-								<i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
-								<a href="javascript:void(0)" (click)="onCategorySelected(category.id)">
-								  {{ category.name }} <span>({{ category.blogs_count }})</span>
-								</a>
-							  </li>
-							</ul>
-					  </div>
-					
-						<div class="prs_mcc_bro_title_wrapper">
-							<h2>Recent News</h2>
-							<div class="hs_blog_right_recnt_cont_wrapper" *ngFor="let blog of latestBlogs">
-								<div class="hs_footer_ln_img_wrapper">
-								  <img [src]="blog.image" width="80" height="80" alt="ln_img" />
-								</div>
-								<div class="hs_footer_ln_cont_wrapper">
-								  <h4><a [routerLink]="['/blog', blog.id]">{{ blog.title }}</a></h4>
-								  <p>{{ blog.created_at | date: 'longDate' }}</p>
-								</div>
-							</div>
-						</div>
-						<div class="prs_mcc_bro_title_wrapper">
-							<h2>Archives</h2>
-							<ul>
-								<li *ngFor="let year of years">
-								  <i class="fa fa-caret-right"></i> &nbsp;&nbsp;&nbsp;
-								  <a href="javascript:void(0)" (click)="onYearSelected(year.year)">
-									{{ year.year }} <span>({{ year.count }})</span>
-								  </a>
-								</li>
-							  </ul>
-						</div>
-						<div class="prs_blog_right_sub_btn_wrapper">
-							<h2>Subscribe</h2>
-							<input type="text" placeholder="Your email id">
-							<ul>
-								<li><a href="#">Subscribe</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<app-newsletter></app-newsletter>
+</div>
+<app-newsletter></app-newsletter>
