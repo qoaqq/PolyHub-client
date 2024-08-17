@@ -98,12 +98,6 @@ export class CateMovieComponent implements OnInit {
     this.loadMovies();
   }
 
-  viewDetails(movieId: number): void {
-    this.router.navigate(['/movie', movieId]).then(() => {
-      window.location.reload();
-    });
-  }
-
   // pagination
   onPageChange(page: number) {
     if (page > 0 && page <= this.totalPages) {
