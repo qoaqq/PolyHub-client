@@ -7,12 +7,22 @@
         <app-session-timer></app-session-timer>
       </div>
       <div class="col-12 details-section">
-        <p>Date: <span>{{ showingRelease.premiere_date }}</span></p>
-        <p>Time: <span>{{ showingRelease.time_release }}</span></p>
-        <p>Movie: <span>{{ showingRelease.movie.name }}</span></p>
-        <p>Cinema: <span>{{ showingRelease.room.cinema.name }}</span></p>
-        <p>Total: <span>{{ totalPriceFoodCombo | currency }}</span></p>
-      </div>
+        <div class="movie-time">
+            <p>Date: <span>{{ showingRelease.date_release | date:'dd/MM/yyyy' }}</span></p>
+            <p>Time: <span>{{ showingRelease.time_release | date:'hh:mm a' }}</span></p>
+        </div>
+        <div class="movie-details">
+            <p>Movie: <span>{{ showingRelease.movie.name }}</span></p>
+        </div>
+        <div class="location">
+            <p>City: <span>{{ showingRelease.room.cinema.city.name }}</span></p>
+            <p>Cinema: <span>{{ showingRelease.room.cinema.name }}</span></p>
+        </div>
+        <div class="total">
+            <p>Total: <span>{{ totalPriceTicketSeat | currency:'VND':'':'1.0-0' }} ₫</span></p>
+        </div>
+    </div>
+    
       <div class="prs_heading_section_wrapper">
         <h2>Select Food Combos</h2>
       </div>
@@ -27,9 +37,9 @@
             />
             <div class="meal-content">
               <div class="meal-tags">
-                <span class="tag tag--vegetarian">{{ combo?.name }}</span>
+                <span class="tag tag--vegetarian meal-title">{{ combo?.name }}</span>
               </div>
-              <p class="meal-title">{{ 'Price: ' + (combo?.price | currency)}}</p>
+              <p class="meal-title">{{ 'Price: ' + (combo?.price | currency:'VND':'':'1.0-0' )}}₫</p>
               <ul class="meal-attributes">
                 <li class="meal-attribute">
                   <span>{{ combo?.description }}</span>
