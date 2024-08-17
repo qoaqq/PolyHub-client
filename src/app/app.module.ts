@@ -17,7 +17,6 @@ import { CateMovieComponent } from './frontend/movie/cate-movie/cate-movie.compo
 import { SingleMovieComponent } from './frontend/movie/single-movie/single-movie.component';
 import { CateBlogComponent } from './frontend/blog/cate-blog/cate-blog.component';
 import { SingleBlogComponent } from './frontend/blog/single-blog/single-blog.component';
-import { SilderVideoComponent } from './frontend/home/components/silder-video/silder-video.component';
 import { TopMovieComponent } from './frontend/home/components/top-movie/top-movie.component';
 import { RelesedMovieComponent } from './frontend/home/components/relesed-movie/relesed-movie.component';
 import { UpcomingMovieComponent } from './frontend/home/components/upcoming-movie/upcoming-movie.component';
@@ -47,7 +46,6 @@ import { BestMovieComponent } from './frontend/home/components/best-movie/best-m
     SingleMovieComponent,
     CateBlogComponent,
     SingleBlogComponent,
-    SilderVideoComponent,
     TopMovieComponent,
     RelesedMovieComponent,
     UpcomingMovieComponent,
