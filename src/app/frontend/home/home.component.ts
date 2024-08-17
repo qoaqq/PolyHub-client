@@ -31,10 +31,7 @@ export class HomeComponent implements OnInit  {
         this.getImage();
       });
     
-    sessionStorage.removeItem('billData');
-    sessionStorage.removeItem('showingRelease');
-    sessionStorage.removeItem('selectedSeats');
-    sessionStorage.removeItem('selectedFoodCombos');
+    
   }
 
   goToMovies() {
