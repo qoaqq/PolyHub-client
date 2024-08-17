@@ -126,12 +126,12 @@
 					<div  class="prs_in_left_img_overlay" >
 						<img  [src]="'http://127.0.0.1:8000/'+ Hot?.image" class="overlay-image w-100 h-100 rounded-3">
 					</div>
-					<div class="prs_webseri_video_sec_icon_wrapper " >
+					<!-- <div class="prs_webseri_video_sec_icon_wrapper " >
 						<ul>
 							<li><a class="test-popup-link button"  rel='external' href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'><i class="flaticon-play-button"></i></a>
 							</li>
 						</ul>
-					</div>
+					</div> -->
 					<div class="prs_prs_webseri_video_sec_icon_cont_wrapper">
 						<p>{{Hot.created_at | date:'dd MMM yyyy'}}</p>
 						<h2><a class="text-white" [routerLink]="['/blog', Hot.id]">{{Hot.title}}</a></h2>
