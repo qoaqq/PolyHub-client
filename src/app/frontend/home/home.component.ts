@@ -25,11 +25,7 @@ export class HomeComponent implements OnInit  {
       // console.log(data);
       // console.log(this.blogHot);
     });
-      this.movieId = this.route.snapshot.paramMap.get('id');
-      this.HomeService.getSilder(this.movieId).subscribe(movie => {
-        this.movie = movie.data;
-        this.getImage();
-      });
+      
     
     
   }
