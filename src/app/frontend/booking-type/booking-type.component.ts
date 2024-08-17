@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, forkJoin, of, Observable } from 'rxjs';
 import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
 import { Location } from '@angular/common';
-
+import { AuthService } from '../../services/auth/auth.service';
 @Component({
   selector: 'app-booking-type',
   templateUrl: './booking-type.component.html',
@@ -42,6 +42,7 @@ export class BookingTypeComponent implements OnInit {
     private foodComboService: FoodComboService,
     private bookingTypeService: BookingTypeService,
     private location: Location,
+    private authService: AuthService,
   ) {
     this.paymentForm = this.fb.group({
       paymentMethod: [''],
@@ -82,10 +83,18 @@ export class BookingTypeComponent implements OnInit {
   }
 
   getUser(): void {
-    const user = sessionStorage.getItem('user');
-    if (user) {
-      this.user = JSON.parse(user);
-    }
+    this.authService.getUser().subscribe({
+      next: (response) => {
+        this.user = response; // Gán dữ liệu người dùng vào biến
+      },
+      error: (error) => {
+        this.errorMessage =
+          'Unable to load user information. Please try again later.';
+        if (error.status === 401 || error.status === 403) {
+          this.router.navigate(['/signin']);
+        }
+      },
+    });
   }
 
   loadShowingRelease(): void {
