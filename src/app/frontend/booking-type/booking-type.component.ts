@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
-
 import { UserComponent } from '../user/user.component';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Subscription, forkJoin, of, Observable } from 'rxjs';
 import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-booking-type',
@@ -32,7 +31,7 @@ export class BookingTypeComponent implements OnInit {
   private sessionTimeout: any;
   public apiUrl = 'http://127.0.0.1:8000/api/bill';
   formattedVoucherAmount: string = '';
-  
+  private routerSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -41,7 +40,8 @@ export class BookingTypeComponent implements OnInit {
     private http: HttpClient,
     private fb: FormBuilder,
     private foodComboService: FoodComboService,
-    private bookingTypeService: BookingTypeService
+    private bookingTypeService: BookingTypeService,
+    private location: Location,
   ) {
     this.paymentForm = this.fb.group({
       paymentMethod: [''],
@@ -49,6 +49,26 @@ export class BookingTypeComponent implements OnInit {
     window.addEventListener('submit', () => {
       // Gọi applyVoucherOnPayment sau khi submit
       this.applyVoucherOnPayment();
+  });
+   // Lắng nghe sự kiện NavigationStart
+   this.routerSubscription = this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      const excludedUrls = [ '/booking-type', '/seat-booking'];
+      // Nếu URL không nằm trong danh sách loại trừ
+      if (!excludedUrls.includes(event.url)) {
+        this.removeVoucher();
+      }
+    }
+  });
+
+  // Lắng nghe sự kiện popstate
+  window.addEventListener('popstate', () => {
+    const currentUrl = this.location.path();
+    const excludedUrls = ['/booking-type'];
+    // Nếu URL không nằm trong danh sách loại trừ
+    if (!excludedUrls.includes(currentUrl)) {
+      this.removeVoucher();
+    }
   });
   }
 
