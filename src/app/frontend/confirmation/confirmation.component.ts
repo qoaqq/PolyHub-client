@@ -29,6 +29,11 @@ export class ConfirmationComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.loadResources();
     this.createBill();
+    sessionStorage.removeItem('billData');
+    sessionStorage.removeItem('showingRelease');
+    sessionStorage.removeItem('selectedSeats');
+    sessionStorage.removeItem('sessionEndTime');
+    sessionStorage.removeItem('selectedFoodCombos');
   }
 
   private loadResources() {

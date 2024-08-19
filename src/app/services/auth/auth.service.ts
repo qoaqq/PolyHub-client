@@ -20,7 +20,6 @@ export class AuthService {
     const token = localStorage.getItem('token');
     if (token) {
       this.loggedIn.next(true);
-      this.loadUser();
     }
   }
 
@@ -32,7 +31,6 @@ export class AuthService {
           if (response && response.token) {
             localStorage.setItem('token', response.token);
             this.loggedIn.next(true);
-            this.loadUser();
           }
         }),
         catchError((error: HttpErrorResponse) => {
@@ -107,17 +105,6 @@ export class AuthService {
     );
   }
 
-  loadUser() {
-    this.getUser().subscribe({
-      next: (user) => {
-        this.user.next(user);
-        sessionStorage.setItem('user', JSON.stringify(user)); // Lưu thông tin người dùng vào sessionStorage
-      },
-      error: (err) => {
-        console.error('Failed to load user', err);
-      },
-    });
-  }
 
   updateUser(user: any): Observable<any> {
     const token = localStorage.getItem('token');
