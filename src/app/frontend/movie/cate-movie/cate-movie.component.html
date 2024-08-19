@@ -99,14 +99,14 @@
 														<ul>
 															<li><a href="#">View Trailer</a>
 															</li>
-															<li><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">View Details</a>
+															<li><a [routerLink]="['/movie',movie.id ]" href="javascript:void(0);">View Details</a>
 															</li>
 														</ul>
 													</div>
 												</div>
 												<div class="prs_upcom_movie_content_box">
 													<div class="prs_upcom_movie_content_box_inner">
-														<h2 class="truncate-text"><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h2>
+														<h2 class="truncate-text"><a [routerLink]="['/movie',movie.id ]" href="javascript:void(0);">{{ movie?.name }}</a></h2>
 														<i class="fa fa-star"></i>
 														<i class="fa fa-star"></i>
 														<i class="fa fa-star"></i>
@@ -158,7 +158,7 @@
 												</div>
 												<div class="prs_mcc_list_movie_img_cont_wrapper">
 													<div class="prs_mcc_list_left_cont_wrapper">
-														<h2><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h2>
+														<h2><a [routerLink]="['/movie',movie.id ]" href="javascript:void(0);">{{ movie?.name }}</a></h2>
 														<p>
 															<i class="fa fa-star"></i>
 															<i class="fa fa-star"></i>
@@ -176,7 +176,7 @@
 													<div class="prs_mcc_list_bottom_cont_wrapper">
 														<p>{{ movie.description }}</p>
 														<ul>
-															<li><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">View Details</a>
+															<li><a [routerLink]="['/movie',movie.id ]" href="javascript:void(0);">View Details</a>
 															</li>
 														</ul>
 													</div>
@@ -235,9 +235,9 @@
 	<h3 class="slider-title">Top movie in month</h3>
 	<div id="slider-container" class="slider">
 		<div *ngFor="let movie of topMovies" class="slide">
-			<img (click)="viewDetails(movie?.id)" height="600px" [src]="'http://127.0.0.1:8000/' + movie?.photo" alt="">
+			<img [routerLink]="['/movie',movie.id ]" height="600px" [src]="'http://127.0.0.1:8000/' + movie?.photo" alt="">
 			<div>
-				<h4><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h4>
+				<h4><a [routerLink]="['/movie',movie.id ]" href="javascript:void(0);">{{ movie?.name }}</a></h4>
 			</div>
 		</div>
 

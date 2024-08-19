@@ -9,15 +9,16 @@
                         <ul>
                             <li><a href="#">View Trailer</a>
                             </li>
-                            <li><a (click)="viewDetails(top?.id)" href="javascript:void(0);">View Details</a>
+                            <li><a  [routerLink]="['/movie',top.id ]" href="javascript:void(0);">View Details</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="prs_upcom_movie_content_box">
                     <div class="prs_upcom_movie_content_box_inner">
-                        <h2><a (click)="viewDetails(top?.id)" href="javascript:void(0);">{{top?.name}}</a></h2>
-                        <!-- <p>Drama , Acation</p>	<i class="fa fa-star"></i> -->
+                        <h2><a  [routerLink]="['/movie',top.id ]" href="javascript:void(0);">{{top?.name}}</a></h2>
+                        <!-- <p>Drama , Acation</p>	-->
+                         <i class="fa fa-star"></i> 
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star-o"></i>

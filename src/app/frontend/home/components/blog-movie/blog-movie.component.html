@@ -8,7 +8,7 @@
             <div style="height:240px" class="prs_in_right_box_img_cont_wrapper">
                 <h2><a [routerLink]="['/blog', blog.id]">{{blog.title}}</a></h2>
                 <h3>{{blog.created_at | date:'dd MMM yyyy'}}</h3>
-                <p class="truncate-content">{{blog.content}}</p>
+                <p class="truncate-content">{{blog.short_desc}}</p>
                 <ul>
                     <!-- <li><i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;<a href="#">120 Like</a>
                     </li>

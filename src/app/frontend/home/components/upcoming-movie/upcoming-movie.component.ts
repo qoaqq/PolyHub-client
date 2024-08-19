@@ -18,9 +18,5 @@ export class UpcomingMovieComponent implements AfterViewInit{
       // console.log(this.upcomingMovie);
     });
   }
-  viewDetails(movieId: number): void {
-    this.Router.navigate(['/movie', movieId]).then(() => {
-      window.location.reload();
-    });
-  }
+  
 }
