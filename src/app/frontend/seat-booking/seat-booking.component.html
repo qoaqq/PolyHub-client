@@ -3,14 +3,11 @@
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 				<div class="st_bt_top_center_heading st_bt_top_center_heading_seat_book_page float_left">
-					<!-- <h3> {{ movie?.name }} - English - {{ movie?.duration }} minutes </h3> -->
-					<!-- <h4>{{ formatTime2(showing?.time_release) }}, {{ formatTime(showing?.time_release) }} PM</h4> -->
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<!-- st top header Start -->
 <!-- st seat Layout Start -->
 <div class="st_seatlayout_main_wrapper float_left">
 	<div class="container container_seat">
@@ -23,7 +20,17 @@
 				  <img src="../../../assets/images/content/screen.png" alt="Screen">
 				</div>
 				<div class="seat-legend">
-					
+					<!-- seat type start -->
+					<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
+						<ul class="mx-2">
+							<li *ngFor="let seatType of seatTypes" [ngClass]="getSeatTypeClass(seatType)">
+							  {{ seatType.name }} - {{ seatType.price | currency:'': 'symbol' : '1.0-0'}} 
+							  <span class="color-indicator" [ngStyle]="{'background-color': getColor(seatType)}"></span> 
+							</li>
+							<li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span></li>
+						  </ul>
+					</div>
+					<!-- seat type end -->
 				</div>
 			  </div>
 			  
@@ -31,8 +38,7 @@
 				<div class="st_seat_lay_economy_heading float_left">
 					<h3>Executive + 3d glasss - rs 190.00</h3>
 				</div>
-				<div class="st_seat_lay_row float_left"  >
-					
+				<div class="st_seat_lay_row float_left">
 					<!-- Đối với từng hàng -->
 					<div *ngFor="let row of getRows()" class="row">
 						<!-- Hiển thị ghế trong hàng đó -->
@@ -51,12 +57,7 @@
 						</div>
 						</div>
 					</div>
-					  
-					  
-					  
-					  
 				</div>
-
 			</div>
 		</div>
 		<!-- continute buttom -->
@@ -65,15 +66,6 @@
 				<a [routerLink]="['/movie-booking', movieId]">
 					<i class="fas fa-long-arrow-alt-left"></i> &nbsp;Back
 				</a>
-			</div>
-			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left border border-white">
-				<ul class="mx-2">
-					<li *ngFor="let seatType of seatTypes" [ngClass]="getSeatTypeClass(seatType)">
-					  {{ seatType.name }} - {{ seatType.price | currency:'': 'symbol' : '1.0-0'}} 
-					  <span class="color-indicator" [ngStyle]="{'background-color': getColor(seatType)}"></span> 
-					</li>
-					<li class="seat-type seat-type-booked">Booked Seat - <span class="color-indicator" style="background-color: gray;"></span></li>
-				  </ul>
 			</div>
 			<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
 				<a (click)="goToFoodCombo()" href="javascript:void(0);">
