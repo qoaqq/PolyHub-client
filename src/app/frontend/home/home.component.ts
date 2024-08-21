@@ -25,23 +25,8 @@ export class HomeComponent implements OnInit  {
       // console.log(data);
       // console.log(this.blogHot);
     });
-      
-    
-    
   }
-
   goToMovies() {
     this.router.navigate(['/movies']);
-  }
-  getImage(){
-    if (Array.isArray(this.movie.attributes)) {
-      this.movie.attributes.forEach((item: any) => { 
-        if(item.name === "Image"){
-          this.sliderIMG = item.attribute_values[0].value;
-        }
-      }); 
-    } else {
-        console.error('this.movie.attributes is not an array:', this.movie.attributes);
-    }
   }
 }
