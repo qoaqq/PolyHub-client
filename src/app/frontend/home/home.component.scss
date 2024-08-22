@@ -1,2 +1,9 @@
-
+.blogtitle {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; /* Cho phép xuống dòng */
+    -webkit-line-clamp: 3; /* Giới hạn số dòng hiển thị */
+}
 
