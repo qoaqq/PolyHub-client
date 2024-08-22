@@ -7,7 +7,12 @@
                     <div class="prs_upcom_movie_img_overlay"></div>
                     <div class="prs_upcom_movie_img_btn_wrapper">
                         <ul>
-                            <li><a href="#">View Trailer</a>
+                            <li>
+                                <div *ngFor="let attribute of top?.attributes">
+                                    <div *ngIf="attribute?.name === 'Trailer'">
+                                        <a rel='external' href="{{ attribute?.attribute_values[0].value }}" target="_blank">View Trailer</a>
+                                    </div>
+                                </div>
                             </li>
                             <li><a  [routerLink]="['/movie',top.id ]" href="javascript:void(0);">View Details</a>
                             </li>
