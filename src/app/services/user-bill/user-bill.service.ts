@@ -11,7 +11,7 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class UserBillService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/admin/getbill';  // URL to Laravel API
+  private apiUrl = 'http://127.0.0.1:8000/api/admin';  // URL to Laravel API
   private loggedIn = new BehaviorSubject<boolean>(false);
   
 
@@ -36,7 +36,12 @@ export class UserBillService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<any>(`${this.apiUrl}`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/getBill`, { headers });
   }
+
+  getBillDetail(id: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getBillDetail/${id}`);
+  }
+
 
 }

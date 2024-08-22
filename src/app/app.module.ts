@@ -32,6 +32,7 @@ import { SessionTimerComponent } from './components/session-timer/session-timer.
 import { BestMovieComponent } from './frontend/home/components/best-movie/best-movie.component';
 
 import { UserBillComponent } from './frontend/user-bill/user-bill.component';
+import { BillDetaiComponent } from './frontend/bill-detai/bill-detai.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +62,7 @@ import { UserBillComponent } from './frontend/user-bill/user-bill.component';
     SessionTimerComponent,
     BestMovieComponent,
     UserBillComponent,
+    BillDetaiComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule, ReactiveFormsModule],
   providers: [AuthService],

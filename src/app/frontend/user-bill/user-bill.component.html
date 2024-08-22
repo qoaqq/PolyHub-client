@@ -1,23 +1,20 @@
-
-
 <!-- src/app/components/ticket-list/ticket-list.component.html -->
-<div class="container mt-5 pt-5">
-    <h2 class="mb-4">Your booked</h2>
+<div class="container">
     <table class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Booked at</th>
+                <th scope="col">Email</th>
+                <th scope="col">Booked At</th>
                 <th scope="col">Total</th>
-                
+                <th scope="col">Order Details</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let bill of bills; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
-                <td>{{ bill.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{ bill.grand_total  }}</td>
-               
+            <tr *ngFor="let bill of bills">
+                <td>{{bill.user.email}}</td>
+                <td>{{ bill.created_at | date: 'HH:mm yyyy-MM-dd' }}</td>
+                <td>{{ bill.grand_total | currency:'VND':'':'1.0-0' }} ₫</td>
+                <td><a [routerLink]="['/user-bill-detail', bill.id]">Detail</a></td>
             </tr>
         </tbody>
     </table>
