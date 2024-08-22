@@ -6,7 +6,7 @@
                 <img width="240px" height="240px" [src]="'http://127.0.0.1:8000/'+ blog?.image" alt="news_img" />
             </div>
             <div style="height:240px" class="prs_in_right_box_img_cont_wrapper">
-                <h2><a [routerLink]="['/blog', blog.id]">{{blog.title}}</a></h2>
+                <h2 class="blogtitle"><a [routerLink]="['/blog', blog.id]">{{blog.title}}</a></h2>
                 <h3>{{blog.created_at | date:'dd MMM yyyy'}}</h3>
                 <p class="truncate-content">{{blog.short_desc}}</p>
                 <ul>

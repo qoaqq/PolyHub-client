@@ -17,12 +17,7 @@
             <div class="prs_upcom_movie_content_box">
                 <div class="prs_upcom_movie_content_box_inner">
                     <h2><a [routerLink]="['/movie',upcoming.id ]" href="javascript:void(0);">{{upcoming?.name}}</a></h2>
-                    <!-- <div *ngFor = "let category of upcoming.categories"><p>{{category.name}}</p></div>  -->
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
+                    <span class="truncate-text">{{ upcoming?.director?.name }}</span>
                 </div>
                 <div class="prs_upcom_movie_content_box_inner_icon">
                     <ul>

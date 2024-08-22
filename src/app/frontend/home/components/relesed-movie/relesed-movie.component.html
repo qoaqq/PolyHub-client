@@ -18,12 +18,7 @@
             <div class="prs_upcom_movie_content_box">
                 <div class="prs_upcom_movie_content_box_inner">
                     <h2><a  [routerLink]="['/movie',list.id ]" href="javascript:void(0);">{{list?.name}}</a></h2>
-                   <!-- <div *ngFor = "let category of list.categories"><p>{{category.name}}</p></div> 	 -->
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
+                    <span class="truncate-text">{{ list?.director?.name }}</span>
                 </div>
                 <div class="prs_upcom_movie_content_box_inner_icon">
                     <ul>
