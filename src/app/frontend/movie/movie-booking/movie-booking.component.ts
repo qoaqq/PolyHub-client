@@ -18,6 +18,7 @@
   movieId: string | null = null;
   private sessionTimeout: any;
   private sessionEndTime: number = 0;
+  movie: any;
 
   groupedShowings: { 
     [key: string]: { 
@@ -46,7 +47,10 @@
       });
       this.fetchData();
     
-      
+      // get movie information
+      this.movieBookingService.getMovieById(this.movieId).subscribe(movie => {
+        this.movie = movie.data;
+      })
     }
 
     fetchData(): void {
