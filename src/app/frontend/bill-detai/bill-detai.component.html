@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="username">Username :</label>
+            <input type="text" id="username" class="form-control mt-2" [value]="bill?.user?.name" readonly />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="email">Email :</label>
+            <input type="text" id="email" class="form-control mt-2" [value]="bill?.user?.email" readonly />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="cinema">Cinema :</label>
+            <input type="text" id="cinema" class="form-control" 
+            [value]="bill?.ticket_seats[0]?.cinema?.name" readonly />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="movie">Movie :</label>
+            <input type="text" id="movie" class="form-control" [value]="bill?.ticket_seats[0]?.movie?.name" readonly />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="room">Room :</label>
+            <input type="text" id="room" class="form-control" [value]="bill?.ticket_seats[0]?.room?.name" readonly />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="food_combo">Food Combo :</label>
+            <ng-container *ngFor="let food_item of bill?.ticket_food_combo">
+                <input style="margin-top: 7px;" type="text" id="food_combo" class="form-control" 
+                       [value]="food_item?.food_combo?.name + ' - ' + (food_item?.price | currency:'VND':'':'1.0-0') + ' ₫' + '(qty: ' + food_item?.quantity + ')'" 
+                       readonly />
+            </ng-container>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="seat">Seat :</label>
+            <ng-container *ngFor="let item of bill?.ticket_seats">
+                <input style="margin-top: 7px;" type="text" id="seat" class="form-control" 
+                       [value]="(item?.seat_show_time_status?.seat?.row | uppercase) + item?.seat_show_time_status?.seat?.column + ' - ' + item?.seat_show_time_status?.seat?.seat_type?.name + ' ' + '(' + (item?.seat_show_time_status?.seat?.seat_type?.price | currency:'VND':'':'1.0-0') + '₫)'" 
+                       readonly />
+            </ng-container>
+        </div>
+        
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="grand_total">Grand Total :</label>
+            <input style="margin-top: 7px;" type="text" id="grand_total" class="form-control" [value]="(bill?.grand_total|currency:'VND':'':'1.0-0') + ' ₫ '" readonly />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="barcode">Barcode :</label>
+            <div>
+                <img [src]="'data:image/png;base64,' + bill?.checkin?.checkin_code" alt="Checkin Barcode">
+            </div>
+        </div>
+    </div>
+    <a [routerLink]="['/bill']" class="btn btn-secondary mt-3 rounded-pill px-4">Back</a>
+</div>

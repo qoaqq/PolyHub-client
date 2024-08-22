@@ -15,8 +15,7 @@ export class UserBillComponent {
     this.userbillService.getBills().subscribe(
       data => {
         // Handle the data directly here
-        this.bills = data.data;
-        console.log(this.bills);
+        this.bills = Object.values(data.data);
       },
       error => {
         // Handle errors here
