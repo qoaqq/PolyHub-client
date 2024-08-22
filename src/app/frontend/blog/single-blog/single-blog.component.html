@@ -31,7 +31,7 @@
 									<div class="hs_blog_box1_cont_main_wrapper">
 										<div class="hs_blog_cont_heading_wrapper">
 											<ul>
-												<li>{{  blog.created_at | date: 'mediumDate' }}</li>
+												<li>{{  blog.created_at | date: 'longDate' }}</li>
 												<li>by Admin</li>
 											</ul>
 											<h2 class="title">{{ blog.title }}</h2>
@@ -98,7 +98,6 @@
 				</div>
 				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 					<div class="hs_blog_right_sidebar_main_wrapper">
-
 						<div class="prs_bc_right_about_wrapper">
 							<img src="../../../../assets/images/content/blog_category/side_img1.jpg" alt="side_img">
 							<h2>About Presenter</h2>
@@ -116,7 +115,7 @@
 								  <h4>
 									<a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a>
 								  </h4>
-								  <p>{{ blog.created_at | date: 'longDate' }}</p>
+								  <p>{{ blog.created_at | date: 'shortDate' }}</p>
 								</div>
 							  </div>
 						</div>
