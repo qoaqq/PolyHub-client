@@ -72,8 +72,10 @@ a:hover, a:focus {
 
 /* Đặt kiểu cho các thẻ p */
 .tinymce-content p {
-    margin: 0 0 1em 0;
+    font-family: Helvetica, Arial, sans-serif;
+	color: #333;
     line-height: 1.6;
+	text-align: justify;
 }
 
 /* Đặt kiểu cho các thẻ li trong danh sách */
@@ -126,7 +128,7 @@ a:hover, a:focus {
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: 'Poppins', sans-serif;
-	line-height: 1.1;
+	line-height: 1.4;
 	font-weight:400;
 	color: #222222;
 	margin:0;
@@ -173,8 +175,7 @@ ul{
     -moz-transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%);
 }
-#status img {
-}
+
 #return-to-top {
     position: fixed;
     bottom: 37px;
