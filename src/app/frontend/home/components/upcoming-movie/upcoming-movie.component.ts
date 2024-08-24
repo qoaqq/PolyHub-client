@@ -15,7 +15,6 @@ export class UpcomingMovieComponent implements AfterViewInit{
   ngAfterViewInit(){
     this.HomeService.getUpComingMovie().subscribe(data => { 
       this.upcomingMovie = data.data.data;
-      // console.log(this.upcomingMovie);
     });
   }
   
