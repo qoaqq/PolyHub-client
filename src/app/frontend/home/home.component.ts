@@ -22,8 +22,6 @@ export class HomeComponent implements OnInit  {
   ngOnInit(): void {
     this.HomeService.getBlogHot().subscribe(data => {
       this.blogHot = data.data;
-      // console.log(data);
-      // console.log(this.blogHot);
     });
   }
   goToMovies() {

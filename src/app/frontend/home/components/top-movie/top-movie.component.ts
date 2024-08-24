@@ -27,7 +27,6 @@ export class TopMovieComponent implements AfterViewInit {
         this.topMovies = data.data;
       }
       // Thực hiện các thao tác khác nếu cần
-      // console.log(this.topMovies);
     } catch (error) {
       console.error('Lỗi khi lấy thông tin top phim:', error);
     }
