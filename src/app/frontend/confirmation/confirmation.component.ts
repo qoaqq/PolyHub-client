@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { BillService } from '../../services/bill/bill.service';
-
+import { UserBillService } from 'src/app/services/user-bill/user-bill.service';
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
@@ -16,12 +16,14 @@ import { BillService } from '../../services/bill/bill.service';
 export class ConfirmationComponent implements AfterViewInit {
   barcode: string | undefined;
   billData: any;
+  bill: any;
   private renderer: Renderer2;
 
   constructor(
     private rendererFactory: RendererFactory2,
     private billService: BillService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private userBillService: UserBillService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -29,6 +31,7 @@ export class ConfirmationComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.loadResources();
     this.createBill();
+    this.getBill();
     sessionStorage.removeItem('billData');
     sessionStorage.removeItem('showingRelease');
     sessionStorage.removeItem('selectedSeats');
@@ -131,5 +134,21 @@ export class ConfirmationComponent implements AfterViewInit {
     
     this.barcode = billData?.data.barcode;
     this.cdr.detectChanges();
+  }
+  getBill(){
+    const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
+    console.log(billData);
+    this.userBillService.getBillDetail(billData?.data.bill.id).subscribe(
+      data => {
+        // Handle the data directly here
+        this.bill = data.data;
+        console.log(this.bill);
+        
+      },
+      error => {
+        // Handle errors here
+        
+      }
+    );
   }
 }

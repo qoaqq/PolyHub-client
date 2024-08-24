@@ -230,28 +230,26 @@ export class BookingTypeComponent implements OnInit {
     this.bookingTypeService.getVoucherInfo(this.code).subscribe(
         response => {
             if (response.status) {
-                // Lưu chi tiết voucher vào session storage
+               
                 sessionStorage.setItem('voucherCode', response.data.code);
                 sessionStorage.setItem('voucherType', response.data.type);
                 sessionStorage.setItem('voucherAmount', response.data.amount.toString());
 
-                // Cập nhật đối tượng voucherResponse cục bộ
+
                 this.voucherResponse = response.data;
 
-                // Cập nhật giao diện UI
+                
                 this.errorMessage = '';
                 this.updateFormattedVoucherAmount();
                 this.updateGrandTotal();
-
-                console.log('Voucher details stored in session:', this.voucherResponse);
             } else {
                 this.errorMessage = response.message;
-                console.log('Voucher validation failed:', this.errorMessage);
+
             }
         },
         error => {
             this.errorMessage = 'Error retrieving voucher info';
-            console.error('Error:', error);
+            
         }
     );
 }
@@ -269,7 +267,7 @@ export class BookingTypeComponent implements OnInit {
     }
   }
   removeVoucher(): void {
-    console.log('Removing voucher from session storage');
+    
 
     sessionStorage.removeItem('voucherCode');
     sessionStorage.removeItem('voucherType');
@@ -282,7 +280,7 @@ export class BookingTypeComponent implements OnInit {
     this.updateFormattedVoucherAmount();
     this.updateGrandTotal();
 
-    console.log('Voucher removed from session storage');
+    
 }
 
   applyVoucherOnPayment(): void {
@@ -294,18 +292,19 @@ export class BookingTypeComponent implements OnInit {
         this.bookingTypeService.applyVoucher(storedVoucherCode).subscribe(
             response => {
                 if (response.status) {
-                    console.log('Voucher applied successfully on payment:', response.data);
+                   
                     // Handle the success response, such as confirming the discount and proceeding with payment
                 } else {
-                    console.error('Failed to apply voucher:', response.message);
+                 
+                    this.errorMessage = 'Error retrieving voucher info';
                 }
             },
             error => {
-                console.error('Error applying voucher on payment:', error);
+              this.errorMessage = 'Error applying voucher on payment';
             }
         );
     } else {
-        console.error('No voucher code found in session storage.');
+         this.errorMessage = 'No voucher code found in session storage.';
     }
 }
 onVoucherInputChange(event: Event) {
