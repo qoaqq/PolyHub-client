@@ -32,7 +32,6 @@
 										<div class="hs_blog_cont_heading_wrapper">
 											<ul>
 												<li>{{  blog.created_at | date: 'longDate' }}</li>
-												<li>by Admin</li>
 											</ul>
 											<h2 class="title">{{ blog.title }}</h2>
 											<h4 class="content">{{ blog.short_desc }}</h4>
@@ -42,11 +41,11 @@
 									<div class="hs_blog_box1_bottom_cont_main_wrapper">
 										<div class="hs_blog_box1_bottom_cont_left">
 											<ul>
-												<li><i class="fa fa-thumbs-up"></i> &nbsp;&nbsp;<a href="#">1244 Likes</a>
+												<li><i class="fa fa-thumbs-up"></i> &nbsp;&nbsp;<a href="#">Likes</a>
 												</li>
-												<li><i class="fa fa-comments"></i> &nbsp;&nbsp;<a href="#">256 Comments</a>
+												<li><i class="fa fa-comments"></i> &nbsp;&nbsp;<a href="#">Comments</a>
 												</li>
-												<li><i class="fa fa-tags"></i> &nbsp;&nbsp;<a href="#">Presenter Movie</a>
+												<li><i class="fa fa-tags"></i> &nbsp;&nbsp;<a href="#">Presenter</a>
 												</li>
 											</ul>
 										</div>
@@ -105,7 +104,7 @@
 								  <img [src]="blog.image" width="80" height="80" alt="ln_img" />
 								</div>
 								<div class="hs_footer_ln_cont_wrapper">
-								  <h4>
+								  <h4 class="mini-title">
 									<a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a>
 								  </h4>
 								  <p>{{ blog.created_at | date: 'shortDate' }}</p>

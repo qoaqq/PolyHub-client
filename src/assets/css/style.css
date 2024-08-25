@@ -5948,7 +5948,7 @@ body.active #mobile-nav {
 }
 .hs_blog_cont_heading_wrapper li:first-child:after{
 	content: '';
-    border: 1px solid #ff4444;
+    /* border: 1px solid #ff4444; */
     height: 15px;
     position: absolute;
     right: -13px;
