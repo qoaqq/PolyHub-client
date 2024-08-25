@@ -4,134 +4,118 @@ import {
   Renderer2,
   RendererFactory2,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 
+import { ActivatedRoute } from '@angular/router';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { BillService } from '../../services/bill/bill.service';
-import { UserBillService } from 'src/app/services/user-bill/user-bill.service';
+import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
+import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
+import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
+import { UserComponent } from '../user/user.component';
+
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
 })
-export class ConfirmationComponent implements AfterViewInit {
+export class ConfirmationComponent implements AfterViewInit, OnInit {
   barcode: string | undefined;
   billData: any;
   bill: any;
   private renderer: Renderer2;
+  private apiUrl = 'http://127.0.0.1:8000/api/vnPayCheckMail';
+  paramValue: string | null = null;
+  user: any = {};
+  combo: any;
+  selectedSeats: any[] = [];
+  selectedFoodCombos: any[] = [];
+  showingrelease: any;
+  grandTotal: number = 0;
 
   constructor(
     private rendererFactory: RendererFactory2,
     private billService: BillService,
     private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private http: HttpClient
     private userBillService: UserBillService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+        if (params['vnp_ResponseCode']) {
+          this.paramValue = params['vnp_ResponseCode'];
+          this.apiUrl = 'http://127.0.0.1:8000/api/vnPayCheckMail';
+        } else if (params['message']) {
+          this.paramValue = params['message'];
+          this.apiUrl = 'http://127.0.0.1:8000/api/momoCheckMail';
+        } else if (params['PayerID']) {
+          this.paramValue = params['PayerID'];
+          this.apiUrl = 'http://127.0.0.1:8000/api/paypalCheckMail';
+        }
+      
+        if (this.paramValue) {
+          this.sendDataToApi(this.paramValue).subscribe(
+            (response: any) => {
+              console.log('Dữ liệu đã được gửi:', response);
+            },
+            (error: HttpErrorResponse) => {
+              console.error('Lỗi khi gửi dữ liệu:', error);
+              console.error('Chi tiết lỗi:', error.error);
+            }
+          );
+        }
+    });
+  }
+
   ngAfterViewInit() {
-    this.loadResources();
     this.createBill();
-    this.getBill();
-    sessionStorage.removeItem('billData');
-    sessionStorage.removeItem('showingRelease');
-    sessionStorage.removeItem('selectedSeats');
-    sessionStorage.removeItem('sessionEndTime');
-    sessionStorage.removeItem('selectedFoodCombos');
   }
 
-  private loadResources() {
-    const stylesheets = [
-      '../../../assets/css/animate.css',
-      '../../../assets/css/bootstrap.css',
-      '../../../assets/css/font-awesome.css',
-      '../../../assets/css/fonts.css',
-      '../../../assets/css/flaticon.css',
-      '../../../assets/css/owl.carousel.css',
-      '../../../assets/css/owl.theme.default.css',
-      '../../../assets/css/dl-menu.css',
-      '../../../assets/css/nice-select.css',
-      '../../../assets/css/magnific-popup.css',
-      '../../../assets/css/venobox.css',
-      '../../../assets/js/plugin/rs_slider/layers.css',
-      '../../../assets/js/plugin/rs_slider/navigation.css',
-      '../../../assets/js/plugin/rs_slider/settings.css',
-      '../../../assets/css/seat.css',
-      '../../../assets/css/style.css',
-      '../../../assets/css/responsive.css',
-    ];
-
-    const scripts = [
-      '../../../assets/js/jquery_min.js',
-      '../../../assets/js/modernizr.js',
-      '../../../assets/js/bootstrap.js',
-      '../../../assets/js/owl.carousel.js',
-      '../../../assets/js/jquery.dlmenu.js',
-      '../../../assets/js/jquery.sticky.js',
-      '../../../assets/js/jquery.nice-select.min.js',
-      '../../../assets/js/jquery.magnific-popup.js',
-      '../../../assets/js/jquery.bxslider.min.js',
-      '../../../assets/js/venobox.min.js',
-      '../../../assets/js/smothscroll_part1.js',
-      '../../../assets/js/smothscroll_part2.js',
-      '../../../assets/js/plugin/rs_slider/jquery.themepunch.revolution.min.js',
-      '../../../assets/js/plugin/rs_slider/jquery.themepunch.tools.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.addon.snow.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.actions.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.carousel.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.kenburn.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.layeranimation.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.migration.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.navigation.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.parallax.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.slideanims.min.js',
-      '../../../assets/js/plugin/rs_slider/revolution.extension.video.min.js',
-      '../../../assets/js/custom.js',
-    ];
-
-    this.loadStylesheets(stylesheets)
-      .then(() => this.loadScriptsSequentially(scripts))
-      .catch((error) => console.error('Error loading resources:', error));
-  }
-
-  private loadStylesheets(urls: string[]): Promise<void> {
-    return Promise.all(urls.map((url) => this.loadStylesheet(url))).then(
-      () => {}
-    );
-  }
-
-  private loadStylesheet(url: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const link = this.renderer.createElement('link');
-      this.renderer.setAttribute(link, 'rel', 'stylesheet');
-      this.renderer.setAttribute(link, 'type', 'text/css');
-      this.renderer.setAttribute(link, 'href', url);
-      link.onload = () => resolve();
-      link.onerror = (error: ErrorEvent) => reject(error);
-      this.renderer.appendChild(document.head, link);
+  sendDataToApi(responseCode: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
     });
-  }
 
-  private loadScriptsSequentially(urls: string[]): Promise<void> {
-    return urls.reduce((promise, url) => {
-      return promise.then(() => this.loadScript(url));
-    }, Promise.resolve());
-  }
+    const user = sessionStorage.getItem('user');
+    const showingRelease = sessionStorage.getItem('showingRelease');
+    const selectedSeats = sessionStorage.getItem('selectedSeats');
+    const selectedFoodCombos = sessionStorage.getItem('selectedFoodCombos');
+    const totalPriceTicketSeat = sessionStorage.getItem('totalPriceTicketSeat');
+    const grandTotal = sessionStorage.getItem('grandTotal');
 
-  private loadScript(url: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const script = this.renderer.createElement('script');
-      this.renderer.setAttribute(script, 'type', 'text/javascript');
-      this.renderer.setAttribute(script, 'src', url);
-      script.onload = () => resolve();
-      script.onerror = (error: ErrorEvent) => reject(error);
-      this.renderer.appendChild(document.head, script);
+    // Tạo payload để gửi
+    const body = JSON.stringify({
+      responseCode,
+      user: user ? JSON.parse(user) : {},
+      showingRelease: showingRelease ? JSON.parse(showingRelease) : {},
+      selectedSeats: selectedSeats ? JSON.parse(selectedSeats) : [],
+      selectedFoodCombos: selectedFoodCombos
+        ? JSON.parse(selectedFoodCombos)
+        : [],
+      totalPriceTicketSeat: totalPriceTicketSeat
+        ? JSON.parse(totalPriceTicketSeat)
+        : 0,
+      grandTotal: grandTotal ? JSON.parse(grandTotal) : 0,
     });
+
+    return this.http.post(this.apiUrl, body, { headers });
   }
 
   createBill() {
     const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
-    console.log(billData);
-    
+    console.log('bill', billData.data.bill.grand_total);
+
     this.barcode = billData?.data.barcode;
     this.cdr.detectChanges();
   }

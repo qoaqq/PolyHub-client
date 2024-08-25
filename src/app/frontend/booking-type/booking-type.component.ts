@@ -136,9 +136,10 @@ export class BookingTypeComponent implements OnInit {
         (seat.seat.seat_type.price as string).replace(/,/g, '')
       );
       this.totalPriceTicketSeat += price;
+      sessionStorage.setItem('totalPriceTicketSeat', JSON.stringify(this.totalPriceTicketSeat));
     });
 
-    this.updateGrandTotal(); // Cập nhật tổng khi giá vé đã được tính
+    this.updateGrandTotal();
   }
 
   calculateTotalPriceFoodCombo(): void {
@@ -168,9 +169,6 @@ export class BookingTypeComponent implements OnInit {
     return `${day}/${month}/${year}`;
   }
 
-  // updateGrandTotal(): void {
-  //   this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
-  // }
   updateGrandTotal(): void {
     this.grandTotal = this.totalPriceTicketSeat + this.totalPriceFoodCombo;
   
@@ -182,6 +180,8 @@ export class BookingTypeComponent implements OnInit {
         this.grandTotal -= this.grandTotal * (amount / 100);
       }
     }
+
+    sessionStorage.setItem('grandTotal', JSON.stringify(this.grandTotal));
   }
 
 
@@ -211,9 +211,6 @@ export class BookingTypeComponent implements OnInit {
       ticket_seat: ticket_seat,
       user: user,
     };
-
-    console.log('Token:', payload);
-
 
     this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
       console.log(data);
@@ -317,5 +314,4 @@ onVoucherInputChange(event: Event) {
   }
 }
     
-
 }

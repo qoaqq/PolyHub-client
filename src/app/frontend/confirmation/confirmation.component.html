@@ -25,14 +25,14 @@
         <div class="col-md-12">
           <div class="st_bcc_heading_wrapper float_left">
             <i class="fa fa-check-circle"></i>
-            <h3>Payment of <span>{{bill?.grand_total | currency:'VND':'symbol'}}</span> Complete successfully</h3>
+            <h3>Payment of <span>{{billData?.grand_total}}</span> Complete successfully</h3>
           </div>
         </div>
         <div class="col-md-12">
           <div class="st_bcc_ticket_boxes_wrapper float_left">
             <div class="st_bcc_tecket_top_hesder float_left">
               <p>Your Booking is Confirmed!</p>
-             
+              <span>Booking ID {{billData?.id}}</span>
             </div>
             <div class="st_bcc_tecket_bottom_hesder float_left">
               <div class="st_bcc_tecket_bottom_left_wrapper">
