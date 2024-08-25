@@ -34,9 +34,7 @@ export class CateBlogComponent implements OnInit {
     })
     
     this.blogService.getLatestBlogs().subscribe(blogLastest => {
-        this.blogLastest = blogLastest.data;
-        console.log(this.blogLastest);
-        
+        this.blogLastest = blogLastest.data;        
     })
   }
 
