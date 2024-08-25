@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SilderVideoComponent } from './silder-video.component';
+import { BillDetaiComponent } from './bill-detai.component';
 
-describe('SilderVideoComponent', () => {
-  let component: SilderVideoComponent;
-  let fixture: ComponentFixture<SilderVideoComponent>;
+describe('BillDetaiComponent', () => {
+  let component: BillDetaiComponent;
+  let fixture: ComponentFixture<BillDetaiComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SilderVideoComponent ]
+      declarations: [ BillDetaiComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SilderVideoComponent);
+    fixture = TestBed.createComponent(BillDetaiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

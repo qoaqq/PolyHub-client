@@ -72,8 +72,10 @@ a:hover, a:focus {
 
 /* Đặt kiểu cho các thẻ p */
 .tinymce-content p {
-    margin: 0 0 1em 0;
+    font-family: Helvetica, Arial, sans-serif;
+	color: #333;
     line-height: 1.6;
+	text-align: justify;
 }
 
 /* Đặt kiểu cho các thẻ li trong danh sách */
@@ -90,7 +92,6 @@ a:hover, a:focus {
 /* Đặt kiểu cho các thẻ img */
 .tinymce-content img {
     max-width: 100%; /* Đảm bảo hình ảnh không vượt quá kích thước của khối chứa */
-    height: auto;
     display: block;
     margin: 0 auto; /* Canh giữa hình ảnh */
 }
@@ -173,8 +174,7 @@ ul{
     -moz-transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%);
 }
-#status img {
-}
+
 #return-to-top {
     position: fixed;
     bottom: 37px;
@@ -4229,7 +4229,7 @@ body.active #mobile-nav {
 .prs_mcc_bro_title_wrapper{
 	float:left;
 	width:100%;
-	padding-top:60px;
+	padding-top:30px;
 }
 .prs_mcc_bro_title_wrapper h2{
 	font-size:20px;
@@ -5948,7 +5948,7 @@ body.active #mobile-nav {
 }
 .hs_blog_cont_heading_wrapper li:first-child:after{
 	content: '';
-    border: 1px solid #ff4444;
+    /* border: 1px solid #ff4444; */
     height: 15px;
     position: absolute;
     right: -13px;

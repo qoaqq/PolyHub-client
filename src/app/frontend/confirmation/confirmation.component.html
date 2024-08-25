@@ -32,21 +32,19 @@
           <div class="st_bcc_ticket_boxes_wrapper float_left">
             <div class="st_bcc_tecket_top_hesder float_left">
               <p>Your Booking is Confirmed!</p>
-              <h5>{{billData?.data.bill.grand_total | currency:'INR':'symbol'}}</h5>
               <span>Booking ID {{billData?.id}}</span>
             </div>
             <div class="st_bcc_tecket_bottom_hesder float_left">
               <div class="st_bcc_tecket_bottom_left_wrapper">
                 <div class="st_bcc_tecket_bottom_inner_left">
                   <div class="st_bcc_teckt_bot_inner_img">
-                    <img src="../../../assets/images/content/tcc1.png" alt="img">
+                    <img width="162px" height="150px" [src]="'http://127.0.0.1:8000/' + bill?.ticket_seats[0]?.movie?.photo" alt="img">
                   </div>
                   <div class="st_bcc_teckt_bot_inner_img_cont">
-                    <h4>Njan Prakashan</h4>
-                    <h5>Malayalam, 2D</h5>
-                    <h3>Mon, 31 Dec | 09.30PM</h3>
-                    <h6>Carnival: Artech Central Mall,<br> 
-                      Trivandrum Audi-5</h6>
+                    <h4>MOVIE: <span>{{ bill?.ticket_seats[0]?.movie?.name }}</span></h4>
+                    <h4 class="my-3">CINEMA: <span>{{ bill?.ticket_seats[0]?.cinema?.name }}</span> </h4>
+                    <h4>ROOM: <span>{{ bill?.ticket_seats[0]?.room?.name }} </span></h4>
+
                   </div>
                   <div class="st_purchase_img">
                     <img src="../../../assets/images/content/pur2.png" alt="img">
@@ -54,8 +52,11 @@
                 </div>
                 <div class="st_bcc_tecket_bottom_inner_right">
                   <i class="fas fa-chair"></i>
-                  <h3>2 TICKETS <br>
-                    <span>EXECUTIV - K1, K2</span>
+                  <h3> TICKETS <br>
+                    <span *ngFor="let item of bill?.ticket_seats">  {{ (item?.seat_show_time_status?.seat?.row | uppercase) + item?.seat_show_time_status?.seat?.column }}</span>
+                  </h3>
+                  <h3> FOOD COMBO <br>
+                    <span *ngFor="let food_item of bill?.ticket_food_combo">  {{ food_item?.food_combo?.name + ' - ' + (food_item?.price | currency:'VND':'':'1.0-0') + ' ₫' + '(qty: ' + food_item?.quantity + ')' }}</span>
                   </h3>
                 </div>
               </div>
@@ -63,21 +64,15 @@
                 <div>
                 </div>
                 <img [src]="'data:image/png;base64,' + barcode" alt="Barcode" width="150px" height="auto">
-                <h4>Booking ID<br>{{billData?.id}}</h4>
+                <h4>Booking ID<br>{{bill?.id}}</h4>
               </div>
               <div class="st_bcc_tecket_bottom_left_price_wrapper">
                 <h4>Total Amount</h4>
-                
+                <h5>{{bill?.grand_total | currency:'VND':'symbol'}}</h5>
               </div>
             </div>
           </div>
-          <div class="st_bcc_ticket_boxes_bottom_wrapper float_left">
-            <p>You can access your ticket from your Profile. We will send you an e-Mail/SMS Confirmation within 15 Minutes.</p>
-            <ul>
-              <li><a href="#">INVITE FRIENDS</a></li>
-              <li><a href="#">Locate Friend</a></li>
-            </ul>
-          </div>
+          
         </div>
       </div>
     </div>

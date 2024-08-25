@@ -120,7 +120,7 @@ body, h1, h2, h3, p, div {
 }
 
 .quantity-btn:hover {
-  background-color: #0056b3;
+  background-color: #3f414f;
 }
 
 /* Styling for quantity input */
@@ -241,19 +241,16 @@ strong {
   padding: 0.2rem 0.4rem;
   font-size: 1rem;
   text-transform: uppercase;
-  background-color: #51cf66;
   color: #333;
   border-radius: 50px;
   font-weight: 600;
 }
 
 .tag--vegetarian {
-  background-color: #51cf66;
   font-size: 12px;
 }
 
 .tag--vegan {
-  background-color: #94d82d;
 }
 
 .tag--paleo {
@@ -292,3 +289,19 @@ strong {
   object-fit: cover;
 }
 
+.details-section {
+  display: flex;
+  flex-direction: column; /* Sắp xếp các hàng theo chiều dọc */
+  gap: 10px; /* Khoảng cách giữa các hàng */
+}
+
+.details-section > div {
+  display: flex;
+  justify-content: center; /* Căn giữa các phần tử trong cùng hàng */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 5px; /* Khoảng cách giữa các phần tử trong cùng hàng */
+}
+
+.details-section p {
+  margin: 0; /* Loại bỏ margin mặc định của p */
+}

@@ -11,6 +11,8 @@ import { FoodComboService } from 'src/app/services/food-combo/food-combo.service
 export class FoodComboComponent implements OnInit {
   foodCombos: { id: number; name: string; description: string; price: number; quantity: number; avatar?: string; }[] = [];
   selectedFoodCombos: { id: number; name: string; quantity: number; price: number }[] = [];
+  selectedSeats: any[] = [];
+  totalPriceTicketSeat: number = 0;
   totalPriceFoodCombo: number = 0;
   showingRelease: any;
 
@@ -27,19 +29,43 @@ export class FoodComboComponent implements OnInit {
     }
     this.loadFoodCombos();
     this.loadShowingRelease();
+    this.loadTicketSeats();
+    this.calculateTotalPrice();
+  }
+
+  loadTicketSeats(): void {
+    const selectedSeats = sessionStorage.getItem('selectedSeats');
+    if (selectedSeats) {
+      this.selectedSeats = JSON.parse(selectedSeats);
+    }
+  }
+
+  private calculateTotalPrice(): void {
+    // Tính tổng giá vé
+    this.totalPriceTicketSeat = this.selectedSeats.reduce((total, seat) => {
+      const price = parseFloat((seat.seat.seat_type.price as string).replace(/,/g, ''));
+      return total + price;
+    }, 0);
+
+    // Tính tổng giá food combo
+    this.totalPriceFoodCombo = this.selectedFoodCombos.reduce((total, combo) => {
+      return total + (combo.quantity * combo.price);
+    }, 0);
+
+    // Cộng cả hai tổng vào nhau
+    this.totalPriceTicketSeat += this.totalPriceFoodCombo;
   }
 
   loadFoodCombos(): void {
     this.foodComboService.getFoodCombos().subscribe(
       (data) => {
-        this.foodCombos = data.map((combo:any) => {
+        this.foodCombos = data.map((combo: any) => {
           const storedCombo = this.selectedFoodCombos.find(c => c.id === combo.id);
           return {
             ...combo,
             quantity: storedCombo ? storedCombo.quantity : 0
           };
         });
-        console.log('Food Combos:', this.foodCombos);
       },
       (error) => {
         console.error('Error fetching food combos:', error);
@@ -51,8 +77,6 @@ export class FoodComboComponent implements OnInit {
     const showingRelease = sessionStorage.getItem('showingRelease');
     if (showingRelease) {
       this.showingRelease = JSON.parse(showingRelease);
-      console.log(this.showingRelease);
-      
     }
   }
 
@@ -87,19 +111,19 @@ export class FoodComboComponent implements OnInit {
       }
     }
 
-    // Remove combo if quantity is 0
+    // Xóa combo nếu số lượng là 0
     this.selectedFoodCombos = this.selectedFoodCombos.filter(c => c.quantity > 0);
 
-    // Update foodCombos with the current quantity
+    // Cập nhật số lượng trong foodCombos
     this.foodCombos = this.foodCombos.map(c => 
       c.id === comboId ? { ...c, quantity: this.getQuantity(comboId) } : c
     );
 
-    // Update sessionStorage
+    // Cập nhật sessionStorage
     sessionStorage.setItem('selectedFoodCombos', JSON.stringify(this.selectedFoodCombos));
 
-    // Update total price
-    this.totalPriceFoodCombo = this.selectedFoodCombos.reduce((total, combo) => total + (combo.quantity * combo.price), 0);
+    // Tính toán lại tổng giá
+    this.calculateTotalPrice();
   }
 
   private getQuantity(comboId: number): number {

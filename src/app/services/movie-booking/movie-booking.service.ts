@@ -36,4 +36,8 @@ export class MovieBookingService {
   getShowingReleasebyMovieId(id: any): Observable<any> {
     return this.http.get<any>(`http://127.0.0.1:8000/api/admin/showingrelease/${id}/movie`);
   }
+
+  getMovieById(id: any): Observable<any> {
+    return this.http.get<any>(`http://127.0.0.1:8000/api/movie/${id}`);
+  }
 }

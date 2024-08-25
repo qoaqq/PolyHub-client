@@ -14,8 +14,6 @@ export class BlogMovieComponent implements AfterViewInit{
   ngAfterViewInit(){
     this.HomeService.getBlogHome().subscribe(data => {
       this.blogHome = data.data;
-      // console.log(data);
-      // console.log(this.movies);
     });
   }
 }

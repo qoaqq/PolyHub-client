@@ -15,13 +15,6 @@ export class BestMovieComponent implements AfterViewInit{
     // phim đang chiếu
     this.HomeService.getBestMovies().subscribe(data => {
       this.best = data.data;
-      // console.log(data);
-      // console.log(this.movies);
-    });
-  }
-  viewDetails(movieId: number): void {
-    this.Router.navigate(['/movie', movieId]).then(() => {
-      window.location.reload();
     });
   }
 }

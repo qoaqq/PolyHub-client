@@ -29,6 +29,7 @@ import { UserComponent } from '../user/user.component';
 export class ConfirmationComponent implements AfterViewInit, OnInit {
   barcode: string | undefined;
   billData: any;
+  bill: any;
   private renderer: Renderer2;
   private apiUrl = 'http://127.0.0.1:8000/api/vnPayCheckMail';
   paramValue: string | null = null;
@@ -45,6 +46,7 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private http: HttpClient
+    private userBillService: UserBillService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -61,7 +63,7 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
           this.paramValue = params['PayerID'];
           this.apiUrl = 'http://127.0.0.1:8000/api/paypalCheckMail';
         }
-
+      
         if (this.paramValue) {
           this.sendDataToApi(this.paramValue).subscribe(
             (response: any) => {
@@ -116,5 +118,21 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
 
     this.barcode = billData?.data.barcode;
     this.cdr.detectChanges();
+  }
+  getBill(){
+    const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
+    console.log(billData);
+    this.userBillService.getBillDetail(billData?.data.bill.id).subscribe(
+      data => {
+        // Handle the data directly here
+        this.bill = data.data;
+        console.log(this.bill);
+        
+      },
+      error => {
+        // Handle errors here
+        
+      }
+    );
   }
 }
