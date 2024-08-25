@@ -112,7 +112,7 @@
 							  <img [src]="'http://127.0.0.1:8000/' + blog?.image" width="80" height="80" alt="ln_img" />
 							</div>
 							<div class="hs_footer_ln_cont_wrapper">
-							  <h4><a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a></h4>
+							  <h4 class="mini-title"><a [routerLink]="['/blog', blog.id]" class="truncated-title">{{ blog.title }}</a></h4>
 							  <p>{{ blog.created_at | date: 'shortDate' }}</p>
 							</div>
 						</div>
