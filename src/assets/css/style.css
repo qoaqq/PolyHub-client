@@ -92,7 +92,6 @@ a:hover, a:focus {
 /* Đặt kiểu cho các thẻ img */
 .tinymce-content img {
     max-width: 100%; /* Đảm bảo hình ảnh không vượt quá kích thước của khối chứa */
-    height: auto;
     display: block;
     margin: 0 auto; /* Canh giữa hình ảnh */
 }
