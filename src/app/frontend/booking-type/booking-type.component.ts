@@ -49,14 +49,14 @@ export class BookingTypeComponent implements OnInit {
     });
     window.addEventListener('submit', () => {
       // Gọi applyVoucherOnPayment sau khi submit
-      this.applyVoucherOnPayment();
+     
       sessionStorage.removeItem('grandTotal');
       sessionStorage.removeItem('totalPriceTicketSeat');
   });
    // Lắng nghe sự kiện NavigationStart
    this.routerSubscription = this.router.events.subscribe(event => {
     if (event instanceof NavigationStart) {
-      const excludedUrls = [ '/booking-type', '/seat-booking'];
+      const excludedUrls = [ '/booking-type', '/seat-booking', '/confirmation'];
       // Nếu URL không nằm trong danh sách loại trừ
       if (!excludedUrls.includes(event.url)) {
         this.removeVoucher();
@@ -69,7 +69,7 @@ export class BookingTypeComponent implements OnInit {
   // Lắng nghe sự kiện popstate
   window.addEventListener('popstate', () => {
     const currentUrl = this.location.path();
-    const excludedUrls = ['/booking-type'];
+    const excludedUrls = ['/booking-type' , '/confirmation'];
     // Nếu URL không nằm trong danh sách loại trừ
     if (!excludedUrls.includes(currentUrl)) {
       this.removeVoucher();
@@ -189,6 +189,7 @@ export class BookingTypeComponent implements OnInit {
 
   submit() {
 
+    this.applyVoucherOnPayment();
     const paymentForm = this.paymentForm?.value;
     sessionStorage.setItem('paymentForm', JSON.stringify(paymentForm));
 
@@ -221,6 +222,7 @@ export class BookingTypeComponent implements OnInit {
         window.location.href = data.redirect_url;
       }
     });
+
   }
   applyVoucher(): void {
     console.log('Retrieving voucher info for code:', this.code);
@@ -236,7 +238,7 @@ export class BookingTypeComponent implements OnInit {
 
 
                 this.voucherResponse = response.data;
-
+                
                 
                 this.errorMessage = '';
                 this.updateFormattedVoucherAmount();
@@ -291,6 +293,7 @@ export class BookingTypeComponent implements OnInit {
         this.bookingTypeService.applyVoucher(storedVoucherCode).subscribe(
             response => {
                 if (response.status) {
+                   console.log(response);
                    
                     // Handle the success response, such as confirming the discount and proceeding with payment
                 } else {
