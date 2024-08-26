@@ -22,13 +22,6 @@ export class HomeComponent implements OnInit  {
   ngOnInit(): void {
     this.HomeService.getBlogHot().subscribe(data => {
       this.blogHot = data.data;
-    });
-<<<<<<< HEAD
-      this.movieId = this.route.snapshot.paramMap.get('id');
-      this.HomeService.getSilder(this.movieId).subscribe(movie => {
-        this.movie = movie.data;
-        this.getImage();
-      });
     
     sessionStorage.removeItem('billData');
     sessionStorage.removeItem('showingRelease');
@@ -38,9 +31,8 @@ export class HomeComponent implements OnInit  {
     sessionStorage.removeItem('grandTotal');
     sessionStorage.removeItem('data');
     sessionStorage.removeItem('totalPriceTicketSeat');
-=======
->>>>>>> 02b47670981f3b1152c87ef64437126b85f2f1b0
   }
+)}
   goToMovies() {
     this.router.navigate(['/movies']);
   }
