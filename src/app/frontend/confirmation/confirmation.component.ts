@@ -7,13 +7,13 @@ import {
   OnInit,
 } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Subscription, forkJoin, of, Observable } from 'rxjs';
 
 import { BillService } from '../../services/bill/bill.service';
 import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.service';
@@ -21,7 +21,8 @@ import { FoodComboService } from 'src/app/services/food-combo/food-combo.service
 import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
 import { UserComponent } from '../user/user.component';
 import { UserBillService } from 'src/app/services/user-bill/user-bill.service';
-
+import { AuthService } from '../../services/auth/auth.service';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
@@ -40,19 +41,46 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
   selectedFoodCombos: any[] = [];
   showingrelease: any;
   grandTotal: number = 0;
-
+  errorMessage: string = '';
+  private routerSubscription: Subscription;
+  
   constructor(
+    private router: Router,
     private rendererFactory: RendererFactory2,
     private billService: BillService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private http: HttpClient,
     private userBillService: UserBillService,
+    private authService: AuthService,
+    private location: Location,
+    
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
+    // Lắng nghe sự kiện NavigationStart
+   this.routerSubscription = this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      const excludedUrls = [ '/confirmation'];
+      // Nếu URL không nằm trong danh sách loại trừ
+      if (!excludedUrls.includes(event.url)) {
+        sessionStorage.removeItem('user_data');
+      }
+    }
+  });
+
+  // Lắng nghe sự kiện popstate
+  window.addEventListener('popstate', () => {
+    const currentUrl = this.location.path();
+    const excludedUrls = ['/confirmation'];
+    // Nếu URL không nằm trong danh sách loại trừ
+    if (!excludedUrls.includes(currentUrl)) {
+      sessionStorage.removeItem('user_data');
+    }
+  });
   }
 
   async ngOnInit() {
+  
     await this.handleQueryParams();
   }
 
@@ -87,23 +115,25 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
         }
       }
     });
+
   }
 
-  ngAfterViewInit() {}
+
+  async ngAfterViewInit() {
+  }
 
   sendDataToApi(responseCode: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-
-    const user = sessionStorage.getItem('user');
+    const user = sessionStorage.getItem('user_data');
     const showingRelease = sessionStorage.getItem('showingRelease');
     const selectedSeats = sessionStorage.getItem('selectedSeats');
     const selectedFoodCombos = sessionStorage.getItem('selectedFoodCombos');
     const totalPriceTicketSeat = sessionStorage.getItem('totalPriceTicketSeat');
     const grandTotal = sessionStorage.getItem('grandTotal');
     const paymentMethod = sessionStorage.getItem('paymentForm');
-
+    
     // Tạo payload để gửi
     const body = JSON.stringify({
       responseCode,
@@ -119,29 +149,28 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
       grandTotal: grandTotal ? JSON.parse(grandTotal) : 0,
       paymentMethod: paymentMethod ? JSON.parse(paymentMethod) : [],
     });
-
+    
     return this.http.post(this.apiUrl, body, { headers });
   }
 
   createBill() {
     const billData = JSON.parse(sessionStorage.getItem('data') || '{}');
     console.log('bill', billData);
-
     this.barcode = billData?.data.barcode;
-    this.cdr.detectChanges();
-  }
-  getBill(){
-    const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
-    console.log(billData);
     this.userBillService.getBillDetail(billData?.data.bill.id).subscribe(
       data => {
+        console.log(data);
+        
         // Handle the data directly here
         this.bill = data.data;
+        console.log(this.bill);
+        
       },
       error => {
         // Handle errors here
         
       }
     );
+    this.cdr.detectChanges();
   }
 }
