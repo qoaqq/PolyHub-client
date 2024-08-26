@@ -6,7 +6,7 @@
       <div *ngFor="let movie of topMovies" class="slide rounded-4">
         <img (click)="viewDetails(movie?.id)" height="600px" [src]="'http://127.0.0.1:8000/' + movie?.photo" alt="">
         <div style="background-color: white;">
-          <h4><a (click)="viewDetails(movie?.id)" href="javascript:void(0);">{{ movie?.name }}</a></h4>
+          <h4><a  [routerLink]="['/movie',movie.id ]" href="javascript:void(0);">{{ movie?.name }}</a></h4>
         </div>
       </div>
   

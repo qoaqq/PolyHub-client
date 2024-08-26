@@ -20,6 +20,7 @@ import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.s
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
 import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
 import { UserComponent } from '../user/user.component';
+import { UserBillService } from 'src/app/services/user-bill/user-bill.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -29,6 +30,7 @@ import { UserComponent } from '../user/user.component';
 export class ConfirmationComponent implements AfterViewInit, OnInit {
   barcode: string | undefined;
   billData: any;
+  bill: any;
   private renderer: Renderer2;
   private apiUrl = 'http://127.0.0.1:8000/api/vnPayCheckMail';
   paramValue: string | null = null;
@@ -44,7 +46,8 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
     private billService: BillService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private userBillService: UserBillService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -126,5 +129,19 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
 
     this.barcode = billData?.data.barcode;
     this.cdr.detectChanges();
+  }
+  getBill(){
+    const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
+    console.log(billData);
+    this.userBillService.getBillDetail(billData?.data.bill.id).subscribe(
+      data => {
+        // Handle the data directly here
+        this.bill = data.data;
+      },
+      error => {
+        // Handle errors here
+        
+      }
+    );
   }
 }

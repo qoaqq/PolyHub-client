@@ -1,6 +1,16 @@
 .truncate-content {
-    white-space: nowrap; /* Ngăn chặn từng dòng xuống dòng */
-    overflow: hidden; /* Ẩn nội dung bị tràn */
-    text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Cho phép xuống dòng */
+  -webkit-line-clamp: 2; /* Giới hạn số dòng hiển thị */
   }
-  
+  .blogtitle {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; /* Cho phép xuống dòng */
+    -webkit-line-clamp: 2; /* Giới hạn số dòng hiển thị */
+    }

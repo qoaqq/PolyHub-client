@@ -17,6 +17,8 @@ import { SessionGuard } from './guards/session/session.guard';
 import { AuthUserGuard } from './guards/user/auth-user.guard';
 import { FoodComboComponent } from './frontend/food-combo/food-combo.component';
 import { PaymentComponent } from './frontend/payment/payment.component';
+import { UserBillComponent } from './frontend/user-bill/user-bill.component';
+import { BillDetaiComponent } from './frontend/bill-detai/bill-detai.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -35,6 +37,9 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuard]  },
   { path: 'signup', component: SignupComponent, canActivate: [AuthGuard]  },
   { path: 'user', component: UserComponent , canActivate: [AuthUserGuard] },
+  { path: 'user-bill', component: UserBillComponent , canActivate: [AuthUserGuard] },
+  { path: 'user-bill-detail/:id', component: BillDetaiComponent , canActivate: [AuthUserGuard] },
+  
 ];
 
 @NgModule({

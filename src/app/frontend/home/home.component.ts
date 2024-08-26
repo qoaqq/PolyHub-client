@@ -22,9 +22,8 @@ export class HomeComponent implements OnInit  {
   ngOnInit(): void {
     this.HomeService.getBlogHot().subscribe(data => {
       this.blogHot = data.data;
-      // console.log(data);
-      // console.log(this.blogHot);
     });
+<<<<<<< HEAD
       this.movieId = this.route.snapshot.paramMap.get('id');
       this.HomeService.getSilder(this.movieId).subscribe(movie => {
         this.movie = movie.data;
@@ -39,20 +38,10 @@ export class HomeComponent implements OnInit  {
     sessionStorage.removeItem('grandTotal');
     sessionStorage.removeItem('data');
     sessionStorage.removeItem('totalPriceTicketSeat');
+=======
+>>>>>>> 02b47670981f3b1152c87ef64437126b85f2f1b0
   }
-
   goToMovies() {
     this.router.navigate(['/movies']);
-  }
-  getImage(){
-    if (Array.isArray(this.movie.attributes)) {
-      this.movie.attributes.forEach((item: any) => { 
-        if(item.name === "Image"){
-          this.sliderIMG = item.attribute_values[0].value;
-        }
-      }); 
-    } else {
-        console.error('this.movie.attributes is not an array:', this.movie.attributes);
-    }
   }
 }

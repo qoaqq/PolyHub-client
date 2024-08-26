@@ -15,13 +15,6 @@ export class RelesedMovieComponent implements AfterViewInit{
     // phim đang chiếu
     this.HomeService.getMovies().subscribe(data => {
       this.movies = data.data.data;
-      // console.log(data);
-      // console.log(this.movies);
-    });
-  }
-  viewDetails(movieId: number): void {
-    this.Router.navigate(['/movie', movieId]).then(() => {
-      window.location.reload();
     });
   }
   

@@ -28,9 +28,9 @@
 								<div class="st_dtts_ineer_box float_left">
 									<ul>
 										<app-session-timer></app-session-timer>
-										<li><span class="dtts1">Date</span> {{ showingrelease.date_release }} <span
+										<li><span class="dtts1">Date</span> {{ showingrelease.date_release | date:'dd/MM/yyyy'}} <span
 												class="dtts2"></span></li>
-										<li><span class="dtts1">Time</span> {{ showingrelease.time_release }} <span
+										<li><span class="dtts1">Time</span> {{ showingrelease.time_release| date:'hh:mm a' }} <span
 												class="dtts2"></span></li>
 										<li><span class="dtts1">Movie</span> {{ showingrelease.movie.name }} <span
 												class="dtts2"></span></li>
@@ -75,27 +75,18 @@
 											</div>
 										</div>
 									</div>
-									<div class="st_cherity_img_cont float_left">
-										<div class="box">
-											<p class="cc_pc_color1">
-												<input type="checkbox" id="c201" name="cb">
-												<label for="c201"><span>ADD Rs. 2</span> to your transaction as a
-													donation. (Uncheck if you do not wish to donate)</label>
-										</div>
-									</div>
 								</div>
 							</div>
 							<div class="col-md-12">
-								<div class="st_cherity_btn float_left">
-									<h3>SELECT TICKET TYPE</h3>
+								<div class="st_cherity_btn float_left mt-4">
 
 									<ul>
-										<li><a href="#"><i class="flaticon-tickets"></i> &nbsp;M-Ticket</a>
-										</li>
-										<li><a href="#"><i class="flaticon-tickets"></i> &nbsp;Box office Pickup </a>
-										</li>
 										<li>
-											<button type="submit" (click)="submit()">Proceed to Pay </button>
+											<div class="st_bt_top_back_btn st_bt_top_back_btn_seatl float_left">
+												<a type="submit" (click)="submit()">
+												<i class="fas fa-long-arrow-alt-left"></i> &nbsp;Proceed to Pay 
+												</a>
+											</div>
 										</li>
 
 									</ul>
@@ -120,7 +111,7 @@
 												<li style="text-transform: uppercase;"> {{ seat.seat.row +
 													seat.seat.column }}
 													<span class="dtts2">
-														{{ seat.seat.seat_type.price | currency: 'USD' }}
+														{{ seat.seat.seat_type.price | currency:'VND':'':'1.0-0'  }}₫
 													</span>
 												</li>
 											</div>
@@ -128,7 +119,7 @@
 											<div class="">
 												<li>Sub total:
 													<span class="dtts2" style="text-transform: uppercase;">
-														{{ totalPriceTicketSeat | currency: 'USD' }}
+														{{ totalPriceTicketSeat | currency:'VND':'':'1.0-0'  }}₫
 													</span>
 												</li>
 											</div>
@@ -140,7 +131,7 @@
 													style="text-transform: uppercase;">
 													{{ food.name }} - Quantity: {{ food.quantity }}:
 													<span class="dtts2">
-														{{ (food.price * food.quantity) | currency: 'USD' }}
+														{{ (food.price * food.quantity) | currency:'VND':'':'1.0-0'  }}₫
 													</span>
 												</li>
 											</ul>
@@ -148,7 +139,7 @@
 											<div class="">
 												<li>Sub total:
 													<span class="dtts2" style="text-transform: uppercase;">
-														{{ totalPriceFoodCombo | currency: 'USD' }}
+														{{ totalPriceFoodCombo | currency:'VND':'':'1.0-0'  }}₫
 													</span>
 												</li>
 											</div>
@@ -173,7 +164,7 @@
 												<li>
 													<h5>Voucher: {{voucherResponse.code}}</h5>
 													<span *ngIf="voucherResponse.type === 'Fixed'" class="fw-bold">
-														 {{ voucherResponse.amount | currency: 'USD' }}
+														 {{ voucherResponse.amount | currency:'VND':'':'1.0-0'  }}₫
 														
 													</span>
 													<span *ngIf="voucherResponse.type === 'Percent'" class="fw-bold">
@@ -187,7 +178,7 @@
 								</div>
 								<div class="st_dtts_sb_h2 float_left">
 									<!-- <button>{{ grandTotal }}</button> -->
-									<h2>Total: <span class="text-danger">{{ grandTotal | currency: 'USD' }} </span>
+									<h2>Total: <span class="text-danger">{{ grandTotal | currency:'VND':'':'1.0-0'  }}₫ </span>
 									</h2>
 								</div>
 							</div>
