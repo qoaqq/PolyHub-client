@@ -90,6 +90,7 @@ export class BookingTypeComponent implements OnInit {
     this.authService.getUser().subscribe({
       next: (response) => {
         this.user = response; // Gán dữ liệu người dùng vào biến
+        sessionStorage.setItem('user_data', JSON.stringify(response));
       },
       error: (error) => {
         this.errorMessage =

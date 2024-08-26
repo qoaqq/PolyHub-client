@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit  {
     sessionStorage.removeItem('grandTotal');
     sessionStorage.removeItem('data');
     sessionStorage.removeItem('totalPriceTicketSeat');
+    sessionStorage.removeItem('sessionEndTime');
   }
 )}
   goToMovies() {
