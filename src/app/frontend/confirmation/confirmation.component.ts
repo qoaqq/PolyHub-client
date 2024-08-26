@@ -115,7 +115,6 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
 
   createBill() {
     const billData = JSON.parse(sessionStorage.getItem('billData') || '{}');
-    console.log('bill', billData.data.bill.grand_total);
 
     this.barcode = billData?.data.barcode;
     this.cdr.detectChanges();
@@ -127,8 +126,6 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
       data => {
         // Handle the data directly here
         this.bill = data.data;
-        console.log(this.bill);
-        
       },
       error => {
         // Handle errors here

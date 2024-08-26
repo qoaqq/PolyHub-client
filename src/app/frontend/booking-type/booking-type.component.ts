@@ -50,6 +50,8 @@ export class BookingTypeComponent implements OnInit {
     window.addEventListener('submit', () => {
       // Gọi applyVoucherOnPayment sau khi submit
       this.applyVoucherOnPayment();
+      sessionStorage.removeItem('grandTotal');
+      sessionStorage.removeItem('totalPriceTicketSeat');
   });
    // Lắng nghe sự kiện NavigationStart
    this.routerSubscription = this.router.events.subscribe(event => {
@@ -58,6 +60,8 @@ export class BookingTypeComponent implements OnInit {
       // Nếu URL không nằm trong danh sách loại trừ
       if (!excludedUrls.includes(event.url)) {
         this.removeVoucher();
+        sessionStorage.removeItem('grandTotal');
+        sessionStorage.removeItem('totalPriceTicketSeat');
       }
     }
   });
@@ -101,7 +105,6 @@ export class BookingTypeComponent implements OnInit {
     const showingRelease = sessionStorage.getItem('showingRelease');
     if (showingRelease) {
       this.showingrelease = JSON.parse(showingRelease);
-      console.log(this.showingrelease);
     }
   }
 
@@ -109,7 +112,6 @@ export class BookingTypeComponent implements OnInit {
     const selectedSeats = sessionStorage.getItem('selectedSeats');
     if (selectedSeats) {
       this.selectedSeats = JSON.parse(selectedSeats);
-      console.log(this.selectedSeats);
     }
   }
 
@@ -117,7 +119,6 @@ export class BookingTypeComponent implements OnInit {
     const selectedFoodCombos = sessionStorage.getItem('selectedFoodCombos');
     if (selectedFoodCombos) {
       this.selectedFoodCombos = JSON.parse(selectedFoodCombos);
-      console.log(this.selectedFoodCombos);
     }
   }
 
@@ -213,7 +214,6 @@ export class BookingTypeComponent implements OnInit {
     };
 
     this.http.post<any>(this.apiUrl, payload).subscribe((data) => {
-      console.log(data);
       sessionStorage.setItem('billData', JSON.stringify(data));
       if (data.redirect_url) {
         window.location.href = data.redirect_url;
