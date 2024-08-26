@@ -20,6 +20,7 @@ import { SeatBookingService } from 'src/app/services/seat-booking/seat-booking.s
 import { FoodComboService } from 'src/app/services/food-combo/food-combo.service';
 import { BookingTypeService } from 'src/app/services/booking-type/booking-type.service';
 import { UserComponent } from '../user/user.component';
+import { UserBillService } from 'src/app/services/user-bill/user-bill.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -45,7 +46,7 @@ export class ConfirmationComponent implements AfterViewInit, OnInit {
     private billService: BillService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
     private userBillService: UserBillService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
