@@ -159,6 +159,7 @@ export class BookingTypeComponent implements OnInit {
   submit() {
 
     const paymentForm = this.paymentForm?.value;
+    sessionStorage.setItem('paymentForm', JSON.stringify(paymentForm));
 
     const user = {
       user: this.user
