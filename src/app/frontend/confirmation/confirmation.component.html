@@ -25,7 +25,7 @@
         <div class="col-md-12">
           <div class="st_bcc_heading_wrapper float_left">
             <i class="fa fa-check-circle"></i>
-            <h3>Payment of <span>{{billData?.grand_total}}</span> Complete successfully</h3>
+            <h3>Payment of <span>{{billData?.grand_total | currency:'INR':'symbol'}}</span> Complete successfully</h3>
           </div>
         </div>
         <div class="col-md-12">
@@ -68,7 +68,11 @@
               </div>
               <div class="st_bcc_tecket_bottom_left_price_wrapper">
                 <h4>Total Amount</h4>
+<<<<<<< HEAD
+                <h5>{{billData?.grand_total | currency:'INR':'symbol'}}</h5>
+=======
                 <h5>{{bill?.grand_total | currency:'VND':'symbol'}}</h5>
+>>>>>>> 02b47670981f3b1152c87ef64437126b85f2f1b0
               </div>
             </div>
           </div>

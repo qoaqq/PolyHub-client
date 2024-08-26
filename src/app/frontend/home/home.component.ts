@@ -23,6 +23,23 @@ export class HomeComponent implements OnInit  {
     this.HomeService.getBlogHot().subscribe(data => {
       this.blogHot = data.data;
     });
+<<<<<<< HEAD
+      this.movieId = this.route.snapshot.paramMap.get('id');
+      this.HomeService.getSilder(this.movieId).subscribe(movie => {
+        this.movie = movie.data;
+        this.getImage();
+      });
+    
+    sessionStorage.removeItem('billData');
+    sessionStorage.removeItem('showingRelease');
+    sessionStorage.removeItem('selectedSeats');
+    sessionStorage.removeItem('selectedFoodCombos');
+    sessionStorage.removeItem('paymentForm');
+    sessionStorage.removeItem('grandTotal');
+    sessionStorage.removeItem('data');
+    sessionStorage.removeItem('totalPriceTicketSeat');
+=======
+>>>>>>> 02b47670981f3b1152c87ef64437126b85f2f1b0
   }
   goToMovies() {
     this.router.navigate(['/movies']);
